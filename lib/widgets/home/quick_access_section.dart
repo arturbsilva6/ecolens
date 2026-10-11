@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class QuickAccessSection extends StatelessWidget {
@@ -17,17 +16,14 @@ class QuickAccessSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textScale =
-        MediaQuery.textScalerOf(context).scale(1);
+    final textScale = MediaQuery.textScalerOf(context).scale(1);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'Acessos rápidos',
-          style: Theme.of(context)
-              .textTheme
-              .titleLarge
+          style: Theme.of(context).textTheme.titleLarge
               ?.copyWith(fontWeight: FontWeight.bold),
         ),
 
@@ -35,9 +31,7 @@ class QuickAccessSection extends StatelessWidget {
 
         LayoutBuilder(
           builder: (context, constraints) {
-            final oneColumn =
-                constraints.maxWidth < 330 ||
-                textScale > 1.3;
+            final oneColumn = constraints.maxWidth < 330 || textScale > 1.3;
 
             final cardWidth = oneColumn
                 ? constraints.maxWidth
@@ -109,17 +103,17 @@ class QuickAccessCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Material(
-      color: colors.surfaceContainerLow,
+      color: isDark ? colors.surfaceContainerHigh : colors.surfaceContainerLow,
       borderRadius: BorderRadius.circular(20),
+      clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(20),
         child: Container(
-          constraints: const BoxConstraints(
-            minHeight: 170,
-          ),
+          constraints: const BoxConstraints(minHeight: 170),
           padding: const EdgeInsets.all(14),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -128,36 +122,25 @@ class QuickAccessCard extends StatelessWidget {
               CircleAvatar(
                 radius: 23,
                 backgroundColor: colors.primaryContainer,
-                child: Icon(
-                  icon,
-                  color: colors.onPrimaryContainer,
-                  size: 25,
-                ),
+                child: Icon(icon, color: colors.onPrimaryContainer, size: 25),
               ),
 
               const SizedBox(height: 12),
 
               Text(
                 title,
-                style: Theme.of(context)
-                    .textTheme
-                    .titleSmall
-                    ?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: colors.onSurface,
-                    ),
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: colors.onSurface,
+                ),
               ),
 
               const SizedBox(height: 6),
 
               Text(
                 subtitle,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodySmall
-                    ?.copyWith(
-                      color: colors.onSurfaceVariant,
-                    ),
+                style: Theme.of(context).textTheme.bodySmall
+                    ?.copyWith(color: colors.onSurfaceVariant),
               ),
 
               const SizedBox(height: 12),
