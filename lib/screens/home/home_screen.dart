@@ -4,6 +4,7 @@ import '../../widgets/home/sos_banner.dart';
 import '../../widgets/home/home_header.dart';
 import '../../widgets/home/identification_banner.dart';
 import '../../widgets/home/species_search_bar.dart';
+import '../../widgets/home/quick_access_section.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -70,6 +71,35 @@ class HomeScreen extends StatelessWidget {
 
                     onFilterTap: () {
                       _mostrarMensagem(context, 'Filtros em desenvolvimento');
+                    },
+                  ),
+
+                  const SizedBox(height: 24),
+
+                  QuickAccessSection(
+                    onVenomousTap: () {
+                      _mostrarMensagem(
+                        context,
+                        'Animais peçonhentos em desenvolvimento',
+                      );
+                    },
+                    onFirstAidTap: () {
+                      _mostrarMensagem(
+                        context,
+                        'Primeiros socorros em desenvolvimento',
+                      );
+                    },
+                    onHistoryTap: () {
+                      _mostrarMensagem(
+                        context,
+                        'Meus registros em desenvolvimento',
+                      );
+                    },
+                    onForumTap: () {
+                      _mostrarMensagem(
+                        context,
+                        'Fórum local em desenvolvimento',
+                      );
                     },
                   ),
                 ],
