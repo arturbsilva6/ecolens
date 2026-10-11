@@ -7,6 +7,7 @@ import '../../widgets/home/species_search_bar.dart';
 import '../../widgets/home/quick_access_section.dart';
 import '../../models/species_model.dart';
 import '../../widgets/home/recent_species_section.dart';
+import '../../widgets/home/bottom_nav_bar.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -40,6 +41,24 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: EcoLensBottomNavBar(
+        selectedIndex: 0,
+
+        onDestinationSelected: (index) {
+          if (index == 0) return;
+
+          const paginas = [
+            'Início',
+            'Identificar',
+            'Mapa',
+            'Comunidade',
+            'Perfil',
+          ];
+
+          _mostrarMensagem(context, '${paginas[index]} em desenvolvimento');
+        },
+      ),
+
       body: SafeArea(
         child: Column(
           children: [
