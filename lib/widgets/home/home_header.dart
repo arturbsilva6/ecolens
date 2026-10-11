@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class HomeHeader extends StatelessWidget {
@@ -16,26 +15,17 @@ class HomeHeader extends StatelessWidget {
     final colors = Theme.of(context).colorScheme;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 16,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       child: Row(
         children: [
-          // Logo provisório
           CircleAvatar(
             radius: 26,
             backgroundColor: colors.primaryContainer,
-            child: Icon(
-              Icons.eco,
-              color: colors.primary,
-              size: 30,
-            ),
+            child: Icon(Icons.eco, color: colors.primary, size: 30),
           ),
 
           const SizedBox(width: 12),
 
-          // Nome e slogan
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,22 +49,16 @@ class HomeHeader extends StatelessWidget {
             ),
           ),
 
-          // Notificações
           IconButton(
             tooltip: 'Notificações',
             onPressed: onNotificationsTap,
-            icon: const Icon(
-              Icons.notifications_outlined,
-            ),
+            icon: const Icon(Icons.notifications_outlined),
           ),
 
-          // Perfil
           IconButton(
             tooltip: 'Meu perfil',
             onPressed: onProfileTap,
-            icon: const Icon(
-              Icons.account_circle_outlined,
-            ),
+            icon: const Icon(Icons.account_circle_outlined),
           ),
         ],
       ),

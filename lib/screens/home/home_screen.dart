@@ -1,14 +1,14 @@
-
 import 'package:flutter/material.dart';
+
 import '../../widgets/home/home_header.dart';
+import '../../widgets/home/identification_banner.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   void _mostrarMensagem(BuildContext context, String mensagem) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(mensagem)),
-    );
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(mensagem)));
   }
 
   @override
@@ -19,24 +19,29 @@ class HomeScreen extends StatelessWidget {
           children: [
             HomeHeader(
               onNotificationsTap: () {
-                _mostrarMensagem(
-                  context,
-                  'Notificações em desenvolvimento',
-                );
+                _mostrarMensagem(context, 'Notificações em desenvolvimento');
               },
               onProfileTap: () {
-                _mostrarMensagem(
-                  context,
-                  'Perfil em desenvolvimento',
-                );
+                _mostrarMensagem(context, 'Perfil em desenvolvimento');
               },
             ),
 
-            const Expanded(
-              child: Center(
-                child: Text(
-                  'Nossa nova Home começa aqui!',
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
                 ),
+                children: [
+                  IdentificationBanner(
+                    onCameraTap: () {
+                      _mostrarMensagem(context, 'Câmera em desenvolvimento');
+                    },
+                    onGalleryTap: () {
+                      _mostrarMensagem(context, 'Galeria em desenvolvimento');
+                    },
+                  ),
+                ],
               ),
             ),
           ],
