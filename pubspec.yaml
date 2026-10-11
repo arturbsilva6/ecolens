@@ -58,8 +58,8 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/sagui_banner.jpg
-    
+    - assets/images/
+
   
 
   # To add assets to your application, add an assets section, like this:

@@ -5,6 +5,8 @@ import '../../widgets/home/home_header.dart';
 import '../../widgets/home/identification_banner.dart';
 import '../../widgets/home/species_search_bar.dart';
 import '../../widgets/home/quick_access_section.dart';
+import '../../models/species_model.dart';
+import '../../widgets/home/recent_species_section.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -13,6 +15,27 @@ class HomeScreen extends StatelessWidget {
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text(mensagem)));
   }
+
+  static const List<SpeciesModel> _recentSpecies = [
+    SpeciesModel(
+      commonName: 'Jararaca',
+      scientificName: 'Bothrops jararaca',
+      status: SpeciesStatus.danger,
+      imagePath: 'assets/images/jararaca.jpg',
+    ),
+    SpeciesModel(
+      commonName: 'Cambará',
+      scientificName: 'Lantana camara',
+      status: SpeciesStatus.invasive,
+      imagePath: 'assets/images/cambara.jpg',
+    ),
+    SpeciesModel(
+      commonName: 'Sagui',
+      scientificName: 'Callithrix sp.',
+      imagePath: 'assets/images/sagui_banner.jpg',
+      status: SpeciesStatus.unverified,
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -99,6 +122,25 @@ class HomeScreen extends StatelessWidget {
                       _mostrarMensagem(
                         context,
                         'Fórum local em desenvolvimento',
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 24),
+
+                  RecentSpeciesSection(
+                    species: _recentSpecies,
+
+                    onSpeciesTap: (species) {
+                      _mostrarMensagem(
+                        context,
+                        'Detalhes de ${species.commonName} em desenvolvimento',
+                      );
+                    },
+
+                    onViewAllTap: () {
+                      _mostrarMensagem(
+                        context,
+                        'Todos os registros em desenvolvimento',
                       );
                     },
                   ),
