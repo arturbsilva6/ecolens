@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../widgets/home/sos_banner.dart';
 import '../../widgets/home/home_header.dart';
 import '../../widgets/home/identification_banner.dart';
 
@@ -39,6 +40,13 @@ class HomeScreen extends StatelessWidget {
                     },
                     onGalleryTap: () {
                       _mostrarMensagem(context, 'Galeria em desenvolvimento');
+                    },
+                  ),
+                  const SizedBox(height: 16),
+
+                  SosBanner(
+                    onSosTap: () {
+                      _mostrarMensagem(context, 'Tela SOS em desenvolvimento');
                     },
                   ),
                 ],
