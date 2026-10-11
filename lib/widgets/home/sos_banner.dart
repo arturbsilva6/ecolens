@@ -23,27 +23,25 @@ class SosBanner extends StatelessWidget {
             : const Color(0xFFFCE8E8),
         borderRadius: BorderRadius.circular(20),
       ),
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Ícone de segurança
-          const CircleAvatar(
-            radius: 25,
-            backgroundColor: Color(0xFFD9292F),
-            child: Icon(
-              Icons.shield_outlined,
-              color: Colors.white,
-              size: 28,
-            ),
-          ),
+          Row(
+            children: [
+              const CircleAvatar(
+                radius: 24,
+                backgroundColor: Color(0xFFD9292F),
+                child: Icon(
+                  Icons.shield_outlined,
+                  color: Colors.white,
+                  size: 27,
+                ),
+              ),
 
-          const SizedBox(width: 12),
+              const SizedBox(width: 12),
 
-          // Informações do SOS
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
+              Expanded(
+                child: Text(
                   'Encontrou um animal em risco?',
                   style: TextStyle(
                     fontSize: 15,
@@ -53,43 +51,44 @@ class SosBanner extends StatelessWidget {
                         : const Color(0xFF731C20),
                   ),
                 ),
+              ),
 
-                const SizedBox(height: 4),
+              const SizedBox(width: 8),
 
-                Text(
-                  'Acesse orientações de resgate e órgãos competentes.',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: isDark
-                        ? const Color(0xFFF0BEC1)
-                        : const Color(0xFF805052),
+              FilledButton.icon(
+                onPressed: onSosTap,
+                icon: const Icon(
+                  Icons.phone,
+                  size: 18,
+                ),
+                label: const Text('SOS'),
+                style: FilledButton.styleFrom(
+                  backgroundColor:
+                      const Color(0xFFD9292F),
+                  foregroundColor: Colors.white,
+                  minimumSize: const Size(88, 48),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.circular(14),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
 
-          const SizedBox(width: 8),
+          const SizedBox(height: 12),
 
-          // Botão SOS
-          FilledButton(
-            onPressed: onSosTap,
-            style: FilledButton.styleFrom(
-              backgroundColor: const Color(0xFFD9292F),
-              foregroundColor: Colors.white,
-              minimumSize: const Size(64, 48),
-              padding: const EdgeInsets.symmetric(
-                horizontal: 12,
-              ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(14),
-              ),
-            ),
-            child: const Text(
-              'SOS',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
+          Text(
+            'Acesse orientações de resgate e contatos de órgãos competentes.',
+            style: TextStyle(
+              fontSize: 13,
+              height: 1.4,
+              color: isDark
+                  ? const Color(0xFFF0BEC1)
+                  : const Color(0xFF805052),
             ),
           ),
         ],
