@@ -17,7 +17,7 @@ class IdentificationBanner extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(28),
         image: const DecorationImage(
-          image: AssetImage('assets/images/sagui_banner.jpg'),
+          image: AssetImage('assets/images/sagui_banner_home.jpg'),
           fit: BoxFit.cover,
           alignment: Alignment.centerRight,
         ),
