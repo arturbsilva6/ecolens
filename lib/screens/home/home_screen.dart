@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../widgets/home/sos_banner.dart';
 import '../../widgets/home/home_header.dart';
 import '../../widgets/home/identification_banner.dart';
+import '../../widgets/home/species_search_bar.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -47,6 +48,28 @@ class HomeScreen extends StatelessWidget {
                   SosBanner(
                     onSosTap: () {
                       _mostrarMensagem(context, 'Tela SOS em desenvolvimento');
+                    },
+                  ),
+                  const SizedBox(height: 20),
+
+                  SpeciesSearchBar(
+                    onSearch: (texto) {
+                      if (texto.isEmpty) {
+                        _mostrarMensagem(
+                          context,
+                          'Digite o nome de uma espécie',
+                        );
+                        return;
+                      }
+
+                      _mostrarMensagem(
+                        context,
+                        'Pesquisa por "$texto" em desenvolvimento',
+                      );
+                    },
+
+                    onFilterTap: () {
+                      _mostrarMensagem(context, 'Filtros em desenvolvimento');
                     },
                   ),
                 ],

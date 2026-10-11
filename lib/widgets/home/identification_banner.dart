@@ -13,7 +13,7 @@ class IdentificationBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 280,
+      constraints: const BoxConstraints(minHeight: 300),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(28),
         image: const DecorationImage(
@@ -66,7 +66,7 @@ class IdentificationBanner extends StatelessWidget {
                 ),
               ),
             ),
-            const Spacer(),
+            const SizedBox(height: 28),
 
             Row(
               children: [
