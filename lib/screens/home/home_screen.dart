@@ -10,6 +10,7 @@ import '../../widgets/home/recent_species_section.dart';
 import '../../widgets/home/bottom_nav_bar.dart';
 import '../../controllers/theme_controller.dart';
 import '../settings/settings_screen.dart';
+import '../identification/identification_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   final ThemeController themeController;
@@ -41,6 +42,14 @@ class HomeScreen extends StatelessWidget {
         .showSnackBar(SnackBar(content: Text(mensagem)));
   }
 
+  void _abrirIdentificacao(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (context) => const IdentificationScreen(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,6 +58,12 @@ class HomeScreen extends StatelessWidget {
 
         onDestinationSelected: (index) {
           if (index == 0) return;
+
+          // Abre a tela de identificação
+          if (index == 1) {
+            _abrirIdentificacao(context);
+            return;
+          }
 
           const paginas = [
             'Início',
@@ -88,10 +103,10 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   IdentificationBanner(
                     onCameraTap: () {
-                      _mostrarMensagem(context, 'Câmera em desenvolvimento');
+                      _abrirIdentificacao(context);
                     },
                     onGalleryTap: () {
-                      _mostrarMensagem(context, 'Galeria em desenvolvimento');
+                      _abrirIdentificacao(context);
                     },
                   ),
                   const SizedBox(height: 16),
@@ -101,8 +116,8 @@ class HomeScreen extends StatelessWidget {
                       _mostrarMensagem(context, 'Tela SOS em desenvolvimento');
                     },
                   ),
-                  const SizedBox(height: 20),
 
+                  const SizedBox(height: 20),
                   SpeciesSearchBar(
                     onSearch: (texto) {
                       if (texto.isEmpty) {
