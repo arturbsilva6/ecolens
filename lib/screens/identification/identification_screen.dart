@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 
 import '../../controllers/species_controller.dart';
 
+enum IdentificationSource { camera, gallery }
+
 class IdentificationScreen extends StatefulWidget {
-  const IdentificationScreen({super.key});
+  final IdentificationSource? initialSource;
+
+  const IdentificationScreen({super.key, this.initialSource});
 
   @override
   State<IdentificationScreen> createState() => _IdentificationScreenState();
@@ -15,7 +19,18 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
   @override
   void initState() {
     super.initState();
+
     _controller = SpeciesController();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+
+      if (widget.initialSource == IdentificationSource.camera) {
+        _controller.takePhoto();
+      } else if (widget.initialSource == IdentificationSource.gallery) {
+        _controller.pickFromGallery();
+      }
+    });
   }
 
   @override

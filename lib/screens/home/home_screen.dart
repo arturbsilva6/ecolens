@@ -42,10 +42,14 @@ class HomeScreen extends StatelessWidget {
         .showSnackBar(SnackBar(content: Text(mensagem)));
   }
 
-  void _abrirIdentificacao(BuildContext context) {
+  void _abrirIdentificacao(
+    BuildContext context, {
+    IdentificationSource? initialSource,
+  }) {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
-        builder: (context) => const IdentificationScreen(),
+        builder: (context) =>
+            IdentificationScreen(initialSource: initialSource),
       ),
     );
   }
@@ -103,10 +107,16 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   IdentificationBanner(
                     onCameraTap: () {
-                      _abrirIdentificacao(context);
+                      _abrirIdentificacao(
+                        context,
+                        initialSource: IdentificationSource.camera,
+                      );
                     },
                     onGalleryTap: () {
-                      _abrirIdentificacao(context);
+                      _abrirIdentificacao(
+                        context,
+                        initialSource: IdentificationSource.gallery,
+                      );
                     },
                   ),
                   const SizedBox(height: 16),
