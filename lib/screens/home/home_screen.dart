@@ -8,15 +8,13 @@ import '../../widgets/home/quick_access_section.dart';
 import '../../models/species_model.dart';
 import '../../widgets/home/recent_species_section.dart';
 import '../../widgets/home/bottom_nav_bar.dart';
+import '../../controllers/theme_controller.dart';
+import '../settings/settings_screen.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  final ThemeController themeController;
 
-  void _mostrarMensagem(BuildContext context, String mensagem) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(mensagem)));
-  }
-
+  const HomeScreen({super.key, required this.themeController});
   static const List<SpeciesModel> _recentSpecies = [
     SpeciesModel(
       commonName: 'Jararaca',
@@ -37,6 +35,11 @@ class HomeScreen extends StatelessWidget {
       status: SpeciesStatus.unverified,
     ),
   ];
+
+  void _mostrarMensagem(BuildContext context, String mensagem) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(mensagem)));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,8 +69,13 @@ class HomeScreen extends StatelessWidget {
               onNotificationsTap: () {
                 _mostrarMensagem(context, 'Notificações em desenvolvimento');
               },
-              onProfileTap: () {
-                _mostrarMensagem(context, 'Perfil em desenvolvimento');
+              onSettingsTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (context) =>
+                        SettingsScreen(themeController: themeController),
+                  ),
+                );
               },
             ),
 
