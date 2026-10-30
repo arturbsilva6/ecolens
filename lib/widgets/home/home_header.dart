@@ -55,10 +55,26 @@ class HomeHeader extends StatelessWidget {
             icon: const Icon(Icons.notifications_outlined),
           ),
 
-          IconButton(
-            tooltip: 'Meu perfil',
-            onPressed: onProfileTap,
-            icon: const Icon(Icons.account_circle_outlined),
+          PopupMenuButton<String>(
+            tooltip: 'Mais opções',
+            icon: const Icon(Icons.more_vert),
+            onSelected: (value) {
+              if (value == 'settings') {
+                onProfileTap();
+              }
+            },
+            itemBuilder: (context) => const [
+              PopupMenuItem<String>(
+                value: 'settings',
+                child: Row(
+                  children: [
+                    Icon(Icons.settings_outlined),
+                    SizedBox(width: 12),
+                    Text('Configurações'),
+                  ],
+                ),
+              ),
+            ],
           ),
         ],
       ),
