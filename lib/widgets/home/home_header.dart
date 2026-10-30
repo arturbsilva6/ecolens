@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 class HomeHeader extends StatelessWidget {
   final VoidCallback onNotificationsTap;
-  final VoidCallback onProfileTap;
+  final VoidCallback onSettingsTap;
 
   const HomeHeader({
     super.key,
     required this.onNotificationsTap,
-    required this.onProfileTap,
+    required this.onSettingsTap,
   });
 
   @override
@@ -60,7 +60,7 @@ class HomeHeader extends StatelessWidget {
             icon: const Icon(Icons.more_vert),
             onSelected: (value) {
               if (value == 'settings') {
-                onProfileTap();
+                onSettingsTap();
               }
             },
             itemBuilder: (context) => const [

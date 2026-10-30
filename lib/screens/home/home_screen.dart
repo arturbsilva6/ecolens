@@ -69,7 +69,7 @@ class HomeScreen extends StatelessWidget {
               onNotificationsTap: () {
                 _mostrarMensagem(context, 'Notificações em desenvolvimento');
               },
-              onProfileTap: () {
+              onSettingsTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute<void>(
                     builder: (context) =>
