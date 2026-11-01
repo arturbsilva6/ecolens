@@ -11,6 +11,8 @@ import '../../widgets/home/bottom_nav_bar.dart';
 import '../../controllers/theme_controller.dart';
 import '../settings/settings_screen.dart';
 import '../identification/identification_screen.dart';
+import '../species/species_catalog_screen.dart';
+import '../species/species_detail_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   final ThemeController themeController;
@@ -183,16 +185,19 @@ class HomeScreen extends StatelessWidget {
                     species: _recentSpecies,
 
                     onSpeciesTap: (species) {
-                      _mostrarMensagem(
-                        context,
-                        'Detalhes de ${species.commonName} em desenvolvimento',
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (context) =>
+                              SpeciesDetailScreen(species: species),
+                        ),
                       );
                     },
 
                     onViewAllTap: () {
-                      _mostrarMensagem(
-                        context,
-                        'Todos os registros em desenvolvimento',
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (context) => const SpeciesCatalogScreen(),
+                        ),
                       );
                     },
                   ),
