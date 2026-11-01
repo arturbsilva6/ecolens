@@ -1,17 +1,11 @@
-
 import 'package:flutter/material.dart';
 
 import '../../models/species_model.dart';
 
-
-
 class SpeciesDetailScreen extends StatelessWidget {
   final SpeciesModel species;
 
-  const SpeciesDetailScreen({
-    super.key,
-    required this.species,
-  });
+  const SpeciesDetailScreen({super.key, required this.species});
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +18,7 @@ class SpeciesDetailScreen extends StatelessWidget {
     };
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Resultado da identificação'),
-      ),
+      appBar: AppBar(title: const Text('Resultado da identificação')),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.all(20),
@@ -68,30 +60,21 @@ class SpeciesDetailScreen extends StatelessWidget {
 
             Text(
               species.commonName,
-              style: Theme.of(context)
-                  .textTheme
-                  .headlineMedium,
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
 
             const SizedBox(height: 6),
 
             Text(
               species.scientificName,
-              style: Theme.of(context)
-                  .textTheme
-                  .titleMedium
-                  ?.copyWith(
-                    fontStyle: FontStyle.italic,
-                  ),
+              style: Theme.of(context).textTheme.titleMedium
+                  ?.copyWith(fontStyle: FontStyle.italic),
             ),
 
             const SizedBox(height: 20),
 
             Chip(
-              avatar: const Icon(
-                Icons.info_outline,
-                size: 18,
-              ),
+              avatar: const Icon(Icons.info_outline, size: 18),
               label: Text(statusText),
             ),
 
@@ -99,9 +82,7 @@ class SpeciesDetailScreen extends StatelessWidget {
 
             const Card(
               child: ListTile(
-                leading: Icon(
-                  Icons.analytics_outlined,
-                ),
+                leading: Icon(Icons.analytics_outlined),
                 title: Text('Confiança da identificação'),
                 subtitle: Text(
                   'Não disponível — a inteligência '
@@ -111,14 +92,62 @@ class SpeciesDetailScreen extends StatelessWidget {
             ),
 
             const SizedBox(height: 16),
+            for (final section
+                in <({String title, String? content, IconData icon})>[
+                  (
+                    title: 'Sobre a espécie',
+                    content: species.description,
+                    icon: Icons.menu_book_outlined,
+                  ),
+                  (
+                    title: 'Características',
+                    content: species.characteristics,
+                    icon: Icons.visibility_outlined,
+                  ),
+                  (
+                    title: 'Habitat',
+                    content: species.habitat,
+                    icon: Icons.park_outlined,
+                  ),
+                  (
+                    title: 'Riscos conhecidos',
+                    content: species.riskDescription,
+                    icon: Icons.warning_amber_outlined,
+                  ),
+                  (
+                    title: 'Orientações de segurança',
+                    content: species.safetyAdvice,
+                    icon: Icons.health_and_safety_outlined,
+                  ),
+                  (
+                    title: 'Fonte das informações',
+                    content: species.sourceName,
+                    icon: Icons.source_outlined,
+                  ),
+                  (
+                    title: 'Endereço da fonte',
+                    content: species.sourceUrl,
+                    icon: Icons.link_outlined,
+                  ),
+                ])
+              if (section.content != null &&
+                  section.content!.trim().isNotEmpty) ...[
+                Card(
+                  child: ListTile(
+                    leading: Icon(section.icon, color: colors.primary),
+                    title: Text(section.title),
+                    subtitle: Text(section.content!),
+                  ),
+                ),
+                const SizedBox(height: 8),
+              ],
 
             Card(
               color: colors.errorContainer,
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Row(
-                  crossAxisAlignment:
-                      CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Icon(
                       Icons.warning_amber_rounded,
@@ -131,9 +160,7 @@ class SpeciesDetailScreen extends StatelessWidget {
                         'identificar espécies reais. '
                         'Mantenha distância de animais '
                         'desconhecidos e não os manuseie.',
-                        style: TextStyle(
-                          color: colors.onErrorContainer,
-                        ),
+                        style: TextStyle(color: colors.onErrorContainer),
                       ),
                     ),
                   ],

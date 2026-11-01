@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../controllers/species_controller.dart';
-
-import '../../models/species_model.dart';
 import '../species/species_detail_screen.dart';
+import '../../data/mock_species_repository.dart';
 
 enum IdentificationSource { camera, gallery }
 
@@ -143,12 +142,7 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
                             Navigator.of(context).push(
                               MaterialPageRoute<void>(
                                 builder: (context) => const SpeciesDetailScreen(
-                                  species: SpeciesModel(
-                                    commonName: 'Jararaca',
-                                    scientificName: 'Bothrops jararaca',
-                                    imagePath: 'assets/images/jararaca.jpg',
-                                    status: SpeciesStatus.danger,
-                                  ),
+                                 species: MockSpeciesRepository.jararaca,
                                 ),
                               ),
                             );
