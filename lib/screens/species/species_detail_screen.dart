@@ -4,8 +4,13 @@ import '../../models/species_model.dart';
 
 class SpeciesDetailScreen extends StatelessWidget {
   final SpeciesModel species;
+  final bool isDemonstration;
 
-  const SpeciesDetailScreen({super.key, required this.species});
+  const SpeciesDetailScreen({
+    super.key,
+    required this.species,
+    this.isDemonstration = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,13 +23,18 @@ class SpeciesDetailScreen extends StatelessWidget {
     };
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Resultado da identificação')),
+      appBar: AppBar(
+        title: Text(
+          isDemonstration ? 'Resultado da identificação' : 'Ficha da espécie',
+        ),
+      ),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.all(20),
           children: [
-            Card(
-              color: colors.tertiaryContainer,
+            if (isDemonstration)
+              Card(
+                color: colors.tertiaryContainer,
               child: const Padding(
                 padding: EdgeInsets.all(16),
                 child: Row(
@@ -80,9 +90,10 @@ class SpeciesDetailScreen extends StatelessWidget {
 
             const SizedBox(height: 16),
 
-            const Card(
-              child: ListTile(
-                leading: Icon(Icons.analytics_outlined),
+            if (isDemonstration)
+              const Card(
+                child: ListTile(
+                  leading: Icon(Icons.analytics_outlined),
                 title: Text('Confiança da identificação'),
                 subtitle: Text(
                   'Não disponível — a inteligência '
@@ -156,10 +167,15 @@ class SpeciesDetailScreen extends StatelessWidget {
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(
-                        'Não utilize este exemplo para '
-                        'identificar espécies reais. '
-                        'Mantenha distância de animais '
-                        'desconhecidos e não os manuseie.',
+                        isDemonstration
+                            ? 'Não utilize este exemplo para '
+                              'identificar espécies reais. '
+                              'Mantenha distância de animais '
+                              'desconhecidos e não os manuseie.'
+                            : 'Esta ficha é informativa e não substitui '
+                              'a identificação por especialistas nem '
+                              'o atendimento médico. Não toque ou '
+                              'manuseie animais desconhecidos.',
                         style: TextStyle(color: colors.onErrorContainer),
                       ),
                     ),
