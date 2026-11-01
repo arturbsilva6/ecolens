@@ -35,23 +35,23 @@ class SpeciesDetailScreen extends StatelessWidget {
             if (isDemonstration)
               Card(
                 color: colors.tertiaryContainer,
-              child: const Padding(
-                padding: EdgeInsets.all(16),
-                child: Row(
-                  children: [
-                    Icon(Icons.science_outlined),
-                    SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        'DEMONSTRAÇÃO: este resultado é '
-                        'ilustrativo. Nenhuma fotografia '
-                        'foi analisada por IA.',
+                child: const Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Row(
+                    children: [
+                      Icon(Icons.science_outlined),
+                      SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          'DEMONSTRAÇÃO: este resultado é '
+                          'ilustrativo. Nenhuma fotografia '
+                          'foi analisada por IA.',
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
 
             const SizedBox(height: 20),
 
@@ -94,13 +94,13 @@ class SpeciesDetailScreen extends StatelessWidget {
               const Card(
                 child: ListTile(
                   leading: Icon(Icons.analytics_outlined),
-                title: Text('Confiança da identificação'),
-                subtitle: Text(
-                  'Não disponível — a inteligência '
-                  'artificial ainda não está integrada.',
+                  title: Text('Confiança da identificação'),
+                  subtitle: Text(
+                    'Não disponível — a inteligência '
+                    'artificial ainda não está integrada.',
+                  ),
                 ),
               ),
-            ),
 
             const SizedBox(height: 16),
             for (final section
