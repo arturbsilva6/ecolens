@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../../controllers/species_controller.dart';
 
+import '../../models/species_model.dart';
+import '../species/species_detail_screen.dart';
+
 enum IdentificationSource { camera, gallery }
 
 class IdentificationScreen extends StatefulWidget {
@@ -131,6 +134,29 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
                 ),
 
                 if (imageBytes != null) ...[
+                  const SizedBox(height: 20),
+
+                  FilledButton.icon(
+                    onPressed: isLoading
+                        ? null
+                        : () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute<void>(
+                                builder: (context) => const SpeciesDetailScreen(
+                                  species: SpeciesModel(
+                                    commonName: 'Jararaca',
+                                    scientificName: 'Bothrops jararaca',
+                                    imagePath: 'assets/images/jararaca.jpg',
+                                    status: SpeciesStatus.danger,
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                    icon: const Icon(Icons.science_outlined),
+                    label: const Text('Ver resultado demonstrativo'),
+                  ),
+
                   const SizedBox(height: 12),
 
                   TextButton.icon(
@@ -139,29 +165,6 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
                     label: const Text('Remover imagem'),
                   ),
                 ],
-
-                const SizedBox(height: 24),
-
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Icon(Icons.info_outline, color: colors.primary),
-                        const SizedBox(width: 12),
-                        const Expanded(
-                          child: Text(
-                            'Fotografe a espécie com '
-                            'boa iluminação e foco. '
-                            'Não se aproxime de animais '
-                            'desconhecidos ou perigosos.',
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
               ],
             );
           },
