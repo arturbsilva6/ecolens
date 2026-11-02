@@ -178,7 +178,7 @@ class SpeciesDetailScreen extends StatelessWidget {
                       context,
                       species.imageLicenseUrl!,
                     ),
-                    child: const Text('CC BY 2.0'),
+                    child: Text(species.imageLicenseLabel ?? 'Licença'),
                   ),
               ],
             ),
