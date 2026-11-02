@@ -24,7 +24,7 @@ class SpeciesSearchBar extends StatelessWidget {
       },
 
       decoration: InputDecoration(
-        hintText: 'Buscar espécie, planta ou animal...',
+        hintText: 'Buscar espécie...',
 
         prefixIcon: Icon(
           Icons.search,
