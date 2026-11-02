@@ -3,7 +3,7 @@
 -- O catálogo público é protegido por RLS e só expõe is_published = true.
 -- Fontes oficiais específicas estão em cada source_url.
 -- Fotografias exibidas devem ter autoria e licença verificadas
--- (ver docs/IMAGE_CREDITS.md para a jararaca).
+-- (ver docs/IMAGE_CREDITS.md para autoria/licença de cada foto).
 -- NÃO executar com credenciais administrativas no aplicativo Flutter.
 
 INSERT INTO public.species (
@@ -33,7 +33,7 @@ INSERT INTO public.species (
     'Evite plantar, transportar sementes ou disseminar exemplares em áreas naturais. Para manejo ou remoção, consulte o órgão ambiental local e respeite eventuais restrições de áreas protegidas. Não use apenas imagens para confirmar a identificação.',
     'Instituto Água e Terra do Paraná — Flora Exótica',
     'https://www.iat.pr.gov.br/Pagina/Flora-Exotica',
-    NULL,
+    'https://upload.wikimedia.org/wikipedia/commons/4/49/Leucaena_leucocephala.jpg',
     TRUE),
   ('sus-scrofa',
     'Javali',
@@ -46,7 +46,7 @@ INSERT INTO public.species (
     'Não se aproxime, não tente alimentar, perseguir ou capturar javalis. Afaste-se com calma e mantenha crianças e animais domésticos a uma distância segura. Ações de manejo e controle devem obedecer à regulamentação do Ibama e à orientação dos órgãos responsáveis.',
     'Ibama — Manejo e controle do javali',
     'https://www.gov.br/ibama/pt-br/assuntos/biodiversidade/especies-exoticas-invasoras/manejo-e-controle-do-javali',
-    NULL,
+    'https://upload.wikimedia.org/wikipedia/commons/c/c2/Wild_boar_%28Sus_scrofa%29.jpg',
     TRUE),
   ('tityus-serrulatus',
     'Escorpião-amarelo',
@@ -59,6 +59,6 @@ INSERT INTO public.species (
     'Não toque no escorpião nem tente capturá-lo com as mãos. Em caso de ferroada, afaste a pessoa do animal, lave o local com água e sabão e procure atendimento médico imediatamente. Não faça torniquete, cortes, sucção nem utilize produtos caseiros. Se necessário, acione o SAMU 192.',
     'Instituto Butantan e Ministério da Saúde',
     'https://www.butantan.gov.br/bubutantan/resistentes-e-antigos-no-planeta-terra-conheca-9-curiosidades-dos-escorpioes',
-    NULL,
+    'https://upload.wikimedia.org/wikipedia/commons/9/99/Tityus_serrulatus_%28Buthidae%29_%2822768698194%29.jpg',
     TRUE)
 ON CONFLICT (slug) DO NOTHING;
