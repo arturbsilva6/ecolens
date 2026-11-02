@@ -14,6 +14,7 @@ class SpeciesModel {
   final String? imageCredit;
   final String? imageSourceUrl;
   final String? imageLicenseUrl;
+  final String? imageLicenseLabel;
   final SpeciesStatus status;
 
   // Informações gerais
@@ -37,6 +38,7 @@ class SpeciesModel {
     this.imageCredit,
     this.imageSourceUrl,
     this.imageLicenseUrl,
+    this.imageLicenseLabel,
     required this.status,
     this.description,
     this.characteristics,
