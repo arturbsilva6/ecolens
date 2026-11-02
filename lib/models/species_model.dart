@@ -10,6 +10,10 @@ class SpeciesModel {
   final String commonName;
   final String scientificName;
   final String? imagePath;
+  final String? imageUrl;
+  final String? imageCredit;
+  final String? imageSourceUrl;
+  final String? imageLicenseUrl;
   final SpeciesStatus status;
 
   // Informações gerais
