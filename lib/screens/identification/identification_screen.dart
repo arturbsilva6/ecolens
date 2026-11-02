@@ -1,8 +1,12 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 
 import '../../controllers/species_controller.dart';
 import '../species/species_detail_screen.dart';
 import '../../data/mock_species_repository.dart';
+import '../../models/ai_identification_result.dart';
+import '../../services/ai_service.dart';
 
 enum IdentificationSource { camera, gallery }
 
@@ -16,7 +20,105 @@ class IdentificationScreen extends StatefulWidget {
 }
 
 class _IdentificationScreenState extends State<IdentificationScreen> {
+  // Mantido desligado até configurar Auth, segredo Gemini e limites de uso.
+  static const bool _aiEnabled = bool.fromEnvironment(
+    'ECOLENS_AI_ENABLED',
+    defaultValue: false,
+  );
+
   late final SpeciesController _controller;
+  bool _isAnalyzing = false;
+
+  Future<void> _analyzeImage(Uint8List bytes) async {
+    final allowed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Enviar foto para análise?'),
+        content: const Text(
+          'Se você continuar, sua foto será enviada ao serviço '
+          'do EcoLens e ao provedor de IA (Google Gemini). '
+          'A imagem pode conter informações ou metadados pessoais. '
+          'Não envie fotos com pessoas ou dados sensíveis. '
+          'A análise pode errar, especialmente em espécies perigosas.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Cancelar'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const Text('Aceitar e analisar'),
+          ),
+        ],
+      ),
+    );
+
+    if (allowed != true || !mounted) return;
+
+    setState(() => _isAnalyzing = true);
+    try {
+      final result = await AiService().suggestSpecies(bytes);
+      if (!mounted) return;
+
+      await showDialog<void>(
+        context: context,
+        builder: (context) => _suggestionDialog(context, result),
+      );
+    } catch (error) {
+      if (!mounted) return;
+      final message = error is FormatException
+          ? error.message
+          : 'Não foi possível analisar a foto. '
+              'Verifique a conexão e a configuração da IA.';
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(message)),
+      );
+    } finally {
+      if (mounted) setState(() => _isAnalyzing = false);
+    }
+  }
+
+  Widget _suggestionDialog(
+    BuildContext context,
+    AiIdentificationResult result,
+  ) {
+    final speciesName = [
+      result.commonName,
+      result.scientificName,
+    ].whereType<String>().join(' · ');
+
+    return AlertDialog(
+      title: Text(
+        result.identified ? 'Sugestão da IA (não confirmada)' : 'Análise inconclusiva',
+      ),
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (result.identified) ...[
+              Text(speciesName),
+              const SizedBox(height: 12),
+            ],
+            Text(result.explanation),
+            const SizedBox(height: 12),
+            const Text(
+              'Não utilize esta sugestão para avaliar toxicidade, '
+              'decidir se um animal é seguro ou orientar primeiros '
+              'socorros. Mantenha distância e consulte especialistas.',
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text('Entendi'),
+        ),
+      ],
+    );
+  }
 
   @override
   void initState() {
@@ -52,7 +154,7 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
           listenable: _controller,
           builder: (context, child) {
             final imageBytes = _controller.imageBytes;
-            final isLoading = _controller.isLoading;
+            final isLoading = _controller.isLoading || _isAnalyzing;
 
             return ListView(
               padding: const EdgeInsets.all(20),
@@ -134,6 +236,22 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
 
                 if (imageBytes != null) ...[
                   const SizedBox(height: 20),
+                  if (_aiEnabled) ...[
+                    OutlinedButton.icon(
+                      onPressed: isLoading
+                          ? null
+                          : () => _analyzeImage(imageBytes),
+                      icon: const Icon(Icons.auto_awesome_outlined),
+                      label: const Text('Analisar com IA (experimental)'),
+                    ),
+                    const SizedBox(height: 12),
+                  ] else ...[
+                    const Text(
+                      'Reconhecimento por IA em preparação. '
+                      'Por enquanto, use a demonstração abaixo.',
+                    ),
+                    const SizedBox(height: 12),
+                  ],
 
                   FilledButton.icon(
                     onPressed: isLoading
