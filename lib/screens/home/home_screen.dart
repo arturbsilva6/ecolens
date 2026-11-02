@@ -140,9 +140,11 @@ class HomeScreen extends StatelessWidget {
                         return;
                       }
 
-                      _mostrarMensagem(
-                        context,
-                        'Pesquisa por "$texto" em desenvolvimento',
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (context) =>
+                              SpeciesCatalogScreen(initialQuery: texto),
+                        ),
                       );
                     },
 
