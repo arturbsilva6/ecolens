@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../models/species_model.dart';
 
@@ -12,9 +13,184 @@ class SpeciesDetailScreen extends StatelessWidget {
     this.isDemonstration = true,
   });
 
+  Future<void> _openExternalLink(BuildContext context, String url) async {
+    final uri = Uri.tryParse(url);
+    if (uri == null || uri.scheme != 'https' || uri.host.isEmpty) {
+      return;
+    }
+
+    try {
+      final opened = await launchUrl(
+        uri,
+        mode: LaunchMode.externalApplication,
+      );
+      if (!opened && context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Não foi possível abrir o link.')),
+        );
+      }
+    } catch (_) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Não foi possível abrir o link.')),
+        );
+      }
+    }
+  }
+
+  Widget _informationCard(
+    BuildContext context, {
+    required String title,
+    required IconData icon,
+    required String? content,
+    bool isSafety = false,
+  }) {
+    if (content == null || content.trim().isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    final colors = Theme.of(context).colorScheme;
+    final emphasized = isSafety && species.status == SpeciesStatus.danger;
+
+    return Card(
+      color: emphasized ? colors.errorContainer : colors.surfaceContainerLow,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(
+              icon,
+              color: emphasized ? colors.onErrorContainer : colors.primary,
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: emphasized ? colors.onErrorContainer : null,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    content,
+                    style: TextStyle(
+                      color: emphasized
+                          ? colors.onErrorContainer
+                          : colors.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _speciesImage(BuildContext context) {
+    final imageUrl = species.imageUrl;
+    final imagePath = species.imagePath;
+    if (imageUrl == null && imagePath == null) {
+      return const SizedBox.shrink();
+    }
+
+    final colors = Theme.of(context).colorScheme;
+
+    final Widget image;
+    if (imageUrl != null) {
+      image = Image.network(
+        imageUrl,
+        fit: BoxFit.cover,
+        semanticLabel: 'Fotografia ilustrativa de ${species.commonName}',
+        loadingBuilder: (context, child, progress) {
+          if (progress == null) return child;
+          return Center(
+            child: CircularProgressIndicator(
+              value: progress.expectedTotalBytes == null
+                  ? null
+                  : progress.cumulativeBytesLoaded /
+                      progress.expectedTotalBytes!,
+            ),
+          );
+        },
+        errorBuilder: (context, error, stackTrace) {
+          return Center(
+            child: Icon(
+              Icons.broken_image_outlined,
+              color: colors.onSurfaceVariant,
+              size: 46,
+            ),
+          );
+        },
+      );
+    } else {
+      image = Image.asset(
+        imagePath!,
+        fit: BoxFit.cover,
+        semanticLabel: 'Imagem demonstrativa de ${species.commonName}',
+        errorBuilder: (context, error, stackTrace) {
+          return const Center(child: Icon(Icons.image_not_supported_outlined));
+        },
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(18),
+          child: AspectRatio(
+            aspectRatio: 16 / 10,
+            child: ColoredBox(
+              color: colors.surfaceContainerHighest,
+              child: image,
+            ),
+          ),
+        ),
+        if (imageUrl != null && species.imageCredit != null)
+          Padding(
+            padding: const EdgeInsets.only(top: 6),
+            child: Wrap(
+              crossAxisAlignment: WrapCrossAlignment.center,
+              spacing: 4,
+              children: [
+                Text(
+                  'Foto: ${species.imageCredit}',
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+                if (species.imageSourceUrl != null)
+                  TextButton(
+                    onPressed: () => _openExternalLink(
+                      context,
+                      species.imageSourceUrl!,
+                    ),
+                    child: const Text('Origem'),
+                  ),
+                if (species.imageLicenseUrl != null)
+                  TextButton(
+                    onPressed: () => _openExternalLink(
+                      context,
+                      species.imageLicenseUrl!,
+                    ),
+                    child: const Text('CC BY 2.0'),
+                  ),
+              ],
+            ),
+          ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
+    final isDanger = species.status == SpeciesStatus.danger;
 
     final statusText = switch (species.status) {
       SpeciesStatus.danger => 'Espécie perigosa',
@@ -43,116 +219,133 @@ class SpeciesDetailScreen extends StatelessWidget {
                       SizedBox(width: 12),
                       Expanded(
                         child: Text(
-                          'DEMONSTRAÇÃO: este resultado é '
-                          'ilustrativo. Nenhuma fotografia '
-                          'foi analisada por IA.',
+                          'DEMONSTRAÇÃO: este resultado é ilustrativo. '
+                          'Nenhuma fotografia foi analisada por IA.',
                         ),
                       ),
                     ],
                   ),
                 ),
               ),
-
-            const SizedBox(height: 20),
-
-            if (species.imagePath != null)
-              ClipRRect(
-                borderRadius: BorderRadius.circular(18),
-                child: Image.asset(
-                  species.imagePath!,
-                  height: 220,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
-              ),
-
-            const SizedBox(height: 24),
-
+            _speciesImage(context),
+            const SizedBox(height: 18),
             Text(
               species.commonName,
-              style: Theme.of(context).textTheme.headlineMedium,
+              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
             ),
-
-            const SizedBox(height: 6),
-
+            const SizedBox(height: 4),
             Text(
               species.scientificName,
-              style: Theme.of(context).textTheme.titleMedium
-                  ?.copyWith(fontStyle: FontStyle.italic),
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontStyle: FontStyle.italic,
+              ),
             ),
-
-            const SizedBox(height: 20),
-
-            Chip(
-              avatar: const Icon(Icons.info_outline, size: 18),
-              label: Text(statusText),
+            const SizedBox(height: 18),
+            Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 14,
+                vertical: 12,
+              ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(14),
+                color: isDanger
+                    ? colors.errorContainer
+                    : colors.surfaceContainerHighest,
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    isDanger
+                        ? Icons.warning_amber_rounded
+                        : Icons.info_outline,
+                    color: isDanger
+                        ? colors.onErrorContainer
+                        : colors.onSurface,
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      statusText,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: isDanger
+                            ? colors.onErrorContainer
+                            : colors.onSurface,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-
-            const SizedBox(height: 16),
-
+            const SizedBox(height: 12),
             if (isDemonstration)
               const Card(
                 child: ListTile(
                   leading: Icon(Icons.analytics_outlined),
                   title: Text('Confiança da identificação'),
                   subtitle: Text(
-                    'Não disponível — a inteligência '
-                    'artificial ainda não está integrada.',
+                    'Não disponível — a inteligência artificial '
+                    'ainda não está integrada.',
                   ),
                 ),
               ),
-
-            const SizedBox(height: 16),
-            for (final section
-                in <({String title, String? content, IconData icon})>[
-                  (
-                    title: 'Sobre a espécie',
-                    content: species.description,
-                    icon: Icons.menu_book_outlined,
+            _informationCard(
+              context,
+              title: 'Orientações de segurança',
+              icon: Icons.health_and_safety_outlined,
+              content: species.safetyAdvice,
+              isSafety: true,
+            ),
+            _informationCard(
+              context,
+              title: 'Riscos conhecidos',
+              icon: Icons.warning_amber_outlined,
+              content: species.riskDescription,
+              isSafety: true,
+            ),
+            _informationCard(
+              context,
+              title: 'Sobre a espécie',
+              icon: Icons.menu_book_outlined,
+              content: species.description,
+            ),
+            _informationCard(
+              context,
+              title: 'Características',
+              icon: Icons.visibility_outlined,
+              content: species.characteristics,
+            ),
+            _informationCard(
+              context,
+              title: 'Habitat',
+              icon: Icons.park_outlined,
+              content: species.habitat,
+            ),
+            if (species.sourceName != null || species.sourceUrl != null)
+              Card(
+                child: ListTile(
+                  leading: Icon(
+                    Icons.menu_book_outlined,
+                    color: colors.primary,
                   ),
-                  (
-                    title: 'Características',
-                    content: species.characteristics,
-                    icon: Icons.visibility_outlined,
+                  title: const Text('Fontes das informações'),
+                  subtitle: Text(
+                    species.sourceName ?? 'Consultar referência',
                   ),
-                  (
-                    title: 'Habitat',
-                    content: species.habitat,
-                    icon: Icons.park_outlined,
-                  ),
-                  (
-                    title: 'Riscos conhecidos',
-                    content: species.riskDescription,
-                    icon: Icons.warning_amber_outlined,
-                  ),
-                  (
-                    title: 'Orientações de segurança',
-                    content: species.safetyAdvice,
-                    icon: Icons.health_and_safety_outlined,
-                  ),
-                  (
-                    title: 'Fonte das informações',
-                    content: species.sourceName,
-                    icon: Icons.source_outlined,
-                  ),
-                  (
-                    title: 'Endereço da fonte',
-                    content: species.sourceUrl,
-                    icon: Icons.link_outlined,
-                  ),
-                ])
-              if (section.content != null &&
-                  section.content!.trim().isNotEmpty) ...[
-                Card(
-                  child: ListTile(
-                    leading: Icon(section.icon, color: colors.primary),
-                    title: Text(section.title),
-                    subtitle: Text(section.content!),
-                  ),
+                  trailing: species.sourceUrl != null
+                      ? const Icon(Icons.open_in_new)
+                      : null,
+                  onTap: species.sourceUrl != null
+                      ? () => _openExternalLink(
+                          context,
+                          species.sourceUrl!,
+                        )
+                      : null,
                 ),
-                const SizedBox(height: 8),
-              ],
-
+              ),
+            const SizedBox(height: 12),
             Card(
               color: colors.errorContainer,
               child: Padding(
@@ -168,14 +361,11 @@ class SpeciesDetailScreen extends StatelessWidget {
                     Expanded(
                       child: Text(
                         isDemonstration
-                            ? 'Não utilize este exemplo para '
-                              'identificar espécies reais. '
-                              'Mantenha distância de animais '
-                              'desconhecidos e não os manuseie.'
-                            : 'Esta ficha é informativa e não substitui '
-                              'a identificação por especialistas nem '
-                              'o atendimento médico. Não toque ou '
-                              'manuseie animais desconhecidos.',
+                            ? 'Este exemplo não identifica espécies reais. '
+                              'Não toque ou manipule animais desconhecidos.'
+                            : 'Esta ficha é informativa. A fotografia não '
+                              'substitui a identificação por especialistas '
+                              'nem o atendimento médico.',
                         style: TextStyle(color: colors.onErrorContainer),
                       ),
                     ),
