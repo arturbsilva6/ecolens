@@ -69,39 +69,24 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Material(
-            color: Theme.of(context).colorScheme.surface,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: FloatingActionButton.extended(
-                  heroTag: 'ecolens-sos-home',
-                  tooltip: 'Abrir SOS ambiental',
-                  onPressed: () => _abrirSos(context),
-                  icon: const Icon(Icons.shield_outlined),
-                  label: const Text('SOS'),
-                  backgroundColor: const Color(0xFFD9292F),
-                  foregroundColor: Colors.white,
-                ),
-              ),
-            ),
-          ),
-          EcoLensBottomNavBar(
-            selectedIndex: 0,
-
+      floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'ecolens-sos-home',
+        tooltip: 'Abrir SOS ambiental',
+        onPressed: () => _abrirSos(context),
+        icon: const Icon(Icons.shield_outlined),
+        label: const Text('SOS'),
+        backgroundColor: const Color(0xFFD9292F),
+        foregroundColor: Colors.white,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      bottomNavigationBar: EcoLensBottomNavBar(
+        selectedIndex: 0,
         onDestinationSelected: (index) {
           if (index == 0) return;
-
-          // Abre a tela de identificação
           if (index == 1) {
             _abrirIdentificacao(context);
             return;
           }
-
           const paginas = [
             'Início',
             'Identificar',
@@ -109,11 +94,8 @@ class HomeScreen extends StatelessWidget {
             'Comunidade',
             'Perfil',
           ];
-
           _mostrarMensagem(context, '${paginas[index]} em desenvolvimento');
         },
-          ),
-        ],
       ),
 
       body: SafeArea(
@@ -135,7 +117,7 @@ class HomeScreen extends StatelessWidget {
 
             Expanded(
               child: ListView(
-                padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 100),
                 children: [
                   IdentificationBanner(
                     onCameraTap: () {
