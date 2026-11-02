@@ -2,15 +2,18 @@ import 'package:flutter/material.dart';
 
 import '../../data/supabase_species_repository.dart';
 import '../../models/species_model.dart';
+import '../../utils/species_catalog_filter.dart';
 import '../species/species_detail_screen.dart';
 
 /// Catálogo público: apenas espécies publicadas no Supabase.
 class SpeciesCatalogScreen extends StatefulWidget {
   final String initialQuery;
+  final SpeciesCatalogFilter initialFilter;
 
   const SpeciesCatalogScreen({
     super.key,
     this.initialQuery = '',
+    this.initialFilter = SpeciesCatalogFilter.all,
   });
 
   @override
@@ -20,11 +23,13 @@ class SpeciesCatalogScreen extends StatefulWidget {
 class _SpeciesCatalogScreenState extends State<SpeciesCatalogScreen> {
   late final TextEditingController _searchController;
   late Future<List<SpeciesModel>> _speciesFuture;
+  late SpeciesCatalogFilter _selectedFilter;
 
   @override
   void initState() {
     super.initState();
     _searchController = TextEditingController(text: widget.initialQuery);
+    _selectedFilter = widget.initialFilter;
     _speciesFuture = _fetchSpecies();
   }
 
@@ -42,20 +47,6 @@ class _SpeciesCatalogScreenState extends State<SpeciesCatalogScreen> {
     setState(() {
       _speciesFuture = _fetchSpecies();
     });
-  }
-
-  // A busca é feita sobre o catálogo público recebido do Supabase.
-  // Para catálogos grandes, poderemos usar uma consulta filtrada no servidor.
-  String _normalizeSearch(String text) {
-    return text
-        .trim()
-        .toLowerCase()
-        .replaceAll(RegExp(r'[áàâãä]'), 'a')
-        .replaceAll(RegExp(r'[éèêë]'), 'e')
-        .replaceAll(RegExp(r'[íìîï]'), 'i')
-        .replaceAll(RegExp(r'[óòôõö]'), 'o')
-        .replaceAll(RegExp(r'[úùûü]'), 'u')
-        .replaceAll('ç', 'c');
   }
 
   @override
@@ -100,6 +91,36 @@ class _SpeciesCatalogScreenState extends State<SpeciesCatalogScreen> {
                 ),
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Wrap(
+                  spacing: 8,
+                  runSpacing: 4,
+                  children: [
+                    for (final filter in SpeciesCatalogFilter.values)
+                      ChoiceChip(
+                        label: Text(filter.label),
+                        selected: _selectedFilter == filter,
+                        showCheckmark: false,
+                        onSelected: (_) {
+                          setState(() => _selectedFilter = filter);
+                        },
+                      ),
+                  ],
+                ),
+              ),
+            ),
+            if (_selectedFilter == SpeciesCatalogFilter.unverified)
+              const Padding(
+                padding: EdgeInsets.fromLTRB(16, 8, 16, 0),
+                child: Text(
+                  'A verificar significa classificação pendente; '
+                  'não significa que a espécie seja segura.',
+                ),
+              ),
+            const SizedBox(height: 8),
             Expanded(
               child: FutureBuilder<List<SpeciesModel>>(
                 future: _speciesFuture,
@@ -136,17 +157,11 @@ class _SpeciesCatalogScreenState extends State<SpeciesCatalogScreen> {
 
                   final species = snapshot.data ?? const <SpeciesModel>[];
 
-                  final query = _normalizeSearch(_searchController.text);
-                  final matchingSpecies = query.isEmpty
-                      ? species
-                      : species.where((item) {
-                          final common = _normalizeSearch(item.commonName);
-                          final scientific = _normalizeSearch(
-                            item.scientificName,
-                          );
-                          return common.contains(query) ||
-                              scientific.contains(query);
-                        }).toList(growable: false);
+                  final matchingSpecies = filterSpeciesCatalog(
+                    species,
+                    query: _searchController.text,
+                    filter: _selectedFilter,
+                  );
 
                   if (matchingSpecies.isEmpty) {
                     return Center(
@@ -208,11 +223,19 @@ class _SpeciesCatalogScreenState extends State<SpeciesCatalogScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(item.scientificName),
-                              if (isDanger)
-                                Text(
-                                  'Espécie perigosa',
-                                  style: TextStyle(color: colors.error),
+                              Text(
+                                switch (item.status) {
+                                  SpeciesStatus.danger => 'Espécie perigosa',
+                                  SpeciesStatus.invasive => 'Espécie invasora',
+                                  SpeciesStatus.unverified =>
+                                    'Classificação a verificar',
+                                },
+                                style: TextStyle(
+                                  color: isDanger
+                                      ? colors.error
+                                      : colors.onSurfaceVariant,
                                 ),
+                              ),
                             ],
                           ),
                           trailing: const Icon(Icons.chevron_right),
