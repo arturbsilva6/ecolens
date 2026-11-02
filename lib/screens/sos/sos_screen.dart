@@ -12,6 +12,14 @@ class SosScreen extends StatelessWidget {
   static const String saoRoqueEnvironmentNumber = '11996231769';
   static const String cetrasSpNumber = '1128232272';
 
+  String _formatPhoneNumber(String number) {
+    if (number == ibamaNumber) return '0800 061 8080';
+    if (number == saoRoqueGcmNumber) return '(11) 4712-2633';
+    if (number == saoRoqueEnvironmentNumber) return '(11) 99623-1769';
+    if (number == cetrasSpNumber) return '(11) 2823-2272';
+    return number;
+  }
+
   Future<void> _openUri(BuildContext context, Uri uri) async {
     try {
       final opened = await launchUrl(
@@ -78,13 +86,7 @@ class SosScreen extends StatelessWidget {
                 icon: const Icon(Icons.phone_outlined),
                 label: Text(
                   'Abrir discador · '
-                  '${switch (number) {
-                    ibamaNumber => '0800 061 8080',
-                    saoRoqueGcmNumber => '(11) 4712-2633',
-                    saoRoqueEnvironmentNumber => '(11) 99623-1769',
-                    cetrasSpNumber => '(11) 2823-2272',
-                    _ => number,
-                  }}',
+                  '${_formatPhoneNumber(number)}',
                 ),
               ),
             ),
