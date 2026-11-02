@@ -58,9 +58,27 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
+  void _abrirSos(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (context) => const SosScreen(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'ecolens-sos-home',
+        tooltip: 'Abrir SOS ambiental',
+        onPressed: () => _abrirSos(context),
+        icon: const Icon(Icons.shield_outlined),
+        label: const Text('SOS'),
+        backgroundColor: const Color(0xFFD9292F),
+        foregroundColor: Colors.white,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       bottomNavigationBar: EcoLensBottomNavBar(
         selectedIndex: 0,
 
@@ -104,10 +122,7 @@ class HomeScreen extends StatelessWidget {
 
             Expanded(
               child: ListView(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 8,
-                ),
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 100),
                 children: [
                   IdentificationBanner(
                     onCameraTap: () {
@@ -126,13 +141,7 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(height: 16),
 
                   SosBanner(
-                    onSosTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute<void>(
-                          builder: (context) => const SosScreen(),
-                        ),
-                      );
-                    },
+                    onSosTap: () => _abrirSos(context),
                   ),
 
                   const SizedBox(height: 20),
@@ -175,13 +184,7 @@ class HomeScreen extends StatelessWidget {
                         ),
                       );
                     },
-                    onFirstAidTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute<void>(
-                          builder: (context) => const SosScreen(),
-                        ),
-                      );
-                    },
+                    onFirstAidTap: () => _abrirSos(context),
                     onHistoryTap: () {
                       _mostrarMensagem(
                         context,
