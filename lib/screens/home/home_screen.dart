@@ -13,6 +13,8 @@ import '../settings/settings_screen.dart';
 import '../identification/identification_screen.dart';
 import '../species/species_catalog_screen.dart';
 import '../species/species_detail_screen.dart';
+import '../sos/sos_screen.dart';
+import '../../utils/species_catalog_filter.dart';
 
 class HomeScreen extends StatelessWidget {
   final ThemeController themeController;
@@ -125,7 +127,11 @@ class HomeScreen extends StatelessWidget {
 
                   SosBanner(
                     onSosTap: () {
-                      _mostrarMensagem(context, 'Tela SOS em desenvolvimento');
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (context) => const SosScreen(),
+                        ),
+                      );
                     },
                   ),
 
@@ -161,15 +167,19 @@ class HomeScreen extends StatelessWidget {
 
                   QuickAccessSection(
                     onVenomousTap: () {
-                      _mostrarMensagem(
-                        context,
-                        'Animais peçonhentos em desenvolvimento',
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (context) => const SpeciesCatalogScreen(
+                            initialFilter: SpeciesCatalogFilter.danger,
+                          ),
+                        ),
                       );
                     },
                     onFirstAidTap: () {
-                      _mostrarMensagem(
-                        context,
-                        'Primeiros socorros em desenvolvimento',
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (context) => const SosScreen(),
+                        ),
                       );
                     },
                     onHistoryTap: () {
