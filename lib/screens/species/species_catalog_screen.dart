@@ -108,14 +108,46 @@ class _SpeciesCatalogScreenState extends State<SpeciesCatalogScreen> {
                       return Card(
                         clipBehavior: Clip.antiAlias,
                         child: ListTile(
-                          leading: Icon(
-                            isDanger
-                                ? Icons.warning_amber_rounded
-                                : Icons.eco_outlined,
-                            color: isDanger ? colors.error : colors.primary,
-                          ),
+                          leading: item.imageUrl != null
+                              ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.network(
+                                    item.imageUrl!,
+                                    width: 56,
+                                    height: 56,
+                                    fit: BoxFit.cover,
+                                    semanticLabel:
+                                        'Fotografia de ${item.commonName}',
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return const SizedBox(
+                                        width: 56,
+                                        height: 56,
+                                        child: Icon(
+                                          Icons.image_not_supported_outlined,
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                )
+                              : Icon(
+                                  isDanger
+                                      ? Icons.warning_amber_rounded
+                                      : Icons.eco_outlined,
+                                  color:
+                                      isDanger ? colors.error : colors.primary,
+                                ),
                           title: Text(item.commonName),
-                          subtitle: Text(item.scientificName),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(item.scientificName),
+                              if (isDanger)
+                                Text(
+                                  'Espécie perigosa',
+                                  style: TextStyle(color: colors.error),
+                                ),
+                            ],
+                          ),
                           trailing: const Icon(Icons.chevron_right),
                           onTap: () {
                             Navigator.of(context).push(
