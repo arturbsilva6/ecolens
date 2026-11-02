@@ -8,6 +8,9 @@ class SosScreen extends StatelessWidget {
   static const String samuNumber = '192';
   static const String firefightersNumber = '193';
   static const String ibamaNumber = '08000618080';
+  static const String saoRoqueGcmNumber = '1147122633';
+  static const String saoRoqueEnvironmentNumber = '11996231769';
+  static const String cetrasSpNumber = '1128232272';
 
   Future<void> _openUri(BuildContext context, Uri uri) async {
     try {
@@ -75,7 +78,13 @@ class SosScreen extends StatelessWidget {
                 icon: const Icon(Icons.phone_outlined),
                 label: Text(
                   'Abrir discador · '
-                  '${number == ibamaNumber ? '0800 061 8080' : number}',
+                  '${switch (number) {
+                    ibamaNumber => '0800 061 8080',
+                    saoRoqueGcmNumber => '(11) 4712-2633',
+                    saoRoqueEnvironmentNumber => '(11) 99623-1769',
+                    cetrasSpNumber => '(11) 2823-2272',
+                    _ => number,
+                  }}',
                 ),
               ),
             ),
@@ -236,6 +245,48 @@ class SosScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text(
+              'Resgate de fauna · São Roque e região',
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'Contatos regionais para orientação e encaminhamento. '
+              'Fora de São Roque, procure os órgãos da sua cidade. '
+              'Se houver risco imediato, acione 193 ou 190.',
+            ),
+            const SizedBox(height: 8),
+            _callCard(
+              context,
+              title: 'Guarda Civil Municipal · São Roque',
+              subtitle: 'Canal municipal informado pela Prefeitura '
+                  'como disponível 24 horas. Relate a ocorrência e '
+                  'peça orientação sobre resgate especializado.',
+              number: saoRoqueGcmNumber,
+              icon: Icons.local_police_outlined,
+            ),
+            _callCard(
+              context,
+              title: 'Divisão de Meio Ambiente · São Roque',
+              subtitle: 'Orientação municipal sobre fauna. '
+                  'Atendimento de segunda a sexta, das 9h às 15h. '
+                  'Não substitui socorro de emergência.',
+              number: saoRoqueEnvironmentNumber,
+              icon: Icons.nature_people_outlined,
+            ),
+            _callCard(
+              context,
+              title: 'CETRAS-SP · triagem de animais',
+              subtitle: 'Centro estadual de triagem e reabilitação. '
+                  'Entre em contato antes de qualquer deslocamento '
+                  'para confirmar as condições de recebimento. '
+                  'Não é central de resgate 24 horas.',
+              number: cetrasSpNumber,
+              icon: Icons.pets_outlined,
+            ),
+            const SizedBox(height: 16),
+            Text(
               'Denúncias e orientação ambiental',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
@@ -291,6 +342,29 @@ class SosScreen extends StatelessWidget {
               label: 'Ibama · canais de atendimento',
               url: 'https://www.gov.br/ibama/pt-br/'
                   'canais_atendimento/fale-conosco',
+            ),
+            _sourceLink(
+              context,
+              label: 'São Roque · secretarias e contatos municipais',
+              url: 'https://www.saoroque.sp.gov.br/portal/secretarias/',
+            ),
+            _sourceLink(
+              context,
+              label: 'São Roque · Divisão de Meio Ambiente',
+              url: 'https://www.saoroque.sp.gov.br/portal/'
+                  'secretarias/21/divisao-de-meio-ambiente',
+            ),
+            _sourceLink(
+              context,
+              label: 'CETRAS-SP · serviço estadual',
+              url: 'https://servicos.sp.gov.br/fcarta/'
+                  '6E290343-FB48-4A8B-93B0-155E4C79637F',
+            ),
+            _sourceLink(
+              context,
+              label: 'Polícia Militar Ambiental · orientações',
+              url: 'https://policiamilitar.sp.gov.br/'
+                  'unidades/ambiental/faq.html',
             ),
             const SizedBox(height: 14),
             Text(
