@@ -69,18 +69,29 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton.extended(
-        heroTag: 'ecolens-sos-home',
-        tooltip: 'Abrir SOS ambiental',
-        onPressed: () => _abrirSos(context),
-        icon: const Icon(Icons.shield_outlined),
-        label: const Text('SOS'),
-        backgroundColor: const Color(0xFFD9292F),
-        foregroundColor: Colors.white,
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      bottomNavigationBar: EcoLensBottomNavBar(
-        selectedIndex: 0,
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Material(
+            color: Theme.of(context).colorScheme.surface,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: FloatingActionButton.extended(
+                  heroTag: 'ecolens-sos-home',
+                  tooltip: 'Abrir SOS ambiental',
+                  onPressed: () => _abrirSos(context),
+                  icon: const Icon(Icons.shield_outlined),
+                  label: const Text('SOS'),
+                  backgroundColor: const Color(0xFFD9292F),
+                  foregroundColor: Colors.white,
+                ),
+              ),
+            ),
+          ),
+          EcoLensBottomNavBar(
+            selectedIndex: 0,
 
         onDestinationSelected: (index) {
           if (index == 0) return;
@@ -101,6 +112,8 @@ class HomeScreen extends StatelessWidget {
 
           _mostrarMensagem(context, '${paginas[index]} em desenvolvimento');
         },
+          ),
+        ],
       ),
 
       body: SafeArea(
@@ -122,7 +135,7 @@ class HomeScreen extends StatelessWidget {
 
             Expanded(
               child: ListView(
-                padding: const EdgeInsets.fromLTRB(16, 8, 16, 100),
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
                 children: [
                   IdentificationBanner(
                     onCameraTap: () {
