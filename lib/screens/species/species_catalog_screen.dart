@@ -91,25 +91,25 @@ class _SpeciesCatalogScreenState extends State<SpeciesCatalogScreen> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Wrap(
-                  spacing: 8,
-                  runSpacing: 4,
-                  children: [
-                    for (final filter in SpeciesCatalogFilter.values)
-                      ChoiceChip(
-                        label: Text(filter.label),
-                        selected: _selectedFilter == filter,
-                        showCheckmark: false,
-                        onSelected: (_) {
-                          setState(() => _selectedFilter = filter);
-                        },
-                      ),
-                  ],
-                ),
+            SizedBox(
+              height: 52,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                itemCount: SpeciesCatalogFilter.values.length,
+                separatorBuilder: (context, index) =>
+                    const SizedBox(width: 8),
+                itemBuilder: (context, index) {
+                  final filter = SpeciesCatalogFilter.values[index];
+                  return ChoiceChip(
+                    label: Text(filter.label),
+                    selected: _selectedFilter == filter,
+                    showCheckmark: false,
+                    onSelected: (_) {
+                      setState(() => _selectedFilter = filter);
+                    },
+                  );
+                },
               ),
             ),
             if (_selectedFilter == SpeciesCatalogFilter.unverified)
@@ -169,7 +169,8 @@ class _SpeciesCatalogScreenState extends State<SpeciesCatalogScreen> {
                         padding: const EdgeInsets.all(24),
                         child: Text(
                           species.isEmpty
-                              ? 'Ainda não há espécies publicadas.'
+                              ? '0 espécies encontradas. '
+                                'Ainda não há espécies publicadas.'
                               : _searchController.text.trim().isEmpty
                                   ? 'Nenhuma espécie publicada '
                                     'nesta classificação.'
@@ -183,11 +184,18 @@ class _SpeciesCatalogScreenState extends State<SpeciesCatalogScreen> {
 
                   return ListView.separated(
                     padding: const EdgeInsets.all(16),
-                    itemCount: matchingSpecies.length,
+                    itemCount: matchingSpecies.length + 1,
                     separatorBuilder: (context, index) =>
                         const SizedBox(height: 8),
                     itemBuilder: (context, index) {
-                      final item = matchingSpecies[index];
+                      if (index == 0) {
+                        return Text(
+                          '${matchingSpecies.length} '
+                          '${matchingSpecies.length == 1 ? 'espécie encontrada' : 'espécies encontradas'}',
+                          style: Theme.of(context).textTheme.bodySmall,
+                        );
+                      }
+                      final item = matchingSpecies[index - 1];
                       final isDanger = item.status == SpeciesStatus.danger;
 
                       return Card(
