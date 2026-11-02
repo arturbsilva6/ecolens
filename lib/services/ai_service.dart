@@ -51,10 +51,13 @@ class AiService {
   Future<AiIdentificationResult> suggestSpecies(Uint8List imageBytes) async {
     final mimeType = validateImage(imageBytes);
 
+    // Login temporário somente após o consentimento explícito da foto.
+    // Exige habilitar Anonymous Sign-Ins no painel Supabase Auth.
     if (_client.auth.currentSession == null) {
-      throw StateError(
-        'É necessário autenticar no EcoLens antes de usar a IA.',
-      );
+      await _client.auth.signInAnonymously();
+    }
+    if (_client.auth.currentSession == null) {
+      throw StateError('Não foi possível autenticar no EcoLens.');
     }
 
     final response = await _client.functions.invoke(
