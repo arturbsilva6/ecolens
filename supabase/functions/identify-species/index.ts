@@ -67,6 +67,23 @@ Deno.serve(async (request: Request) => {
     | null;
   if (!user?.id) return json({ error: "Usuário não autenticado." }, 401);
 
+  // A quota é persistida no PostgreSQL e consumida ANTES da chamada Gemini.
+  // Máximo: 5 pedidos por usuário/dia; 20 pedidos totais/dia.
+  // A RPC só pode ser executada com chave administrativa do servidor.
+  let privilegedKey: string | undefined;
+  try {
+    const keys = JSON.parse(
+      Deno.env.get("SUPABASE_SECRET_KEYS") ?? "{}",
+    ) as Record<string, string>;
+    privilegedKey = keys.default ??
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  } catch {
+    privilegedKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  }
+  if (!privilegedKey) {
+    return json({ error: "Controle de uso indisponível." }, 503);
+  }
+
   const length = Number(request.headers.get("content-length") ?? 0);
   if (length > 5_700_000) return json({ error: "Imagem muito grande." }, 413);
 
@@ -109,7 +126,37 @@ Deno.serve(async (request: Request) => {
     return json({ error: "Formato de imagem inconsistente." }, 400);
   }
 
-  const model = Deno.env.get("GEMINI_MODEL") ?? "gemini-2.5-flash";
+  let quotaResponse: Response;
+  try {
+    const key = privilegedKey;
+    quotaResponse = await fetch(
+      `${supabaseUrl}/rest/v1/rpc/ecolens_consume_ai_quota`,
+      {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          "apikey": key,
+          ...(key.startsWith("eyJ")
+            ? { "authorization": `Bearer ${key}` }
+            : {}),
+        },
+        body: JSON.stringify({ p_user_id: user.id }),
+        signal: AbortSignal.timeout(7000),
+      },
+    );
+  } catch {
+    return json({ error: "Limite de uso indisponível." }, 503);
+  }
+  if (!quotaResponse.ok) {
+    return json({ error: "Não foi possível validar a cota." }, 503);
+  }
+  const allowed = await quotaResponse.json().catch(() => false);
+  if (allowed !== true) {
+    return json({ error: "Limite diário de análises atingido." }, 429);
+  }
+
+  const model = Deno.env.get("GEMINI_MODEL") ??
+    "gemini-3.5-flash-lite";
   try {
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,
