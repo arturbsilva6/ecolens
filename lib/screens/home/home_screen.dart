@@ -149,7 +149,11 @@ class HomeScreen extends StatelessWidget {
                     },
 
                     onFilterTap: () {
-                      _mostrarMensagem(context, 'Filtros em desenvolvimento');
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (context) => const SpeciesCatalogScreen(),
+                        ),
+                      );
                     },
                   ),
 
