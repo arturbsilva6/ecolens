@@ -73,7 +73,10 @@ class SosScreen extends StatelessWidget {
                   Uri(scheme: 'tel', path: number),
                 ),
                 icon: const Icon(Icons.phone_outlined),
-                label: Text('Abrir discador · $number'),
+                label: Text(
+                  'Abrir discador · '
+                  '${number == ibamaNumber ? '0800 061 8080' : number}',
+                ),
               ),
             ),
           ],
@@ -137,10 +140,12 @@ class SosScreen extends StatelessWidget {
     required String label,
     required String url,
   }) {
-    return TextButton.icon(
-      onPressed: () => _openUri(context, Uri.parse(url)),
-      icon: const Icon(Icons.open_in_new, size: 18),
-      label: Text(label),
+    return ListTile(
+      contentPadding: EdgeInsets.zero,
+      leading: const Icon(Icons.menu_book_outlined),
+      title: Text(label),
+      trailing: const Icon(Icons.open_in_new, size: 18),
+      onTap: () => _openUri(context, Uri.parse(url)),
     );
   }
 
