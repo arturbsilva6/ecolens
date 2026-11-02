@@ -170,8 +170,11 @@ class _SpeciesCatalogScreenState extends State<SpeciesCatalogScreen> {
                         child: Text(
                           species.isEmpty
                               ? 'Ainda não há espécies publicadas.'
-                              : 'Nenhuma espécie publicada encontrada '
-                                'para esta pesquisa.',
+                              : _searchController.text.trim().isEmpty
+                                  ? 'Nenhuma espécie publicada '
+                                    'nesta classificação.'
+                                  : 'Nenhuma espécie publicada encontrada '
+                                    'para esta pesquisa e filtro.',
                           textAlign: TextAlign.center,
                         ),
                       ),
