@@ -4,14 +4,16 @@ import 'dart:typed_data';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../models/ai_identification_result.dart';
+import 'supabase_service.dart';
 
 /// Envia fotos para uma Edge Function autenticada, nunca para a API da IA
 /// diretamente do celular. Nenhuma imagem é salva pelo cliente.
 class AiService {
-  final SupabaseClient _client;
+  final SupabaseClient? _client;
+  final SupabaseService _supabaseService;
 
-  AiService({SupabaseClient? client})
-      : _client = client ?? Supabase.instance.client;
+  AiService({this._client, SupabaseService? supabaseService})
+    : _supabaseService = supabaseService ?? SupabaseService.instance;
 
   static const maxImageBytes = 4 * 1024 * 1024;
 
@@ -50,17 +52,18 @@ class AiService {
   /// Requer Supabase Auth e uma função identify-species implantada.
   Future<AiIdentificationResult> suggestSpecies(Uint8List imageBytes) async {
     final mimeType = validateImage(imageBytes);
+    final client = _client ?? await _supabaseService.requireClient();
 
     // Login temporário somente após o consentimento explícito da foto.
     // Exige habilitar Anonymous Sign-Ins no painel Supabase Auth.
-    if (_client.auth.currentSession == null) {
-      await _client.auth.signInAnonymously();
+    if (client.auth.currentSession == null) {
+      await client.auth.signInAnonymously();
     }
-    if (_client.auth.currentSession == null) {
+    if (client.auth.currentSession == null) {
       throw StateError('Não foi possível autenticar no EcoLens.');
     }
 
-    final response = await _client.functions.invoke(
+    final response = await client.functions.invoke(
       'identify-species',
       body: {
         'imageBase64': base64Encode(imageBytes),

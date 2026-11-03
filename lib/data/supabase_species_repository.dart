@@ -1,6 +1,7 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../models/species_model.dart';
+import '../services/supabase_service.dart';
 
 /// Consulta somente o catálogo de espécies publicadas.
 ///
@@ -53,13 +54,15 @@ class SupabaseSpeciesRepository {
     ),
   };
 
-  final SupabaseClient _client;
+  final SupabaseClient? _client;
+  final SupabaseService _supabaseService;
 
-  SupabaseSpeciesRepository({SupabaseClient? client})
-      : _client = client ?? Supabase.instance.client;
+  SupabaseSpeciesRepository({this._client, SupabaseService? supabaseService})
+    : _supabaseService = supabaseService ?? SupabaseService.instance;
 
   Future<List<SpeciesModel>> fetchPublishedSpecies() async {
-    final rows = await _client
+    final client = _client ?? await _supabaseService.requireClient();
+    final rows = await client
         .from('species')
         .select(
           'common_name,scientific_name,status,description,'
