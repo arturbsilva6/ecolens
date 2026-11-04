@@ -1,4 +1,4 @@
-// EcoLens — protótipo de integração com Gemini, ainda não implantado.
+// EcoLens — integração de identificação experimental com Gemini.
 // Exige sessão real do Supabase Auth e GEMINI_API_KEY no servidor.
 // Não salva imagens; envia bytes à API Gemini após consentimento do usuário.
 const jsonHeaders = {
@@ -191,7 +191,9 @@ Deno.serve(async (request: Request) => {
             temperature: 0.2,
           },
         }),
-        signal: AbortSignal.timeout(25000),
+        // O Gemini pode levar mais que 25s em algumas análises.
+        // Mantemos prazo inferior ao timeout da plataforma Supabase.
+        signal: AbortSignal.timeout(45000),
       },
     );
 
@@ -222,8 +224,15 @@ Deno.serve(async (request: Request) => {
       explanation: safeText(v.explanation, 500) ??
         "Não foi possível concluir a análise.",
     });
-  } catch {
+  } catch (error) {
     // Não registrar a imagem, resposta do provedor ou a chave em logs.
+    // Distinguir timeout evita que o app apresente uma falha genérica.
+    if (error instanceof Error &&
+        (error.name === "TimeoutError" || error.name === "AbortError")) {
+      return json({
+        error: "A análise demorou mais que o esperado. Tente novamente mais tarde.",
+      }, 504);
+    }
     return json({ error: "Falha na análise. Tente depois." }, 502);
   }
 });
