@@ -116,8 +116,8 @@ class _SpeciesCatalogScreenState extends State<SpeciesCatalogScreen> {
               const Padding(
                 padding: EdgeInsets.fromLTRB(16, 8, 16, 0),
                 child: Text(
-                  'A verificar significa classificação pendente; '
-                  'não significa que a espécie seja segura.',
+                  'Demais inclui espécies sem etiqueta específica de perigo '
+                  'ou invasão neste catálogo. Isso não significa que sejam seguras.',
                 ),
               ),
             const SizedBox(height: 8),
@@ -239,7 +239,7 @@ class _SpeciesCatalogScreenState extends State<SpeciesCatalogScreen> {
                                   SpeciesStatus.danger => 'Espécie perigosa',
                                   SpeciesStatus.invasive => 'Espécie invasora',
                                   SpeciesStatus.unverified =>
-                                    'Classificação a verificar',
+                                    'Sem alerta específico cadastrado',
                                 },
                                 style: TextStyle(
                                   color: isDanger
