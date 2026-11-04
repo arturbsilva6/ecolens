@@ -21,6 +21,10 @@ void main() {
     ),
   ];
 
+  test('Demais não apresenta a espécie como necessariamente segura', () {
+    expect(SpeciesCatalogFilter.unverified.label, 'Demais');
+  });
+
   test('Todas inclui as espécies recebidas', () {
     final result = filterSpeciesCatalog(species);
     expect(result.length, 3);
