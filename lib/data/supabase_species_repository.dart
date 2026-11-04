@@ -52,6 +52,37 @@ class SupabaseSpeciesRepository {
           'https://commons.wikimedia.org/wiki/File:Leucaena_leucocephala.jpg',
       licenseLabel: 'Domínio público',
     ),
+    // Lote 2: fauna e flora brasileiras, com autoria e licença verificadas.
+    'https://upload.wikimedia.org/wikipedia/commons/8/8b/'
+        'Capybara_portrait_2.jpg': (
+      credit: 'Smabs Sputzer',
+      sourceUrl: 'https://commons.wikimedia.org/wiki/File:Capybara_portrait_2.jpg',
+      licenseUrl: 'https://creativecommons.org/licenses/by/2.0/',
+      licenseLabel: 'CC BY 2.0',
+    ),
+    'https://upload.wikimedia.org/wikipedia/commons/1/11/'
+        'Ramphastos_toco.jpg': (
+      credit: 'Daph Chloe',
+      sourceUrl: 'https://commons.wikimedia.org/wiki/File:Ramphastos_toco.jpg',
+      licenseUrl: 'https://creativecommons.org/licenses/by-sa/2.0/',
+      licenseLabel: 'CC BY-SA 2.0',
+    ),
+    'https://upload.wikimedia.org/wikipedia/commons/6/63/'
+        'Jaguar_%28Panthera_onca_palustris%29_female_Piquiri_River.JPG': (
+      credit: 'Charles J. Sharp',
+      sourceUrl: 'https://commons.wikimedia.org/wiki/'
+          'File:Jaguar_(Panthera_onca_palustris)_female_Piquiri_River.JPG',
+      licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
+      licenseLabel: 'CC BY-SA 4.0',
+    ),
+    'https://upload.wikimedia.org/wikipedia/commons/a/ac/'
+        'Handroanthus_albus_%28Cham.%29_Mattos.jpg': (
+      credit: 'A.Benedito',
+      sourceUrl: 'https://commons.wikimedia.org/wiki/'
+          'File:Handroanthus_albus_(Cham.)_Mattos.jpg',
+      licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
+      licenseLabel: 'CC BY-SA 4.0',
+    ),
   };
 
   final SupabaseClient? _client;
