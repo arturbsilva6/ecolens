@@ -40,12 +40,20 @@ void main() {
     );
 
     expect(find.text('Resultado da análise'), findsOneWidget);
-    expect(find.text('Espécie sugerida'), findsOneWidget);
-    expect(find.text('Jararaca'), findsOneWidget);
-    expect(find.text('Bothrops jararaca'), findsOneWidget);
     expect(find.byType(Image), findsOneWidget);
     expect(find.text('Ver ficha da espécie'), findsOneWidget);
     expect(find.textContaining('não confirmada'), findsWidgets);
+
+    // A imagem ocupa grande parte da viewport padrão dos testes.
+    // O título é criado pelo ListView somente após a rolagem.
+    await tester.scrollUntilVisible(
+      find.text('Espécie sugerida'),
+      200,
+      scrollable: find.byType(Scrollable).first,
+    );
+    expect(find.text('Espécie sugerida'), findsOneWidget);
+    expect(find.text('Jararaca'), findsOneWidget);
+    expect(find.text('Bothrops jararaca'), findsOneWidget);
     expect(find.textContaining('95%'), findsNothing);
     expect(tester.takeException(), isNull);
   });
@@ -106,9 +114,14 @@ void main() {
       ),
     );
 
-    expect(find.text('Resultado inconclusivo'), findsOneWidget);
     expect(find.text('Ver ficha da espécie'), findsNothing);
     expect(find.text('Nova identificação'), findsOneWidget);
+    await tester.scrollUntilVisible(
+      find.text('Resultado inconclusivo'),
+      200,
+      scrollable: find.byType(Scrollable).first,
+    );
+    expect(find.text('Resultado inconclusivo'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 
