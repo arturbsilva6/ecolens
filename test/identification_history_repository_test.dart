@@ -30,7 +30,13 @@ void main() {
 
   setUp(() {
     store = _MemoryStore();
-    repository = IdentificationHistoryRepository(store: store);
+    var tick = 0;
+    repository = IdentificationHistoryRepository(
+      store: store,
+      now: () => DateTime.utc(2026, 11, 3).add(
+        Duration(seconds: tick++),
+      ),
+    );
   });
 
   test('Histórico só é salvo após a ação explícita', () async {
