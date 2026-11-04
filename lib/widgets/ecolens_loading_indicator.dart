@@ -40,10 +40,9 @@ class _EcoLensLoadingIndicatorState extends State<EcoLensLoadingIndicator>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final reduceMotion = MediaQuery.maybeOf(context)?.disableAnimations ?? false;
+    final reduceMotion = MediaQuery.maybeDisableAnimationsOf(context) ?? false;
     if (reduceMotion) {
       _controller.stop();
-      _controller.value = 0.5;
     } else if (!_controller.isAnimating) {
       _controller.repeat(reverse: true);
     }
@@ -58,6 +57,7 @@ class _EcoLensLoadingIndicatorState extends State<EcoLensLoadingIndicator>
   @override
   Widget build(BuildContext context) {
     final textColor = Theme.of(context).colorScheme.onSurfaceVariant;
+    final reduceMotion = MediaQuery.maybeDisableAnimationsOf(context) ?? false;
     final visibleMessage = widget.message.isEmpty ? 'Carregando...' : widget.message;
 
     return Semantics(
@@ -77,9 +77,9 @@ class _EcoLensLoadingIndicatorState extends State<EcoLensLoadingIndicator>
                 filterQuality: FilterQuality.medium,
               ),
               builder: (context, child) => Transform.scale(
-                scale: _pulse.value,
+                scale: reduceMotion ? 1.0 : _pulse.value,
                 child: Opacity(
-                  opacity: 0.86 + _controller.value * 0.14,
+                  opacity: reduceMotion ? 1.0 : 0.86 + _controller.value * 0.14,
                   child: child,
                 ),
               ),
