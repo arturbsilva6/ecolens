@@ -148,24 +148,36 @@ void main() {
       ),
     );
 
+    // O botão pode estar tecnicamente dentro do ListView, mas coberto
+    // pelo rodapé fixo. Role um pouco mais para garantir um toque real.
+    Future<void> tapVisibleExplanationAction(String label) async {
+      await tester.scrollUntilVisible(
+        find.text(label),
+        160,
+        scrollable: find.byType(Scrollable).first,
+      );
+      await tester.drag(
+        find.byType(ListView),
+        const Offset(0, -220),
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(find.text(label));
+      await tester.pumpAndSettle();
+    }
+
+    final explanation = find.text(longExplanation);
     await tester.scrollUntilVisible(
-      find.text('Ler explicação completa'),
+      explanation,
       160,
       scrollable: find.byType(Scrollable).first,
     );
-
-    final explanation = find.text(longExplanation);
     expect(tester.widget<Text>(explanation).maxLines, 3);
 
-    await tester.tap(find.text('Ler explicação completa'));
-    await tester.pumpAndSettle();
+    await tapVisibleExplanationAction('Ler explicação completa');
     expect(tester.widget<Text>(explanation).maxLines, isNull);
     expect(find.text('Recolher explicação'), findsOneWidget);
 
-    await tester.ensureVisible(find.text('Recolher explicação'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Recolher explicação'));
-    await tester.pumpAndSettle();
+    await tapVisibleExplanationAction('Recolher explicação');
     expect(tester.widget<Text>(explanation).maxLines, 3);
     expect(tester.takeException(), isNull);
   });
