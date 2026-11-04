@@ -83,6 +83,14 @@ class SupabaseSpeciesRepository {
       licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
       licenseLabel: 'CC BY-SA 4.0',
     ),
+    'https://upload.wikimedia.org/wikipedia/commons/9/92/'
+        'Sagui-de-tufo-branco_%28Callithrix_jacchus%29_%288521517719%29.jpg': (
+      credit: 'Luciano Marra',
+      sourceUrl: 'https://commons.wikimedia.org/wiki/'
+          'File:Sagui-de-tufo-branco_(Callithrix_jacchus)_(8521517719).jpg',
+      licenseUrl: 'https://creativecommons.org/licenses/by-sa/2.0/',
+      licenseLabel: 'CC BY-SA 2.0',
+    ),
   };
 
   final SupabaseClient? _client;
