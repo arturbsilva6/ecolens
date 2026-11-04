@@ -9,6 +9,7 @@ import '../../data/supabase_species_repository.dart';
 import '../../models/species_model.dart';
 import '../../utils/ai_species_matcher.dart';
 import '../../services/ai_service.dart';
+import '../../utils/ai_analysis_error_message.dart';
 import 'identification_result_screen.dart';
 
 enum IdentificationSource { camera, gallery }
@@ -102,10 +103,7 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
       }
     } catch (error) {
       if (!mounted) return;
-      final message = error is FormatException
-          ? error.message
-          : 'Não foi possível analisar a foto. '
-              'Verifique a conexão e a configuração da IA.';
+      final message = aiAnalysisErrorMessage(error);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(message)),
       );
