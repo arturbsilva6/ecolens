@@ -13,7 +13,7 @@ extension SpeciesCatalogFilterLabel on SpeciesCatalogFilter {
     SpeciesCatalogFilter.all => 'Todas',
     SpeciesCatalogFilter.danger => 'Perigosas',
     SpeciesCatalogFilter.invasive => 'Invasoras',
-    SpeciesCatalogFilter.unverified => 'A verificar',
+    SpeciesCatalogFilter.unverified => 'Demais',
   };
 }
 
