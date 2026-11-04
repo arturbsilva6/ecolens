@@ -195,7 +195,7 @@ class SpeciesDetailScreen extends StatelessWidget {
     final statusText = switch (species.status) {
       SpeciesStatus.danger => 'Espécie perigosa',
       SpeciesStatus.invasive => 'Espécie invasora',
-      SpeciesStatus.unverified => 'Não verificada',
+      SpeciesStatus.unverified => 'Sem alerta específico cadastrado',
     };
 
     return Scaffold(
