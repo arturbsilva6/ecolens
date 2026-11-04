@@ -43,14 +43,18 @@ void main() {
     );
 
     expect(await repository.load(), isEmpty);
+    final saveButton = find.text('Salvar no histórico');
     await tester.scrollUntilVisible(
-      find.text('Salvar no histórico'),
-      160,
+      saveButton,
+      100,
       scrollable: find.byType(Scrollable).first,
     );
-    await tester.drag(find.byType(ListView), const Offset(0, -220));
+    await Scrollable.ensureVisible(
+      tester.element(saveButton),
+      alignment: 0.4,
+    );
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Salvar no histórico'));
+    await tester.tap(saveButton);
     await tester.pumpAndSettle();
 
     expect((await repository.load()).single.commonName, 'Jararaca');
