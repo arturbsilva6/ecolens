@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 
 import '../../models/ai_identification_result.dart';
+import '../../data/identification_history_repository.dart';
 import '../../models/species_model.dart';
 import '../species/species_detail_screen.dart';
 
@@ -12,6 +13,7 @@ class IdentificationResultScreen extends StatelessWidget {
   final AiIdentificationResult result;
   final SpeciesModel? matchedSpecies;
   final bool catalogUnavailable;
+  final IdentificationHistoryRepository? historyRepository;
 
   const IdentificationResultScreen({
     super.key,
@@ -19,6 +21,7 @@ class IdentificationResultScreen extends StatelessWidget {
     required this.result,
     this.matchedSpecies,
     this.catalogUnavailable = false,
+    this.historyRepository,
   });
 
   void _openPublishedSpecies(BuildContext context) {
@@ -195,6 +198,12 @@ class IdentificationResultScreen extends StatelessWidget {
                     ),
                   ],
                   const SizedBox(height: 12),
+                  _SaveHistoryButton(
+                    result: result,
+                    matchedCatalog: matchedSpecies != null,
+                    repository: historyRepository,
+                  ),
+                  const SizedBox(height: 12),
                   Card(
                     margin: EdgeInsets.zero,
                     color: colors.errorContainer,
@@ -355,6 +364,81 @@ class _AiExplanationCardState extends State<_AiExplanationCard> {
                   ],
                 ],
               ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+/// O salvamento é opcional; só guarda o resultado textual no dispositivo.
+class _SaveHistoryButton extends StatefulWidget {
+  final AiIdentificationResult result;
+  final bool matchedCatalog;
+  final IdentificationHistoryRepository? repository;
+
+  const _SaveHistoryButton({
+    required this.result,
+    required this.matchedCatalog,
+    this.repository,
+  });
+
+  @override
+  State<_SaveHistoryButton> createState() => _SaveHistoryButtonState();
+}
+
+class _SaveHistoryButtonState extends State<_SaveHistoryButton> {
+  bool _saving = false;
+  bool _saved = false;
+
+  Future<void> _save() async {
+    if (_saved || _saving) return;
+    setState(() => _saving = true);
+    try {
+      await (widget.repository ?? IdentificationHistoryRepository()).save(
+        widget.result,
+        matchedCatalog: widget.matchedCatalog,
+      );
+      if (!mounted) return;
+      setState(() => _saved = true);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Resultado salvo no histórico deste dispositivo.'),
+        ),
+      );
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Não foi possível salvar o resultado.'),
+        ),
+      );
+    } finally {
+      if (mounted) setState(() => _saving = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: EdgeInsets.zero,
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextButton.icon(
+              onPressed: _saving || _saved ? null : _save,
+              icon: Icon(
+                _saved ? Icons.check_circle_outline : Icons.bookmark_add_outlined,
+              ),
+              label: Text(_saved ? 'Salvo no histórico' : 'Salvar no histórico'),
+            ),
+            const Text(
+              'Salva somente a data, o nome sugerido e a explicação '
+              'no dispositivo. A fotografia não é armazenada.',
             ),
           ],
         ),
