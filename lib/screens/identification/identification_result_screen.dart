@@ -43,7 +43,11 @@ class IdentificationResultScreen extends StatelessWidget {
   }) {
     final colors = Theme.of(context).colorScheme;
     return Card(
-      color: colors.surfaceContainerLow,
+      color: colors.surfaceContainerHigh,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: BorderSide(color: colors.outlineVariant),
+      ),
       margin: EdgeInsets.zero,
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -175,20 +179,18 @@ class IdentificationResultScreen extends StatelessWidget {
                     ),
                   ],
                   const SizedBox(height: 20),
-                  _informationCard(
-                    context,
-                    icon: Icons.auto_awesome_outlined,
+                  _AiExplanationCard(
+                    message: result.explanation,
                     title: hasSuggestion
                         ? 'O que a IA observou'
                         : 'Por que a análise foi inconclusiva',
-                    message: result.explanation,
                   ),
                   if (hasSuggestion) ...[
                     const SizedBox(height: 12),
                     _informationCard(
                       context,
                       icon: Icons.menu_book_outlined,
-                      title: 'Conferência no catálogo EcoLens',
+                      title: 'Correspondência no catálogo EcoLens',
                       message: catalogMessage,
                     ),
                   ],
@@ -258,6 +260,100 @@ class IdentificationResultScreen extends StatelessWidget {
                     ),
                   ],
                 ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// A análise gerada pela IA pode ser extensa. Mostramos um resumo de até
+/// três linhas e permitimos que o usuário escolha ler a explicação inteira.
+class _AiExplanationCard extends StatefulWidget {
+  final String title;
+  final String message;
+
+  const _AiExplanationCard({
+    required this.title,
+    required this.message,
+  });
+
+  @override
+  State<_AiExplanationCard> createState() => _AiExplanationCardState();
+}
+
+class _AiExplanationCardState extends State<_AiExplanationCard> {
+  bool _expanded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    final canExpand = widget.message.length > 180;
+
+    return Card(
+      color: colors.surfaceContainerHigh,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: BorderSide(color: colors.outlineVariant),
+      ),
+      margin: EdgeInsets.zero,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(Icons.auto_awesome_outlined, color: colors.primary),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.title,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    widget.message,
+                    maxLines: canExpand && !_expanded ? 3 : null,
+                    overflow: canExpand && !_expanded
+                        ? TextOverflow.ellipsis
+                        : TextOverflow.visible,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      height: 1.5,
+                      color: colors.onSurface,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Explicação automática; pode conter imprecisões.',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: colors.onSurfaceVariant,
+                    ),
+                  ),
+                  if (canExpand) ...[
+                    const SizedBox(height: 4),
+                    TextButton.icon(
+                      onPressed: () {
+                        setState(() => _expanded = !_expanded);
+                      },
+                      icon: Icon(
+                        _expanded
+                            ? Icons.expand_less
+                            : Icons.expand_more,
+                      ),
+                      label: Text(
+                        _expanded
+                            ? 'Recolher explicação'
+                            : 'Ler explicação completa',
+                      ),
+                    ),
+                  ],
+                ],
               ),
             ),
           ],
