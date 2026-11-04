@@ -8,8 +8,8 @@ import '../../data/mock_species_repository.dart';
 import '../../data/supabase_species_repository.dart';
 import '../../models/species_model.dart';
 import '../../utils/ai_species_matcher.dart';
-import '../../models/ai_identification_result.dart';
 import '../../services/ai_service.dart';
+import 'identification_result_screen.dart';
 
 enum IdentificationSource { camera, gallery }
 
@@ -81,26 +81,24 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
       }
 
       if (!mounted) return;
-      final selectedSpecies = await showDialog<SpeciesModel>(
-        context: context,
-        builder: (dialogContext) => _suggestionDialog(
-          dialogContext,
-          result,
-          matchedSpecies: matchedSpecies,
-          catalogUnavailable: catalogUnavailable,
+      setState(() => _isAnalyzing = false);
+
+      // Uma tela dedicada mantém a foto e a sugestão visíveis. Ao pedir nova
+      // identificação, a imagem anterior é removida somente quando voltar.
+      final startAgain = await Navigator.of(context).push<bool>(
+        MaterialPageRoute<bool>(
+          builder: (context) => IdentificationResultScreen(
+            imageBytes: bytes,
+            result: result,
+            matchedSpecies: matchedSpecies,
+            catalogUnavailable: catalogUnavailable,
+          ),
         ),
       );
 
       if (!mounted) return;
-      if (selectedSpecies != null) {
-        Navigator.of(context).push(
-          MaterialPageRoute<void>(
-            builder: (context) => SpeciesDetailScreen(
-              species: selectedSpecies,
-              isDemonstration: false,
-            ),
-          ),
-        );
+      if (startAgain == true) {
+        _controller.clearImage();
       }
     } catch (error) {
       if (!mounted) return;
@@ -114,67 +112,6 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
     } finally {
       if (mounted) setState(() => _isAnalyzing = false);
     }
-  }
-
-  Widget _suggestionDialog(
-    BuildContext context,
-    AiIdentificationResult result, {
-    SpeciesModel? matchedSpecies,
-    bool catalogUnavailable = false,
-  }) {
-    final speciesName = [
-      result.commonName,
-      result.scientificName,
-    ].whereType<String>().join(' · ');
-
-    return AlertDialog(
-      title: Text(
-        result.identified ? 'Sugestão da IA (não confirmada)' : 'Análise inconclusiva',
-      ),
-      content: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (result.identified) ...[
-              Text(speciesName),
-              const SizedBox(height: 12),
-            ],
-            Text(result.explanation),
-            const SizedBox(height: 12),
-            if (result.identified) ...[
-              Text(
-                matchedSpecies != null
-                    ? 'Encontramos uma ficha publicada com o mesmo nome '
-                      'científico. Isso não confirma a espécie da fotografia.'
-                    : catalogUnavailable
-                        ? 'O catálogo está indisponível no momento. '
-                          'Não foi possível comparar a sugestão às fichas.'
-                        : 'Não encontramos uma ficha publicada com esse '
-                          'nome científico. A sugestão não foi confirmada.',
-              ),
-              const SizedBox(height: 12),
-            ],
-            const Text(
-              'Não utilize esta sugestão para avaliar toxicidade, '
-              'decidir se um animal é seguro ou orientar primeiros '
-              'socorros. Mantenha distância e consulte especialistas.',
-            ),
-          ],
-        ),
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Entendi'),
-        ),
-        if (matchedSpecies != null)
-          FilledButton(
-            onPressed: () => Navigator.of(context).pop(matchedSpecies),
-            child: const Text('Ver ficha da espécie'),
-          ),
-      ],
-    );
   }
 
   @override
