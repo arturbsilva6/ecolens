@@ -162,6 +162,8 @@ void main() {
     expect(tester.widget<Text>(explanation).maxLines, isNull);
     expect(find.text('Recolher explicação'), findsOneWidget);
 
+    await tester.ensureVisible(find.text('Recolher explicação'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Recolher explicação'));
     await tester.pumpAndSettle();
     expect(tester.widget<Text>(explanation).maxLines, 3);
