@@ -11,6 +11,7 @@ import '../../widgets/home/bottom_nav_bar.dart';
 import '../../controllers/theme_controller.dart';
 import '../settings/settings_screen.dart';
 import '../identification/identification_screen.dart';
+import '../identification/identification_history_screen.dart';
 import '../species/species_catalog_screen.dart';
 import '../species/species_detail_screen.dart';
 import '../sos/sos_screen.dart';
@@ -181,9 +182,11 @@ class HomeScreen extends StatelessWidget {
                     },
                     onFirstAidTap: () => _abrirSos(context),
                     onHistoryTap: () {
-                      _mostrarMensagem(
-                        context,
-                        'Meus registros em desenvolvimento',
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (context) =>
+                              const IdentificationHistoryScreen(),
+                        ),
                       );
                     },
                     onForumTap: () {
