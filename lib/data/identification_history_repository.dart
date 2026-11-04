@@ -30,9 +30,13 @@ class IdentificationHistoryRepository {
   static const maxEntries = 50;
 
   final IdentificationHistoryStore _store;
+  final DateTime Function() _now;
 
-  IdentificationHistoryRepository({IdentificationHistoryStore? store})
-    : _store = store ?? SharedPreferencesHistoryStore();
+  IdentificationHistoryRepository({
+    IdentificationHistoryStore? store,
+    DateTime Function()? now,
+  }) : _store = store ?? SharedPreferencesHistoryStore(),
+       _now = now ?? DateTime.now;
 
   Future<List<IdentificationHistoryEntry>> load() async {
     final values = await _store.read() ?? <String>[];
@@ -58,7 +62,7 @@ class IdentificationHistoryRepository {
   }) async {
     final entry = IdentificationHistoryEntry.fromResult(
       result,
-      createdAt: DateTime.now(),
+      createdAt: _now(),
       matchedCatalog: matchedCatalog,
     );
     final existing = await load();
