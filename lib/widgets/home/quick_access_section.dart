@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../ecolens_card.dart';
 
 class QuickAccessSection extends StatelessWidget {
   final VoidCallback onVenomousTap;
@@ -103,58 +104,50 @@ class QuickAccessCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return EcoLensCard(
+      onTap: onTap,
+      padding: const EdgeInsets.all(14),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(minHeight: 142),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CircleAvatar(
+              radius: 23,
+              backgroundColor: colors.primaryContainer,
+              child: Icon(icon, color: colors.onPrimaryContainer, size: 25),
+            ),
 
-    return Material(
-      color: isDark ? colors.surfaceContainerHigh : colors.surfaceContainerLow,
-      borderRadius: BorderRadius.circular(20),
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(20),
-        child: Container(
-          constraints: const BoxConstraints(minHeight: 170),
-          padding: const EdgeInsets.all(14),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CircleAvatar(
-                radius: 23,
-                backgroundColor: colors.primaryContainer,
-                child: Icon(icon, color: colors.onPrimaryContainer, size: 25),
+            const SizedBox(height: 12),
+
+            Text(
+              title,
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: colors.onSurface,
               ),
+            ),
 
-              const SizedBox(height: 12),
+            const SizedBox(height: 6),
 
-              Text(
-                title,
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: colors.onSurface,
-                ),
+            Text(
+              subtitle,
+              style: Theme.of(context).textTheme.bodySmall
+                  ?.copyWith(color: colors.onSurfaceVariant),
+            ),
+
+            const SizedBox(height: 12),
+
+            Align(
+              alignment: Alignment.centerRight,
+              child: Icon(
+                Icons.arrow_forward_ios_rounded,
+                size: 16,
+                color: colors.primary,
               ),
-
-              const SizedBox(height: 6),
-
-              Text(
-                subtitle,
-                style: Theme.of(context).textTheme.bodySmall
-                    ?.copyWith(color: colors.onSurfaceVariant),
-              ),
-
-              const SizedBox(height: 12),
-
-              Align(
-                alignment: Alignment.centerRight,
-                child: Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  size: 16,
-                  color: colors.primary,
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

@@ -40,19 +40,6 @@ class SpeciesSearchBar extends StatelessWidget {
             color: colors.primary,
           ),
         ),
-
-        filled: true,
-        fillColor: colors.surface,
-
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 18,
-        ),
-
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-          borderSide: BorderSide.none,
-        ),
       ),
     );
   }

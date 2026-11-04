@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../custom_button.dart';
 
 class IdentificationBanner extends StatelessWidget {
   final VoidCallback onCameraTap;
@@ -70,49 +71,20 @@ class IdentificationBanner extends StatelessWidget {
 
             Row(
               children: [
-                // Botão de abrir câmera
                 Expanded(
-                  child: ElevatedButton.icon(
+                  child: EcoLensButton(
                     onPressed: onCameraTap,
-                    icon: const Icon(Icons.camera_alt_outlined),
-                    label: const Text(
-                      'Abrir câmera',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF125039),
-                      foregroundColor: Colors.white,
-                      minimumSize: const Size(0, 56),
-                      padding: const EdgeInsets.symmetric(horizontal: 6),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18),
-                      ),
-                    ),
+                    icon: Icons.camera_alt_outlined,
+                    label: 'Abrir câmera',
                   ),
                 ),
-
                 const SizedBox(width: 10),
-
-                // Botão de enviar foto
                 Expanded(
-                  child: ElevatedButton.icon(
+                  child: EcoLensButton(
                     onPressed: onGalleryTap,
-                    icon: const Icon(Icons.image_outlined),
-                    label: const Text(
-                      'Enviar foto',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: const Color(0xFF125039),
-                      minimumSize: const Size(0, 56),
-                      padding: const EdgeInsets.symmetric(horizontal: 6),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18),
-                      ),
-                    ),
+                    icon: Icons.image_outlined,
+                    label: 'Enviar foto',
+                    tonal: true,
                   ),
                 ),
               ],
