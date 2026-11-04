@@ -68,7 +68,11 @@ void main() {
 
     expect(find.byType(SpeciesDetailScreen), findsOneWidget);
     expect(find.text('Ficha da espécie'), findsOneWidget);
-    expect(find.text('Ficha publicada no catálogo.'), findsOneWidget);
+    final detail = tester.widget<SpeciesDetailScreen>(
+      find.byType(SpeciesDetailScreen),
+    );
+    expect(detail.species, same(jararaca));
+    expect(detail.isDemonstration, isFalse);
     expect(tester.takeException(), isNull);
   });
 
