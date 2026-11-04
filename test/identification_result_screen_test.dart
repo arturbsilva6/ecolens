@@ -125,6 +125,49 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  testWidgets('Explicação longa pode ser expandida e recolhida', (
+    tester,
+  ) async {
+    final longExplanation = List.filled(
+      8,
+      'A análise é experimental e descreve apenas traços visuais.',
+    ).join(' ');
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: IdentificationResultScreen(
+          imageBytes: photoBytes,
+          result: AiIdentificationResult(
+            identified: true,
+            commonName: 'Jararaca',
+            scientificName: 'Bothrops jararaca',
+            explanation: longExplanation,
+          ),
+          matchedSpecies: jararaca,
+        ),
+      ),
+    );
+
+    await tester.scrollUntilVisible(
+      find.text('Ler explicação completa'),
+      160,
+      scrollable: find.byType(Scrollable).first,
+    );
+
+    final explanation = find.text(longExplanation);
+    expect(tester.widget<Text>(explanation).maxLines, 3);
+
+    await tester.tap(find.text('Ler explicação completa'));
+    await tester.pumpAndSettle();
+    expect(tester.widget<Text>(explanation).maxLines, isNull);
+    expect(find.text('Recolher explicação'), findsOneWidget);
+
+    await tester.tap(find.text('Recolher explicação'));
+    await tester.pumpAndSettle();
+    expect(tester.widget<Text>(explanation).maxLines, 3);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('Nova identificação devolve sinal para limpar foto anterior', (
     tester,
   ) async {
