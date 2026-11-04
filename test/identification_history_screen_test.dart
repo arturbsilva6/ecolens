@@ -53,8 +53,20 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Registro de identificação'), findsOneWidget);
     expect(find.text('Padrões visuais descritos pela IA.'), findsOneWidget);
-    await tester.ensureVisible(find.text('Excluir este registro'));
-    await tester.tap(find.text('Excluir este registro'));
+    // O botão pode ainda não ter sido construído pelo ListView.
+    // scrollUntilVisible o constrói antes de posicioná-lo para o toque.
+    final deleteButton = find.text('Excluir este registro');
+    await tester.scrollUntilVisible(
+      deleteButton,
+      120,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await Scrollable.ensureVisible(
+      tester.element(deleteButton),
+      alignment: 0.4,
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(deleteButton);
     await tester.pumpAndSettle();
     await tester.tap(find.text('Apagar'));
     await tester.pumpAndSettle();
