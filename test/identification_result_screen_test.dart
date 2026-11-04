@@ -148,20 +148,22 @@ void main() {
       ),
     );
 
-    // O botão pode estar tecnicamente dentro do ListView, mas coberto
-    // pelo rodapé fixo. Role um pouco mais para garantir um toque real.
+    // Posiciona o botão no centro da área rolável para evitar
+    // sobreposição pelo rodapé fixo, sem uma rolagem extra que possa
+    // retirá-lo da árvore de widgets.
     Future<void> tapVisibleExplanationAction(String label) async {
+      final action = find.text(label);
       await tester.scrollUntilVisible(
-        find.text(label),
-        160,
+        action,
+        100,
         scrollable: find.byType(Scrollable).first,
       );
-      await tester.drag(
-        find.byType(ListView),
-        const Offset(0, -220),
+      await Scrollable.ensureVisible(
+        tester.element(action),
+        alignment: 0.4,
       );
       await tester.pumpAndSettle();
-      await tester.tap(find.text(label));
+      await tester.tap(action);
       await tester.pumpAndSettle();
     }
 
