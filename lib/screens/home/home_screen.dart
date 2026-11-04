@@ -13,6 +13,7 @@ import '../settings/settings_screen.dart';
 import '../identification/identification_screen.dart';
 import '../identification/identification_history_screen.dart';
 import '../species/species_catalog_screen.dart';
+import '../species/favorites_screen.dart';
 import '../species/species_detail_screen.dart';
 import '../sos/sos_screen.dart';
 import '../../utils/species_catalog_filter.dart';
@@ -171,6 +172,13 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(height: 24),
 
                   QuickAccessSection(
+                    onFavoritesTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (_) => const FavoritesScreen(),
+                        ),
+                      );
+                    },
                     onVenomousTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute<void>(

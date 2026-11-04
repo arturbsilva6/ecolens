@@ -2,15 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../models/species_model.dart';
+import '../../data/favorites_repository.dart';
+import '../../widgets/species_favorite_button.dart';
 
 class SpeciesDetailScreen extends StatelessWidget {
   final SpeciesModel species;
   final bool isDemonstration;
+  final FavoritesRepository? favoritesRepository;
 
   const SpeciesDetailScreen({
     super.key,
     required this.species,
     this.isDemonstration = true,
+    this.favoritesRepository,
   });
 
   Future<void> _openExternalLink(BuildContext context, String url) async {
@@ -200,6 +204,13 @@ class SpeciesDetailScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          if (!isDemonstration)
+            SpeciesFavoriteButton(
+              scientificName: species.scientificName,
+              repository: favoritesRepository,
+            ),
+        ],
         title: Text(
           isDemonstration ? 'Resultado da identificação' : 'Ficha da espécie',
         ),
