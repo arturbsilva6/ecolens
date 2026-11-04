@@ -35,7 +35,10 @@ class _IdentificationHistoryScreenState
   }
 
   void _refresh() {
-    setState(() => _entries = _repository.load());
+    final nextEntries = _repository.load();
+    setState(() {
+      _entries = nextEntries;
+    });
   }
 
   Future<void> _clearHistory() async {
