@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import '../../controllers/species_controller.dart';
 import '../species/species_detail_screen.dart';
 import '../../data/mock_species_repository.dart';
+import '../../data/supabase_species_repository.dart';
+import '../../models/species_model.dart';
+import '../../utils/ai_species_matcher.dart';
 import '../../models/ai_identification_result.dart';
 import '../../services/ai_service.dart';
 
@@ -59,12 +62,46 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
     setState(() => _isAnalyzing = true);
     try {
       final result = await AiService().suggestSpecies(bytes);
-      if (!mounted) return;
 
-      await showDialog<void>(
+      // Só relaciona a sugestão com fichas publicadas no catálogo.
+      // Falhas na consulta não ocultam o resultado experimental da IA.
+      SpeciesModel? matchedSpecies;
+      var catalogUnavailable = false;
+      if (result.identified) {
+        try {
+          final publishedSpecies =
+              await SupabaseSpeciesRepository().fetchPublishedSpecies();
+          matchedSpecies = matchAiSuggestionToPublishedSpecies(
+            result,
+            publishedSpecies,
+          );
+        } catch (_) {
+          catalogUnavailable = true;
+        }
+      }
+
+      if (!mounted) return;
+      final selectedSpecies = await showDialog<SpeciesModel>(
         context: context,
-        builder: (context) => _suggestionDialog(context, result),
+        builder: (dialogContext) => _suggestionDialog(
+          dialogContext,
+          result,
+          matchedSpecies: matchedSpecies,
+          catalogUnavailable: catalogUnavailable,
+        ),
       );
+
+      if (!mounted) return;
+      if (selectedSpecies != null) {
+        Navigator.of(context).push(
+          MaterialPageRoute<void>(
+            builder: (context) => SpeciesDetailScreen(
+              species: selectedSpecies,
+              isDemonstration: false,
+            ),
+          ),
+        );
+      }
     } catch (error) {
       if (!mounted) return;
       final message = error is FormatException
@@ -81,8 +118,10 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
 
   Widget _suggestionDialog(
     BuildContext context,
-    AiIdentificationResult result,
-  ) {
+    AiIdentificationResult result, {
+    SpeciesModel? matchedSpecies,
+    bool catalogUnavailable = false,
+  }) {
     final speciesName = [
       result.commonName,
       result.scientificName,
@@ -103,6 +142,19 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
             ],
             Text(result.explanation),
             const SizedBox(height: 12),
+            if (result.identified) ...[
+              Text(
+                matchedSpecies != null
+                    ? 'Encontramos uma ficha publicada com o mesmo nome '
+                      'científico. Isso não confirma a espécie da fotografia.'
+                    : catalogUnavailable
+                        ? 'O catálogo está indisponível no momento. '
+                          'Não foi possível comparar a sugestão às fichas.'
+                        : 'Não encontramos uma ficha publicada com esse '
+                          'nome científico. A sugestão não foi confirmada.',
+              ),
+              const SizedBox(height: 12),
+            ],
             const Text(
               'Não utilize esta sugestão para avaliar toxicidade, '
               'decidir se um animal é seguro ou orientar primeiros '
@@ -116,6 +168,11 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
           onPressed: () => Navigator.of(context).pop(),
           child: const Text('Entendi'),
         ),
+        if (matchedSpecies != null)
+          FilledButton(
+            onPressed: () => Navigator.of(context).pop(matchedSpecies),
+            child: const Text('Ver ficha da espécie'),
+          ),
       ],
     );
   }
