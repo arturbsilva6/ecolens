@@ -16,14 +16,14 @@ void main() {
 
   testWidgets('EcoLens deve iniciar na HomeScreen', (tester) async {
     // Inicializa o aplicativo
-    await tester.pumpWidget(const EcoLensApp());
+    await tester.pumpWidget(EcoLensApp(fetchPublishedSpecies: () async => []));
 
     // Verifica se a Home foi carregada
     expect(find.byType(HomeScreen), findsOneWidget);
   });
 
   testWidgets('SOS fixo da Home abre a tela de orientações', (tester) async {
-    await tester.pumpWidget(const EcoLensApp());
+    await tester.pumpWidget(EcoLensApp(fetchPublishedSpecies: () async => []));
 
     final sosButton = find.byTooltip('Abrir SOS ambiental');
     expect(sosButton, findsOneWidget);

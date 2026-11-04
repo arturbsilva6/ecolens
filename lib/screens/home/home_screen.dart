@@ -20,29 +20,13 @@ import '../../utils/species_catalog_filter.dart';
 
 class HomeScreen extends StatelessWidget {
   final ThemeController themeController;
+  final Future<List<SpeciesModel>> Function()? fetchPublishedSpecies;
 
-  const HomeScreen({super.key, required this.themeController});
-  static const List<SpeciesModel> _recentSpecies = [
-    SpeciesModel(
-      commonName: 'Jararaca',
-      scientificName: 'Bothrops jararaca',
-      status: SpeciesStatus.danger,
-      imagePath: 'assets/images/jararaca.jpg',
-    ),
-    SpeciesModel(
-      commonName: 'Cambará',
-      scientificName: 'Lantana camara',
-      status: SpeciesStatus.invasive,
-      imagePath: 'assets/images/cambara.jpg',
-    ),
-    SpeciesModel(
-      commonName: 'Sagui',
-      scientificName: 'Callithrix sp.',
-      imagePath: 'assets/images/sagui_banner.jpg',
-      status: SpeciesStatus.unverified,
-    ),
-  ];
-
+  const HomeScreen({
+    super.key,
+    required this.themeController,
+    this.fetchPublishedSpecies,
+  });
   void _mostrarMensagem(BuildContext context, String mensagem) {
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text(mensagem)));
@@ -207,13 +191,15 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(height: 24),
 
                   RecentSpeciesSection(
-                    species: _recentSpecies,
+                    fetchPublishedSpecies: fetchPublishedSpecies,
 
                     onSpeciesTap: (species) {
                       Navigator.of(context).push(
                         MaterialPageRoute<void>(
-                          builder: (context) =>
-                              SpeciesDetailScreen(species: species),
+                          builder: (context) => SpeciesDetailScreen(
+                            species: species,
+                            isDemonstration: false,
+                          ),
                         ),
                       );
                     },

@@ -3,14 +3,20 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'controllers/theme_controller.dart';
+import 'models/species_model.dart';
 import 'core/theme/app_theme.dart';
 import 'screens/home/home_screen.dart';
 import 'services/supabase_service.dart';
 
 class EcoLensApp extends StatefulWidget {
   final SupabaseService? supabaseService;
+  final Future<List<SpeciesModel>> Function()? fetchPublishedSpecies;
 
-  const EcoLensApp({super.key, this.supabaseService});
+  const EcoLensApp({
+    super.key,
+    this.supabaseService,
+    this.fetchPublishedSpecies,
+  });
 
   @override
   State<EcoLensApp> createState() => _EcoLensAppState();
@@ -59,7 +65,10 @@ class _EcoLensAppState extends State<EcoLensApp> {
           // Tema controlado pelo ThemeController
           themeMode: _themeController.themeMode,
 
-          home: HomeScreen(themeController: _themeController),
+          home: HomeScreen(
+            themeController: _themeController,
+            fetchPublishedSpecies: widget.fetchPublishedSpecies,
+          ),
         );
       },
     );
