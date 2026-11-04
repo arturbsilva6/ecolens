@@ -366,7 +366,12 @@ void main() {
     final themeController = ThemeController();
     addTearDown(themeController.dispose);
     await tester.pumpWidget(
-      MaterialApp(home: HomeScreen(themeController: themeController)),
+      MaterialApp(
+        home: HomeScreen(
+          themeController: themeController,
+          fetchPublishedSpecies: () async => [],
+        ),
+      ),
     );
     await tester.pumpAndSettle();
 

@@ -18,7 +18,12 @@ void main() {
   });
 
   Future<void> openSos(WidgetTester tester, SupabaseService service) async {
-    await tester.pumpWidget(EcoLensApp(supabaseService: service));
+    await tester.pumpWidget(
+      EcoLensApp(
+        supabaseService: service,
+        fetchPublishedSpecies: () async => [],
+      ),
+    );
     expect(find.byType(HomeScreen), findsOneWidget);
 
     final sos = find.byTooltip('Abrir SOS ambiental');
