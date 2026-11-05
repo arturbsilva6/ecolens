@@ -1,67 +1,96 @@
 import 'package:flutter/material.dart';
 
-class HomeHeader extends StatelessWidget {
-  final VoidCallback onNotificationsTap;
-  final VoidCallback onSettingsTap;
+import '../../core/theme/app_colors.dart';
 
+/// Cabeçalho da Home com o símbolo simplificado do Conceito 2.
+class HomeHeader extends StatelessWidget {
   const HomeHeader({
     super.key,
     required this.onNotificationsTap,
     required this.onSettingsTap,
   });
 
+  final VoidCallback onNotificationsTap;
+  final VoidCallback onSettingsTap;
+
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
+    final theme = Theme.of(context);
+    final colors = theme.colorScheme;
+    final isDark = theme.brightness == Brightness.dark;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+    return Container(
+      padding: const EdgeInsets.fromLTRB(16, 10, 8, 10),
+      decoration: BoxDecoration(
+        color: colors.surface,
+        border: Border(
+          bottom: BorderSide(color: colors.outlineVariant.withValues(alpha: 0.45)),
+        ),
+      ),
       child: Row(
         children: [
-          CircleAvatar(
-            radius: 26,
-            backgroundColor: colors.primaryContainer,
-            child: Icon(Icons.eco, color: colors.primary, size: 30),
+          Container(
+            width: 48,
+            height: 48,
+            padding: const EdgeInsets.all(5),
+            decoration: BoxDecoration(
+              color: AppColors.primary,
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: Image.asset(
+              'assets/branding/ecolens_logo_loader.png',
+              fit: BoxFit.contain,
+              semanticLabel: 'Símbolo do EcoLens',
+              errorBuilder: (_, _, _) =>
+                  const Icon(Icons.eco_outlined, color: AppColors.accent),
+            ),
           ),
-
           const SizedBox(width: 12),
-
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'EcoLens',
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
+                Text.rich(
+                  TextSpan(
+                    text: 'Eco',
+                    children: [
+                      TextSpan(
+                        text: 'Lens',
+                        style: TextStyle(
+                          color: isDark ? AppColors.accent : AppColors.secondary,
+                        ),
+                      ),
+                    ],
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.titleLarge?.copyWith(
                     color: colors.onSurface,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: -0.5,
                   ),
                 ),
                 Text(
                   'Identificar e proteger',
-                  style: TextStyle(
-                    fontSize: 13,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.labelSmall?.copyWith(
                     color: colors.onSurfaceVariant,
                   ),
                 ),
               ],
             ),
           ),
-
           IconButton(
             tooltip: 'Notificações',
             onPressed: onNotificationsTap,
-            icon: const Icon(Icons.notifications_outlined),
+            icon: const Icon(Icons.notifications_none_rounded),
           ),
-
           PopupMenuButton<String>(
             tooltip: 'Mais opções',
-            icon: const Icon(Icons.more_vert),
+            icon: const Icon(Icons.more_vert_rounded),
             onSelected: (value) {
-              if (value == 'settings') {
-                onSettingsTap();
-              }
+              if (value == 'settings') onSettingsTap();
             },
             itemBuilder: (context) => const [
               PopupMenuItem<String>(

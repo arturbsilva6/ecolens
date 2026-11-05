@@ -1,15 +1,15 @@
-
 import 'package:flutter/material.dart';
 
+/// Busca existente com aparência centralizada no ThemeData do EcoLens.
 class SpeciesSearchBar extends StatelessWidget {
-  final ValueChanged<String> onSearch;
-  final VoidCallback onFilterTap;
-
   const SpeciesSearchBar({
     super.key,
     required this.onSearch,
     required this.onFilterTap,
   });
+
+  final ValueChanged<String> onSearch;
+  final VoidCallback onFilterTap;
 
   @override
   Widget build(BuildContext context) {
@@ -17,41 +17,14 @@ class SpeciesSearchBar extends StatelessWidget {
 
     return TextField(
       textInputAction: TextInputAction.search,
-
-      // Executa a busca ao pressionar pesquisar
-      onSubmitted: (texto) {
-        onSearch(texto.trim());
-      },
-
+      onSubmitted: (text) => onSearch(text.trim()),
       decoration: InputDecoration(
-        hintText: 'Buscar espécie...',
-
-        prefixIcon: Icon(
-          Icons.search,
-          color: colors.primary,
-        ),
-
-        // Botão de filtros
+        hintText: 'Buscar espécie, planta ou animal...',
+        prefixIcon: Icon(Icons.search_rounded, color: colors.primary),
         suffixIcon: IconButton(
           tooltip: 'Filtrar espécies',
           onPressed: onFilterTap,
-          icon: Icon(
-            Icons.tune,
-            color: colors.primary,
-          ),
-        ),
-
-        filled: true,
-        fillColor: colors.surface,
-
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 18,
-        ),
-
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-          borderSide: BorderSide.none,
+          icon: Icon(Icons.tune_rounded, color: colors.primary),
         ),
       ),
     );
