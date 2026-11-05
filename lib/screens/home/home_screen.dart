@@ -134,11 +134,6 @@ class HomeScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
 
-                  SosBanner(
-                    onSosTap: () => _abrirSos(context),
-                  ),
-
-                  const SizedBox(height: 20),
                   SpeciesSearchBar(
                     onSearch: (texto) {
                       if (texto.isEmpty) {
@@ -165,7 +160,11 @@ class HomeScreen extends StatelessWidget {
                       );
                     },
                   ),
+                  const SizedBox(height: 16),
 
+                  SosBanner(
+                    onSosTap: () => _abrirSos(context),
+                  ),
                   const SizedBox(height: 24),
 
                   QuickAccessSection(
