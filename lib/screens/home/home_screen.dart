@@ -10,6 +10,7 @@ import '../../widgets/home/recent_species_section.dart';
 import '../../widgets/home/bottom_nav_bar.dart';
 import '../../controllers/theme_controller.dart';
 import '../settings/settings_screen.dart';
+import '../profile/profile_screen.dart';
 import '../identification/identification_screen.dart';
 import '../identification/identification_history_screen.dart';
 import '../species/species_catalog_screen.dart';
@@ -21,11 +22,13 @@ import '../../utils/species_catalog_filter.dart';
 class HomeScreen extends StatelessWidget {
   final ThemeController themeController;
   final Future<List<SpeciesModel>> Function()? fetchPublishedSpecies;
+  final VoidCallback? onProfileTap;
 
   const HomeScreen({
     super.key,
     required this.themeController,
     this.fetchPublishedSpecies,
+    this.onProfileTap,
   });
   void _mostrarMensagem(BuildContext context, String mensagem) {
     ScaffoldMessenger.of(context)
@@ -71,6 +74,16 @@ class HomeScreen extends StatelessWidget {
           if (index == 0) return;
           if (index == 1) {
             _abrirIdentificacao(context);
+            return;
+          }
+          if (index == 4) {
+            if (onProfileTap != null) {
+              onProfileTap!();
+            } else {
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(builder: (_) => const ProfileScreen()),
+              );
+            }
             return;
           }
           const paginas = [

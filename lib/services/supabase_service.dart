@@ -79,6 +79,11 @@ class SupabaseService {
         url: url,
         publishableKey: publishableKey,
         debug: false,
+        // AuthRepository trata callbacks uma única vez e apresenta erros na UI.
+        authOptions: const FlutterAuthClientOptions(
+          authFlowType: AuthFlowType.pkce,
+          detectSessionInUri: false,
+        ),
       );
       return supabase.client;
     } catch (_) {
