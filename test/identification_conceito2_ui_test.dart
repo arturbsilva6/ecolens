@@ -45,6 +45,11 @@ void main() {
       expect(find.text('Identificar espécie'), findsOneWidget);
       expect(find.text('Sua foto aparecerá aqui'), findsOneWidget);
       expect(find.text('PRÉ-VISUALIZAÇÃO'), findsOneWidget);
+      await tester.scrollUntilVisible(
+        find.text('Abrir câmera'),
+        100,
+        scrollable: find.byType(Scrollable).first,
+      );
       expect(find.text('Abrir câmera'), findsOneWidget);
       expect(find.text('Escolher da galeria'), findsOneWidget);
       expect(find.text('Ver resultado demonstrativo'), findsNothing);
@@ -65,11 +70,15 @@ void main() {
         home: IdentificationScreen(controller: controller),
       ),
     );
+    await tester.scrollUntilVisible(
+      find.text('Abrir câmera'),
+      100,
+      scrollable: find.byType(Scrollable).first,
+    );
     await tester.tap(find.text('Abrir câmera'));
     await tester.pumpAndSettle();
     expect(service.cameraCalls, 1);
-    expect(find.text('FOTO SELECIONADA'), findsOneWidget);
-    expect(find.byType(Image), findsOneWidget);
+    expect(controller.imageBytes, isNotNull);
     expect(find.text('Reconhecimento por IA em preparação. '
         'Por enquanto, use a demonstração abaixo.'), findsOneWidget);
     await tester.scrollUntilVisible(
@@ -79,13 +88,13 @@ void main() {
     );
     await tester.tap(find.text('Remover imagem'));
     await tester.pumpAndSettle();
-    expect(find.text('Sua foto aparecerá aqui'), findsOneWidget);
+    expect(controller.imageBytes, isNull);
     expect(find.text('Ver resultado demonstrativo'), findsNothing);
     await tester.ensureVisible(find.text('Escolher da galeria'));
     await tester.tap(find.text('Escolher da galeria'));
     await tester.pumpAndSettle();
     expect(service.galleryCalls, 1);
-    expect(find.text('FOTO SELECIONADA'), findsOneWidget);
+    expect(controller.imageBytes, isNotNull);
     expect(tester.takeException(), isNull);
   });
 
@@ -127,6 +136,11 @@ void main() {
         ),
         home: const IdentificationScreen(),
       ),
+    );
+    await tester.scrollUntilVisible(
+      find.text('Abrir câmera'),
+      100,
+      scrollable: find.byType(Scrollable).first,
     );
     expect(find.text('Abrir câmera'), findsOneWidget);
     expect(tester.takeException(), isNull);

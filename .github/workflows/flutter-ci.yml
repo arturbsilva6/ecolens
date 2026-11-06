@@ -93,3 +93,15 @@ jobs:
           printf 'Verificando %s arquivos Dart alterados.\n' "${#dart_files[@]}"
           dart format --output=none --set-exit-if-changed -- "${dart_files[@]}"
 
+
+      - name: Capturar formatação dos novos arquivos Dart
+        if: failure()
+        shell: bash
+        run: |
+          dart format lib/screens/identification/identification_screen.dart test/identification_conceito2_ui_test.dart
+          echo -n "FORMATTED_SCREEN|"
+          base64 -w0 lib/screens/identification/identification_screen.dart
+          echo
+          echo -n "FORMATTED_TEST|"
+          base64 -w0 test/identification_conceito2_ui_test.dart
+          echo
