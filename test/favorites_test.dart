@@ -15,6 +15,7 @@ import 'package:ecolens/screens/species/species_detail_screen.dart';
 import 'package:ecolens/widgets/home/quick_access_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:ecolens/screens/community/community_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shared_preferences_platform_interface/in_memory_shared_preferences_async.dart';
 import 'package:shared_preferences_platform_interface/shared_preferences_async_platform_interface.dart';
@@ -385,7 +386,12 @@ void main() {
       await Scrollable.ensureVisible(tester.element(card), alignment: 0.2);
       await tester.pumpAndSettle();
       await tester.tap(card);
-      await tester.pumpAndSettle();
+      if (title == 'Fórum Local') {
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 300));
+      } else {
+        await tester.pumpAndSettle();
+      }
     }
 
     await tapShortcut('Favoritos');
@@ -413,7 +419,9 @@ void main() {
     await tester.pageBack();
     await tester.pumpAndSettle();
     await tapShortcut('Fórum Local');
-    expect(find.text('Fórum local em desenvolvimento'), findsOneWidget);
+    expect(find.byType(CommunityScreen), findsOneWidget);
+    await tester.pageBack();
+    await tester.pumpAndSettle();
     expect(find.byType(HomeScreen), findsOneWidget);
     expect(find.byTooltip('Abrir SOS ambiental'), findsOneWidget);
     expect(tester.takeException(), isNull);
