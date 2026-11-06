@@ -92,3 +92,12 @@ jobs:
           printf 'Verificando %s arquivos Dart alterados.\n' "${#dart_files[@]}"
           dart format --output=none --set-exit-if-changed -- "${dart_files[@]}"
 
+ 
+      - name: Capture formatter output for updated Home tests
+        if: failure()
+        shell: bash
+        run: |
+          dart format test/home_conceito2_ui_test.dart
+          printf 'FORMATTED_TEST|'
+          base64 -w0 test/home_conceito2_ui_test.dart
+          echo

@@ -12,6 +12,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  setUp(() {
+    SharedPreferencesAsyncPlatform.instance =
+        InMemorySharedPreferencesAsync.empty();
+  });
+
   testWidgets('Cabeçalho mostra a marca e mantém as ações', (tester) async {
     var notifications = 0;
     var settings = 0;
