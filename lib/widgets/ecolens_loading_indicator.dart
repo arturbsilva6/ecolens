@@ -32,9 +32,10 @@ class _EcoLensLoadingIndicatorState extends State<EcoLensLoadingIndicator>
       duration: const Duration(milliseconds: 1400),
       value: 0.5,
     );
-    _pulse = Tween<double>(begin: 0.95, end: 1.05).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    );
+    _pulse = Tween<double>(
+      begin: 0.95,
+      end: 1.05,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
   @override
@@ -58,7 +59,9 @@ class _EcoLensLoadingIndicatorState extends State<EcoLensLoadingIndicator>
   Widget build(BuildContext context) {
     final textColor = Theme.of(context).colorScheme.onSurfaceVariant;
     final reduceMotion = MediaQuery.maybeDisableAnimationsOf(context) ?? false;
-    final visibleMessage = widget.message.isEmpty ? 'Carregando...' : widget.message;
+    final visibleMessage = widget.message.isEmpty
+        ? 'Carregando...'
+        : widget.message;
 
     return Semantics(
       label: visibleMessage,
@@ -89,10 +92,8 @@ class _EcoLensLoadingIndicatorState extends State<EcoLensLoadingIndicator>
               Text(
                 visibleMessage,
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: textColor,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: Theme.of(context).textTheme.bodyMedium
+                    ?.copyWith(color: textColor, fontWeight: FontWeight.w600),
               ),
             ],
           ],
@@ -105,10 +106,7 @@ class _EcoLensLoadingIndicatorState extends State<EcoLensLoadingIndicator>
 /// Conteúdo de um diálogo de carregamento. O chamador controla sua abertura
 /// e fechamento, sem alterar o fluxo assíncrono existente.
 class EcoLensLoadingDialog extends StatelessWidget {
-  const EcoLensLoadingDialog({
-    super.key,
-    this.message = 'Carregando...',
-  });
+  const EcoLensLoadingDialog({super.key, this.message = 'Carregando...'});
 
   final String message;
 

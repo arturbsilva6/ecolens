@@ -20,7 +20,8 @@ class IdentificationBanner extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         // Evita overflow dos botões em celulares estreitos ou com texto ampliado.
-        final stacked = constraints.maxWidth < 440 ||
+        final stacked =
+            constraints.maxWidth < 440 ||
             MediaQuery.textScalerOf(context).scale(1) > 1.15;
 
         final cameraButton = FilledButton.icon(
@@ -81,8 +82,11 @@ class IdentificationBanner extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    const Icon(Icons.eco_outlined,
-                        color: AppColors.accent, size: 19),
+                    const Icon(
+                      Icons.eco_outlined,
+                      color: AppColors.accent,
+                      size: 19,
+                    ),
                     const SizedBox(width: 6),
                     Expanded(
                       child: Text(

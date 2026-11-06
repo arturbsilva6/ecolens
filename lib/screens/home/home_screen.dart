@@ -48,11 +48,8 @@ class HomeScreen extends StatelessWidget {
   }
 
   void _abrirSos(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (context) => const SosScreen(),
-      ),
-    );
+    Navigator.of(context)
+        .push(MaterialPageRoute<void>(builder: (context) => const SosScreen()));
   }
 
   @override
@@ -162,9 +159,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
 
-                  SosBanner(
-                    onSosTap: () => _abrirSos(context),
-                  ),
+                  SosBanner(onSosTap: () => _abrirSos(context)),
                   const SizedBox(height: 24),
 
                   QuickAccessSection(

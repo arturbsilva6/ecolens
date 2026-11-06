@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'app_colors.dart';
 
 abstract final class AppTheme {
@@ -7,37 +8,45 @@ abstract final class AppTheme {
 
   static ThemeData _build(Brightness brightness) {
     final isDark = brightness == Brightness.dark;
-    final colors = ColorScheme.fromSeed(
-      seedColor: AppColors.primary,
-      brightness: brightness,
-    ).copyWith(
-      // No escuro, o verde vivo mantém contraste sobre superfícies profundas.
-      primary: isDark ? AppColors.accent : AppColors.primary,
-      onPrimary: isDark ? AppColors.primary : Colors.white,
-      primaryContainer: isDark ? AppColors.primary : AppColors.accent,
-      onPrimaryContainer: isDark ? AppColors.accent : AppColors.primary,
-      secondary: isDark ? AppColors.tertiary : AppColors.secondary,
-      onSecondary: isDark ? AppColors.primary : Colors.white,
-      secondaryContainer: isDark ? AppColors.primary : const Color(0xFFD6EEDD),
-      onSecondaryContainer: isDark ? const Color(0xFFD6EEDD) : AppColors.primary,
-      tertiary: isDark ? AppColors.tertiary : const Color(0xFF006B5C),
-      onTertiary: isDark ? AppColors.primary : Colors.white,
-      tertiaryContainer: AppColors.tertiary,
-      onTertiaryContainer: AppColors.primary,
-      surface: isDark ? AppColors.darkSurface : AppColors.surface,
-      onSurface: isDark ? const Color(0xFFE4EDE6) : AppColors.textPrimary,
-      onSurfaceVariant: isDark ? const Color(0xFFB8CBBE) : AppColors.textSecondary,
-      outline: isDark ? const Color(0xFF8A9E91) : const Color(0xFF6B7E71),
-      error: isDark ? const Color(0xFFFFB4AB) : AppColors.danger,
-      onError: isDark ? const Color(0xFF690005) : Colors.white,
-    );
+    final colors =
+        ColorScheme.fromSeed(
+          seedColor: AppColors.primary,
+          brightness: brightness,
+        ).copyWith(
+          // No escuro, o verde vivo mantém contraste sobre superfícies profundas.
+          primary: isDark ? AppColors.accent : AppColors.primary,
+          onPrimary: isDark ? AppColors.primary : Colors.white,
+          primaryContainer: isDark ? AppColors.primary : AppColors.accent,
+          onPrimaryContainer: isDark ? AppColors.accent : AppColors.primary,
+          secondary: isDark ? AppColors.tertiary : AppColors.secondary,
+          onSecondary: isDark ? AppColors.primary : Colors.white,
+          secondaryContainer: isDark
+              ? AppColors.primary
+              : const Color(0xFFD6EEDD),
+          onSecondaryContainer: isDark
+              ? const Color(0xFFD6EEDD)
+              : AppColors.primary,
+          tertiary: isDark ? AppColors.tertiary : const Color(0xFF006B5C),
+          onTertiary: isDark ? AppColors.primary : Colors.white,
+          tertiaryContainer: AppColors.tertiary,
+          onTertiaryContainer: AppColors.primary,
+          surface: isDark ? AppColors.darkSurface : AppColors.surface,
+          onSurface: isDark ? const Color(0xFFE4EDE6) : AppColors.textPrimary,
+          onSurfaceVariant: isDark
+              ? const Color(0xFFB8CBBE)
+              : AppColors.textSecondary,
+          outline: isDark ? const Color(0xFF8A9E91) : const Color(0xFF6B7E71),
+          error: isDark ? const Color(0xFFFFB4AB) : AppColors.danger,
+          onError: isDark ? const Color(0xFF690005) : Colors.white,
+        );
     final base = ThemeData(
       useMaterial3: true,
       brightness: brightness,
       colorScheme: colors,
       fontFamily: 'Montserrat',
-      scaffoldBackgroundColor:
-          isDark ? AppColors.darkBackground : AppColors.background,
+      scaffoldBackgroundColor: isDark
+          ? AppColors.darkBackground
+          : AppColors.background,
     );
     final shape = RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(16),
@@ -68,7 +77,10 @@ abstract final class AppTheme {
       inputDecorationTheme: InputDecorationThemeData(
         filled: true,
         fillColor: colors.surface,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 18,
+        ),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),

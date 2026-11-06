@@ -8,15 +8,17 @@ void main() {
   testWidgets('Cabeçalho mostra a marca e mantém as ações', (tester) async {
     var notifications = 0;
     var settings = 0;
-    await tester.pumpWidget(MaterialApp(
-      theme: AppTheme.light,
-      home: Scaffold(
-        body: HomeHeader(
-          onNotificationsTap: () => notifications++,
-          onSettingsTap: () => settings++,
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.light,
+        home: Scaffold(
+          body: HomeHeader(
+            onNotificationsTap: () => notifications++,
+            onSettingsTap: () => settings++,
+          ),
         ),
       ),
-    ));
+    );
 
     final image = tester.widget<Image>(find.byType(Image).first);
     expect(
@@ -33,23 +35,26 @@ void main() {
   });
 
   for (final themeMode in [ThemeMode.light, ThemeMode.dark]) {
-    testWidgets('Banner mantém câmera e galeria no modo $themeMode',
-        (tester) async {
+    testWidgets('Banner mantém câmera e galeria no modo $themeMode', (
+      tester,
+    ) async {
       var camera = 0;
       var gallery = 0;
-      await tester.pumpWidget(MaterialApp(
-        theme: AppTheme.light,
-        darkTheme: AppTheme.dark,
-        themeMode: themeMode,
-        home: Scaffold(
-          body: SingleChildScrollView(
-            child: IdentificationBanner(
-              onCameraTap: () => camera++,
-              onGalleryTap: () => gallery++,
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: AppTheme.light,
+          darkTheme: AppTheme.dark,
+          themeMode: themeMode,
+          home: Scaffold(
+            body: SingleChildScrollView(
+              child: IdentificationBanner(
+                onCameraTap: () => camera++,
+                onGalleryTap: () => gallery++,
+              ),
             ),
           ),
         ),
-      ));
+      );
 
       await tester.tap(find.text('Abrir câmera'));
       await tester.tap(find.text('Enviar foto'));
@@ -65,22 +70,24 @@ void main() {
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
 
-    await tester.pumpWidget(MaterialApp(
-      home: Scaffold(
-        body: MediaQuery(
-          data: const MediaQueryData(
-            size: Size(320, 640),
-            textScaler: TextScaler.linear(1.8),
-          ),
-          child: SingleChildScrollView(
-            child: IdentificationBanner(
-              onCameraTap: () {},
-              onGalleryTap: () {},
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: MediaQuery(
+            data: const MediaQueryData(
+              size: Size(320, 640),
+              textScaler: TextScaler.linear(1.8),
+            ),
+            child: SingleChildScrollView(
+              child: IdentificationBanner(
+                onCameraTap: () {},
+                onGalleryTap: () {},
+              ),
             ),
           ),
         ),
       ),
-    ));
+    );
 
     expect(find.text('Abrir câmera'), findsOneWidget);
     expect(find.text('Enviar foto'), findsOneWidget);

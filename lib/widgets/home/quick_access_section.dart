@@ -150,8 +150,11 @@ class QuickAccessCard extends StatelessWidget {
             const SizedBox(height: 8),
             Align(
               alignment: Alignment.centerRight,
-              child: Icon(Icons.arrow_forward_rounded,
-                  color: colors.primary, size: 18),
+              child: Icon(
+                Icons.arrow_forward_rounded,
+                color: colors.primary,
+                size: 18,
+              ),
             ),
           ],
         ),

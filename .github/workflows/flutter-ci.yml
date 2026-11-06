@@ -6,6 +6,12 @@ on:
       - feat/auth-profile
       - main
   workflow_dispatch:
+    inputs:
+      base_ref:
+        description: Referência base para comparar os arquivos Dart na execução manual
+        required: true
+        default: origin/feat/auth-profile
+        type: string
 
 permissions:
   contents: read
@@ -45,18 +51,43 @@ jobs:
         run: flutter test
 
   dart-format:
-    name: Dart — formatação (lib e test)
+    name: Dart — formatação dos arquivos do PR
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
     steps:
       - name: Checkout do repositório
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
 
       - name: Instalar Dart
         uses: dart-lang/setup-dart@v1
         with:
           sdk: '3.13.5'
 
-      - name: Verificar formatação do Dart
-        run: dart format --output=none --set-exit-if-changed lib test
+      - name: Verificar formatação dos arquivos Dart alterados
+        shell: bash
+        env:
+          BASE_REF: ${{ github.event.pull_request.base.sha || inputs.base_ref }}
+          HEAD_REF: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          base_sha=$(git rev-parse --verify --end-of-options "${BASE_REF}^{commit}")
+          head_sha=$(git rev-parse --verify --end-of-options "${HEAD_REF}^{commit}")
+          changed_files="${RUNNER_TEMP}/changed-dart-files"
+
+          # Compara com o merge-base, exclui exclusões e usa os nomes atuais
+          # dos arquivos adicionados, copiados, modificados ou renomeados.
+          git diff --name-only --diff-filter=ACMR -z \
+            "${base_sha}...${head_sha}" -- '*.dart' > "$changed_files"
+          mapfile -d '' -t dart_files < "$changed_files"
+
+          if (( ${#dart_files[@]} == 0 )); then
+            echo "Nenhum arquivo Dart alterado; formatação dispensada."
+            exit 0
+          fi
+
+          printf 'Verificando %s arquivos Dart alterados.\n' "${#dart_files[@]}"
+          dart format --output=none --set-exit-if-changed -- "${dart_files[@]}"

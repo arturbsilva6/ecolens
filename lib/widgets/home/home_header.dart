@@ -24,7 +24,9 @@ class HomeHeader extends StatelessWidget {
       decoration: BoxDecoration(
         color: colors.surface,
         border: Border(
-          bottom: BorderSide(color: colors.outlineVariant.withValues(alpha: 0.45)),
+          bottom: BorderSide(
+            color: colors.outlineVariant.withValues(alpha: 0.45),
+          ),
         ),
       ),
       child: Row(
@@ -57,7 +59,9 @@ class HomeHeader extends StatelessWidget {
                       TextSpan(
                         text: 'Lens',
                         style: TextStyle(
-                          color: isDark ? AppColors.accent : AppColors.secondary,
+                          color: isDark
+                              ? AppColors.accent
+                              : AppColors.secondary,
                         ),
                       ),
                     ],
