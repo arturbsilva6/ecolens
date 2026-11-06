@@ -20,27 +20,20 @@ class HomeHeader extends StatelessWidget {
     final isDark = theme.brightness == Brightness.dark;
 
     return Container(
-      padding: const EdgeInsets.fromLTRB(16, 10, 8, 10),
-      color: colors.surface,
+      padding: const EdgeInsets.fromLTRB(16, 8, 8, 8),
+      color: theme.scaffoldBackgroundColor,
       child: Row(
         children: [
-          Container(
-            width: 48,
-            height: 48,
-            padding: const EdgeInsets.all(5),
-            decoration: BoxDecoration(
-              color: AppColors.primary,
-              borderRadius: BorderRadius.circular(14),
-            ),
-            child: Image.asset(
-              'assets/branding/ecolens_logo_loader.png',
-              fit: BoxFit.contain,
-              semanticLabel: 'Símbolo do EcoLens',
-              errorBuilder: (_, _, _) =>
-                  const Icon(Icons.eco_outlined, color: AppColors.accent),
-            ),
+          Image.asset(
+            'assets/branding/ecolens_logo_loader.png',
+            width: 42,
+            height: 42,
+            fit: BoxFit.contain,
+            semanticLabel: 'Símbolo do EcoLens',
+            errorBuilder: (_, _, _) =>
+                Icon(Icons.eco_outlined, color: colors.primary, size: 36),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: 10),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,11 +55,13 @@ class HomeHeader extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: theme.textTheme.titleLarge?.copyWith(
+                    fontSize: 20,
                     color: colors.onSurface,
                     fontWeight: FontWeight.w700,
                     letterSpacing: -0.5,
                   ),
                 ),
+                const SizedBox(height: 2),
                 Text(
                   'Identificar e proteger',
                   maxLines: 1,
