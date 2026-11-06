@@ -76,9 +76,11 @@ class _RecentSpeciesSectionState extends State<RecentSpeciesSection> {
               // As chaves publicáveis devem ser fornecidas no início do app.
               // Não registrar exceções nem exibir URLs ou valores de chaves.
               const supabaseUrl = String.fromEnvironment('SUPABASE_URL');
-              const publishableKey =
-                  String.fromEnvironment('SUPABASE_PUBLISHABLE_KEY');
-              final missingConfig = widget.fetchPublishedSpecies == null &&
+              const publishableKey = String.fromEnvironment(
+                'SUPABASE_PUBLISHABLE_KEY',
+              );
+              final missingConfig =
+                  widget.fetchPublishedSpecies == null &&
                   (supabaseUrl.isEmpty || publishableKey.isEmpty);
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

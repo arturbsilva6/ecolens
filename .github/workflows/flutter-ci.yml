@@ -92,14 +92,3 @@ jobs:
           printf 'Verificando %s arquivos Dart alterados.\n' "${#dart_files[@]}"
           dart format --output=none --set-exit-if-changed -- "${dart_files[@]}"
 
-      # Etapa temporária para obter a saída exata do formatter na CI.
-      - name: Diagnóstico temporário de formatação
-        if: failure()
-        shell: bash
-        run: |
-          dart format lib/widgets/home/bottom_nav_bar.dart lib/widgets/home/recent_species_section.dart test/home_conceito2_ui_test.dart
-          for file in lib/widgets/home/bottom_nav_bar.dart lib/widgets/home/recent_species_section.dart test/home_conceito2_ui_test.dart; do
-            printf 'FORMATTED_FILE|%s|' "$file"
-            base64 -w0 "$file"
-            echo
-          done

@@ -22,16 +22,14 @@ class EcoLensBottomNavBar extends StatelessWidget {
 
     return NavigationBarTheme(
       data: NavigationBarThemeData(
-        labelTextStyle: WidgetStateProperty.resolveWith<TextStyle>(
-          (states) {
-            final selected = states.contains(WidgetState.selected);
-            return TextStyle(
-              fontSize: labelFontSize,
-              fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
-              color: selected ? colors.onSurface : colors.onSurfaceVariant,
-            );
-          },
-        ),
+        labelTextStyle: WidgetStateProperty.resolveWith<TextStyle>((states) {
+          final selected = states.contains(WidgetState.selected);
+          return TextStyle(
+            fontSize: labelFontSize,
+            fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
+            color: selected ? colors.onSurface : colors.onSurfaceVariant,
+          );
+        }),
       ),
       child: NavigationBar(
         selectedIndex: selectedIndex,

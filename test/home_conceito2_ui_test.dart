@@ -125,18 +125,17 @@ void main() {
       MaterialApp(
         theme: AppTheme.dark,
         home: Scaffold(
-          body: HomeHeader(
-            onNotificationsTap: () {},
-            onSettingsTap: () {},
-          ),
+          body: HomeHeader(onNotificationsTap: () {}, onSettingsTap: () {}),
         ),
       ),
     );
     final outer = tester.widget<Container>(
-      find.descendant(
-        of: find.byType(HomeHeader),
-        matching: find.byType(Container),
-      ).first,
+      find
+          .descendant(
+            of: find.byType(HomeHeader),
+            matching: find.byType(Container),
+          )
+          .first,
     );
     expect(outer.decoration, isNull);
   });
