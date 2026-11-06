@@ -80,17 +80,19 @@ class IdentificationBanner extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
-                  mainAxisSize: MainAxisSize.min,
                   children: [
                     const Icon(Icons.eco_outlined,
                         color: AppColors.accent, size: 19),
                     const SizedBox(width: 6),
-                    Text(
-                      'NATUREZA + TECNOLOGIA',
-                      style: theme.textTheme.labelSmall?.copyWith(
-                        color: AppColors.accent,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 0.8,
+                    Expanded(
+                      child: Text(
+                        'NATUREZA + TECNOLOGIA',
+                        softWrap: true,
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: AppColors.accent,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 0.8,
+                        ),
                       ),
                     ),
                   ],
