@@ -374,6 +374,7 @@ class _IdentificationPreview extends StatelessWidget {
               if (hasImage)
                 ColoredBox(
                   color: Colors.black.withValues(alpha: 0.13),
+                  child: const SizedBox.expand(),
                 ),
               const Center(
                 child: SizedBox(

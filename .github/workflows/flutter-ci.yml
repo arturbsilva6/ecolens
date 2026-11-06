@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - feat/auth-profile
+      - feat/uiux-home-conceito2
       - main
   workflow_dispatch:
     inputs:
