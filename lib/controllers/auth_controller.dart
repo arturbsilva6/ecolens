@@ -55,6 +55,20 @@ class AuthController extends ChangeNotifier {
     }
   }
 
+  /// Re-read SDK state before returning to an account-required action.
+  /// Does not reset PKCE callbacks or discard the caller's draft.
+  Future<void> synchronizeSession() async {
+    try {
+      final restored = await repository.connect();
+      if (_disposed) return;
+      user = restored;
+    } catch (error) {
+      if (_disposed) return;
+      message = authErrorMessage(error);
+    }
+    _notify();
+  }
+
   void _event(AccountEvent event) {
     if (_disposed) return;
     switch (event.type) {

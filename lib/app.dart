@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'controllers/theme_controller.dart';
+import 'widgets/auth/account_navigation_scope.dart';
 import 'controllers/auth_controller.dart';
 import 'data/supabase_auth_repository.dart';
 import 'screens/profile/profile_screen.dart';
@@ -32,7 +33,7 @@ class _EcoLensAppState extends State<EcoLensApp> {
   late final AuthController _authController;
   final _navigatorKey = GlobalKey<NavigatorState>();
   int _callbackRevision = 0;
-  bool _profileOpen = false;
+  Future<void>? _profileNavigation;
 
   @override
   void initState() {
@@ -78,18 +79,29 @@ class _EcoLensAppState extends State<EcoLensApp> {
     WidgetsBinding.instance.ensureVisualUpdate();
   }
 
-  void _openProfile() {
-    if (_profileOpen || _navigatorKey.currentState == null) return;
-    _profileOpen = true;
-    _navigatorKey.currentState!
-        .push(
-          MaterialPageRoute<void>(
-            builder: (_) => ProfileScreen(controller: _authController),
-          ),
-        )
-        .whenComplete(() {
-          _profileOpen = false;
-        });
+  Future<void> _openProfile({String? returnLabel}) {
+    final pending = _profileNavigation;
+    if (pending != null) return pending;
+    if (_navigatorKey.currentState == null) return Future.value();
+    final navigation = _showProfile(returnLabel);
+    _profileNavigation = navigation;
+    navigation.whenComplete(() {
+      _profileNavigation = null;
+    });
+    return navigation;
+  }
+
+  Future<void> _showProfile(String? returnLabel) async {
+    if (returnLabel != null) await _authController.synchronizeSession();
+    if (!mounted || _navigatorKey.currentState == null) return;
+    await _navigatorKey.currentState!.push<void>(
+      MaterialPageRoute<void>(
+        builder: (_) => ProfileScreen(
+          controller: _authController,
+          returnLabel: returnLabel,
+        ),
+      ),
+    );
   }
 
   @override
@@ -99,6 +111,8 @@ class _EcoLensAppState extends State<EcoLensApp> {
       builder: (context, child) {
         return MaterialApp(
           navigatorKey: _navigatorKey,
+          builder: (context, child) =>
+              AccountNavigationScope(openAccount: _openProfile, child: child!),
           // O callback é processado por AuthRepository, não como rota nomeada.
           initialRoute: '/',
           title: 'EcoLens',

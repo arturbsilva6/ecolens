@@ -83,6 +83,16 @@ void main() {
     }
     expect(requests, isEmpty);
   });
+  test('expired SDK session is rejected before any write or upload', () async {
+    await session();
+    client.auth.currentSession!.expiresAt = 1;
+    expect(await repository.accountId(), isNull);
+    await expectLater(
+      repository.create(draft, Uint8List(1)),
+      throwsA(isA<CommunityFailure>()),
+    );
+    expect(requests, isEmpty);
+  });
   test(
     'query restricts published rows, municipality, filter and pagination',
     () async {
@@ -174,14 +184,29 @@ void main() {
         }
         if (r.method == 'PATCH') {
           return http.Response(
-            '{"id":"test"}',
+            jsonEncode({
+              'id': 'test',
+              'owner_id': '10000000-0000-4000-8000-000000000001',
+              'municipality_id': '3550605',
+              'photo_path': 'test.png',
+              'observed_on': '2026-10-01',
+              'species_label': null,
+              'identification_origin': 'unknown',
+              'notes': '',
+              'status': 'published',
+            }),
             200,
             headers: {'content-type': 'application/json'},
           );
         }
         return http.Response('', 201);
       };
-      await repository.create(draft, Uint8List.fromList([1, 2, 3]));
+      final published = await repository.create(
+        draft,
+        Uint8List.fromList([1, 2, 3]),
+      );
+      expect(published.id, 'test');
+      expect(published.status, 'published');
       expect(requests.map((r) => r.method), ['POST', 'POST', 'PATCH']);
       expect(requests[1].bodyBytes, containsAllInOrder([1, 2, 3]));
       expect(jsonDecode(requests.last.body), {'status': 'published'});

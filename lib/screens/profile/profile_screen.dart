@@ -6,7 +6,8 @@ enum _AccessForm { guest, login, register, requestReset }
 
 class ProfileScreen extends StatefulWidget {
   final AuthController? controller;
-  const ProfileScreen({super.key, this.controller});
+  final String? returnLabel;
+  const ProfileScreen({super.key, this.controller, this.returnLabel});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -23,12 +24,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool _hidden = true;
   bool _confirmationHidden = true;
   String? _lastName;
-  bool _wasRecovering = false;
+  bool _wasRecovering = false,
+      _hadAccount = false,
+      _readyToReturn = false,
+      _returnScheduled = false;
 
   @override
   void initState() {
     super.initState();
     _auth = widget.controller ?? AuthController();
+    _hadAccount = _auth.user != null;
     _email.text = _auth.pendingEmail ?? '';
     _changed();
     _auth.addListener(_changed);
@@ -41,6 +46,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
       _mode = _AccessForm.guest;
     }
     _wasRecovering = _auth.recoveryRequired;
+    if (!_hadAccount &&
+        _auth.user != null &&
+        !_auth.recoveryRequired &&
+        !_auth.linkProblem) {
+      _readyToReturn = true;
+    }
+    _hadAccount = _auth.user != null;
+    if (widget.returnLabel != null &&
+        _readyToReturn &&
+        !_returnScheduled &&
+        !_auth.busy &&
+        !_auth.recoveryRequired &&
+        !_auth.linkProblem &&
+        _auth.user != null) {
+      _returnScheduled = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted &&
+            ModalRoute.of(context)?.isCurrent == true &&
+            _auth.user != null &&
+            !_auth.recoveryRequired &&
+            !_auth.linkProblem) {
+          Navigator.of(context).pop();
+        }
+      });
+    }
     final name = _auth.user?.displayName;
     if (name != _lastName) {
       _name.text = name ?? '';
@@ -223,6 +253,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    if (widget.returnLabel != null)
+                      OutlinedButton.icon(
+                        onPressed: () => Navigator.of(context).pop(),
+                        icon: const Icon(Icons.arrow_back),
+                        label: Text(widget.returnLabel!),
+                      ),
                     Text(
                       _auth.recoveryRequired
                           ? 'Definir nova senha'
