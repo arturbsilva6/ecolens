@@ -15,8 +15,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  analyze-and-test:
-    name: Formatação, análise e testes
+  flutter-checks:
+    name: Flutter — analyze e test
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -44,6 +44,19 @@ jobs:
         if: ${{ !cancelled() }}
         run: flutter test
 
+  dart-format:
+    name: Dart — formatação (lib e test)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v6
+
+      - name: Instalar Dart
+        uses: dart-lang/setup-dart@v1
+        with:
+          sdk: '3.13.5'
+
       - name: Verificar formatação do Dart
-        if: ${{ !cancelled() }}
         run: dart format --output=none --set-exit-if-changed lib test
