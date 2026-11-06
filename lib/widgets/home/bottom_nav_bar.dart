@@ -16,11 +16,17 @@ class EcoLensBottomNavBar extends StatelessWidget {
     final colors = theme.colorScheme;
     final screenWidth = MediaQuery.sizeOf(context).width;
 
-    // Cinco destinos seguem o Conceito 2; texto discreto em telas estreitas.
+    // Mantém os cinco destinos originais e cores do Conceito 2.
     final labelFontSize = screenWidth < 400 ? 10.0 : 12.0;
 
     return NavigationBarTheme(
       data: NavigationBarThemeData(
+        iconTheme: WidgetStateProperty.resolveWith<IconThemeData>((states) {
+          final selected = states.contains(WidgetState.selected);
+          return IconThemeData(
+            color: selected ? colors.primary : colors.secondary,
+          );
+        }),
         labelTextStyle: WidgetStateProperty.resolveWith<TextStyle>((states) {
           final selected = states.contains(WidgetState.selected);
           return TextStyle(
@@ -44,27 +50,27 @@ class EcoLensBottomNavBar extends StatelessWidget {
         destinations: const [
           NavigationDestination(
             icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home_rounded),
+            selectedIcon: Icon(Icons.home),
             label: 'Início',
           ),
           NavigationDestination(
             icon: Icon(Icons.camera_alt_outlined),
-            selectedIcon: Icon(Icons.camera_alt_rounded),
-            label: 'Câmera',
+            selectedIcon: Icon(Icons.camera_alt),
+            label: 'Identificar',
           ),
           NavigationDestination(
-            icon: Icon(Icons.search_rounded),
-            selectedIcon: Icon(Icons.search_rounded),
-            label: 'Buscar',
+            icon: Icon(Icons.map_outlined),
+            selectedIcon: Icon(Icons.map),
+            label: 'Mapa',
           ),
           NavigationDestination(
-            icon: Icon(Icons.favorite_border_rounded),
-            selectedIcon: Icon(Icons.favorite_rounded),
-            label: 'Favoritos',
+            icon: Icon(Icons.people_outline),
+            selectedIcon: Icon(Icons.people),
+            label: 'Comunidade',
           ),
           NavigationDestination(
-            icon: Icon(Icons.person_outline_rounded),
-            selectedIcon: Icon(Icons.person_rounded),
+            icon: Icon(Icons.person_outline),
+            selectedIcon: Icon(Icons.person),
             label: 'Perfil',
           ),
         ],

@@ -68,41 +68,29 @@ class HomeScreen extends StatelessWidget {
       bottomNavigationBar: EcoLensBottomNavBar(
         selectedIndex: 0,
         onDestinationSelected: (index) {
-          switch (index) {
-            case 0:
-              return;
-            case 1:
-              _abrirIdentificacao(
-                context,
-                initialSource: IdentificationSource.camera,
-              );
-              return;
-            case 2:
-              Navigator.of(context).push(
-                MaterialPageRoute<void>(
-                  builder: (_) => const SpeciesCatalogScreen(),
-                ),
-              );
-              return;
-            case 3:
-              Navigator.of(context).push(
-                MaterialPageRoute<void>(
-                  builder: (_) => const FavoritesScreen(),
-                ),
-              );
-              return;
-            case 4:
-              if (onProfileTap != null) {
-                onProfileTap!();
-              } else {
-                Navigator.of(context).push(
-                  MaterialPageRoute<void>(
-                    builder: (_) => const ProfileScreen(),
-                  ),
-                );
-              }
-              return;
+          if (index == 0) return;
+          if (index == 1) {
+            _abrirIdentificacao(context);
+            return;
           }
+          if (index == 4) {
+            if (onProfileTap != null) {
+              onProfileTap!();
+            } else {
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(builder: (_) => const ProfileScreen()),
+              );
+            }
+            return;
+          }
+          const paginas = [
+            'Início',
+            'Identificar',
+            'Mapa',
+            'Comunidade',
+            'Perfil',
+          ];
+          _mostrarMensagem(context, '${paginas[index]} em desenvolvimento');
         },
       ),
 

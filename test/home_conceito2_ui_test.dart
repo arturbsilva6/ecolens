@@ -4,8 +4,6 @@ import 'package:ecolens/widgets/home/bottom_nav_bar.dart';
 import 'package:ecolens/widgets/home/identification_banner.dart';
 import 'package:ecolens/controllers/theme_controller.dart';
 import 'package:ecolens/screens/home/home_screen.dart';
-import 'package:ecolens/screens/species/species_catalog_screen.dart';
-import 'package:ecolens/screens/species/favorites_screen.dart';
 import 'package:shared_preferences_platform_interface/in_memory_shared_preferences_async.dart';
 import 'package:shared_preferences_platform_interface/shared_preferences_async_platform_interface.dart';
 import 'package:flutter/material.dart';
@@ -129,6 +127,17 @@ void main() {
     expect(bar.shadowColor, Colors.transparent);
     expect(bar.surfaceTintColor, Colors.transparent);
     expect(bar.backgroundColor, AppTheme.dark.scaffoldBackgroundColor);
+    final style = tester.widget<NavigationBarTheme>(
+      find.byType(NavigationBarTheme),
+    );
+    expect(
+      style.data.iconTheme!.resolve({WidgetState.selected})!.color,
+      AppTheme.dark.colorScheme.primary,
+    );
+    expect(
+      style.data.iconTheme!.resolve({})!.color,
+      AppTheme.dark.colorScheme.secondary,
+    );
   });
 
   testWidgets('Cabeçalho não desenha borda separadora', (tester) async {
@@ -151,12 +160,13 @@ void main() {
     expect(outer.decoration, isNull);
   });
 
-  testWidgets('Menu inferior usa os cinco destinos do Conceito 2', (
+  testWidgets('Menu inferior preserva Mapa e Comunidade e usa cores da marca', (
     tester,
   ) async {
     final selected = <int>[];
     await tester.pumpWidget(
       MaterialApp(
+        theme: AppTheme.light,
         home: Scaffold(
           bottomNavigationBar: EcoLensBottomNavBar(
             selectedIndex: 0,
@@ -170,22 +180,35 @@ void main() {
       navigation.destinations.map(
         (destination) => (destination as NavigationDestination).label,
       ),
-      ['Início', 'Câmera', 'Buscar', 'Favoritos', 'Perfil'],
+      ['Início', 'Identificar', 'Mapa', 'Comunidade', 'Perfil'],
     );
     for (final (index, label) in [
-      (1, 'Câmera'),
-      (2, 'Buscar'),
-      (3, 'Favoritos'),
+      (1, 'Identificar'),
+      (2, 'Mapa'),
+      (3, 'Comunidade'),
       (4, 'Perfil'),
     ]) {
       await tester.tap(find.text(label));
       expect(selected.last, index);
     }
-    expect(find.byIcon(Icons.map_outlined), findsNothing);
-    expect(find.byIcon(Icons.people_outline), findsNothing);
+    expect(find.byIcon(Icons.map_outlined), findsOneWidget);
+    expect(find.byIcon(Icons.people_outline), findsOneWidget);
+    final style = tester.widget<NavigationBarTheme>(
+      find.byType(NavigationBarTheme),
+    );
+    expect(
+      style.data.iconTheme!.resolve({WidgetState.selected})!.color,
+      AppTheme.light.colorScheme.primary,
+    );
+    expect(
+      style.data.iconTheme!.resolve({})!.color,
+      AppTheme.light.colorScheme.secondary,
+    );
   });
 
-  testWidgets('Menu da Home abre busca real no catálogo', (tester) async {
+  testWidgets('Mapa permanece visível e informa que está em desenvolvimento', (
+    tester,
+  ) async {
     final theme = ThemeController();
     addTearDown(theme.dispose);
     await tester.pumpWidget(
@@ -200,36 +223,12 @@ void main() {
     await tester.tap(
       find.descendant(
         of: find.byType(EcoLensBottomNavBar),
-        matching: find.text('Buscar'),
+        matching: find.text('Mapa'),
       ),
     );
-    await tester.pumpAndSettle();
-    expect(find.byType(SpeciesCatalogScreen), findsOneWidget);
-    expect(tester.takeException(), isNull);
-  });
-
-  testWidgets('Menu da Home abre favoritos locais', (tester) async {
-    SharedPreferencesAsyncPlatform.instance =
-        InMemorySharedPreferencesAsync.empty();
-    final theme = ThemeController();
-    addTearDown(theme.dispose);
-    await tester.pumpWidget(
-      MaterialApp(
-        home: HomeScreen(
-          themeController: theme,
-          fetchPublishedSpecies: () async => [],
-        ),
-      ),
-    );
-    await tester.pumpAndSettle();
-    await tester.tap(
-      find.descendant(
-        of: find.byType(EcoLensBottomNavBar),
-        matching: find.text('Favoritos'),
-      ),
-    );
-    await tester.pumpAndSettle();
-    expect(find.byType(FavoritesScreen), findsOneWidget);
+    await tester.pump();
+    expect(find.text('Mapa em desenvolvimento'), findsOneWidget);
+    expect(find.byType(HomeScreen), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 }
