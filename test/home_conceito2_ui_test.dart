@@ -2,6 +2,12 @@ import 'package:ecolens/core/theme/app_theme.dart';
 import 'package:ecolens/widgets/home/home_header.dart';
 import 'package:ecolens/widgets/home/bottom_nav_bar.dart';
 import 'package:ecolens/widgets/home/identification_banner.dart';
+import 'package:ecolens/controllers/theme_controller.dart';
+import 'package:ecolens/screens/home/home_screen.dart';
+import 'package:ecolens/screens/species/species_catalog_screen.dart';
+import 'package:ecolens/screens/species/favorites_screen.dart';
+import 'package:shared_preferences_platform_interface/in_memory_shared_preferences_async.dart';
+import 'package:shared_preferences_platform_interface/shared_preferences_async_platform_interface.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -138,5 +144,88 @@ void main() {
           .first,
     );
     expect(outer.decoration, isNull);
+  });
+
+  testWidgets('Menu inferior usa os cinco destinos do Conceito 2', (
+    tester,
+  ) async {
+    final selected = <int>[];
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          bottomNavigationBar: EcoLensBottomNavBar(
+            selectedIndex: 0,
+            onDestinationSelected: selected.add,
+          ),
+        ),
+      ),
+    );
+    final navigation = tester.widget<NavigationBar>(
+      find.byType(NavigationBar),
+    );
+    expect(
+      navigation.destinations
+          .map((destination) => (destination as NavigationDestination).label),
+      ['Início', 'Câmera', 'Buscar', 'Favoritos', 'Perfil'],
+    );
+    for (final (index, label) in [
+      (1, 'Câmera'),
+      (2, 'Buscar'),
+      (3, 'Favoritos'),
+      (4, 'Perfil'),
+    ]) {
+      await tester.tap(find.text(label));
+      expect(selected.last, index);
+    }
+    expect(find.byIcon(Icons.map_outlined), findsNothing);
+    expect(find.byIcon(Icons.people_outline), findsNothing);
+  });
+
+  testWidgets('Menu da Home abre busca real no catálogo', (tester) async {
+    final theme = ThemeController();
+    addTearDown(theme.dispose);
+    await tester.pumpWidget(
+      MaterialApp(
+        home: HomeScreen(
+          themeController: theme,
+          fetchPublishedSpecies: () async => [],
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(
+      find.descendant(
+        of: find.byType(EcoLensBottomNavBar),
+        matching: find.text('Buscar'),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.byType(SpeciesCatalogScreen), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('Menu da Home abre favoritos locais', (tester) async {
+    SharedPreferencesAsyncPlatform.instance =
+        InMemorySharedPreferencesAsync.empty();
+    final theme = ThemeController();
+    addTearDown(theme.dispose);
+    await tester.pumpWidget(
+      MaterialApp(
+        home: HomeScreen(
+          themeController: theme,
+          fetchPublishedSpecies: () async => [],
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(
+      find.descendant(
+        of: find.byType(EcoLensBottomNavBar),
+        matching: find.text('Favoritos'),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.byType(FavoritesScreen), findsOneWidget);
+    expect(tester.takeException(), isNull);
   });
 }

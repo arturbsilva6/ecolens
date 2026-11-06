@@ -16,8 +16,7 @@ class EcoLensBottomNavBar extends StatelessWidget {
     final colors = theme.colorScheme;
     final screenWidth = MediaQuery.sizeOf(context).width;
 
-    // Cinco destinos dividem a largura da tela. Em celulares estreitos,
-    // reduzimos levemente o texto para evitar a quebra de "Comunidade".
+    // Cinco destinos seguem o Conceito 2; texto discreto em telas estreitas.
     final labelFontSize = screenWidth < 400 ? 10.0 : 12.0;
 
     return NavigationBarTheme(
@@ -45,27 +44,27 @@ class EcoLensBottomNavBar extends StatelessWidget {
         destinations: const [
           NavigationDestination(
             icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home),
+            selectedIcon: Icon(Icons.home_rounded),
             label: 'Início',
           ),
           NavigationDestination(
             icon: Icon(Icons.camera_alt_outlined),
-            selectedIcon: Icon(Icons.camera_alt),
-            label: 'Identificar',
+            selectedIcon: Icon(Icons.camera_alt_rounded),
+            label: 'Câmera',
           ),
           NavigationDestination(
-            icon: Icon(Icons.map_outlined),
-            selectedIcon: Icon(Icons.map),
-            label: 'Mapa',
+            icon: Icon(Icons.search_rounded),
+            selectedIcon: Icon(Icons.search_rounded),
+            label: 'Buscar',
           ),
           NavigationDestination(
-            icon: Icon(Icons.people_outline),
-            selectedIcon: Icon(Icons.people),
-            label: 'Comunidade',
+            icon: Icon(Icons.favorite_border_rounded),
+            selectedIcon: Icon(Icons.favorite_rounded),
+            label: 'Favoritos',
           ),
           NavigationDestination(
-            icon: Icon(Icons.person_outline),
-            selectedIcon: Icon(Icons.person),
+            icon: Icon(Icons.person_outline_rounded),
+            selectedIcon: Icon(Icons.person_rounded),
             label: 'Perfil',
           ),
         ],
