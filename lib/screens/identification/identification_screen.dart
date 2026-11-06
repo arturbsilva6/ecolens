@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 
 import '../../controllers/species_controller.dart';
+import '../../core/theme/app_colors.dart';
 import '../species/species_detail_screen.dart';
 import '../../data/mock_species_repository.dart';
 import '../../data/supabase_species_repository.dart';
@@ -16,8 +17,13 @@ enum IdentificationSource { camera, gallery }
 
 class IdentificationScreen extends StatefulWidget {
   final IdentificationSource? initialSource;
+  final SpeciesController? controller;
 
-  const IdentificationScreen({super.key, this.initialSource});
+  const IdentificationScreen({
+    super.key,
+    this.initialSource,
+    this.controller,
+  });
 
   @override
   State<IdentificationScreen> createState() => _IdentificationScreenState();
@@ -31,6 +37,7 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
   );
 
   late final SpeciesController _controller;
+  late final bool _ownsController;
   bool _isAnalyzing = false;
 
   Future<void> _analyzeImage(Uint8List bytes) async {
@@ -116,7 +123,8 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
   void initState() {
     super.initState();
 
-    _controller = SpeciesController();
+    _ownsController = widget.controller == null;
+    _controller = widget.controller ?? SpeciesController();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
@@ -131,16 +139,23 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
 
   @override
   void dispose() {
-    _controller.dispose();
+    if (_ownsController) _controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
+    final theme = Theme.of(context);
+    final colors = theme.colorScheme;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Identificar espécie')),
+      appBar: AppBar(
+        title: const Text('Identificar espécie'),
+        backgroundColor: theme.scaffoldBackgroundColor,
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+      ),
       body: SafeArea(
         child: ListenableBuilder(
           listenable: _controller,
@@ -149,53 +164,50 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
             final isLoading = _controller.isLoading || _isAnalyzing;
 
             return ListView(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
               children: [
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.eco_outlined,
+                      color: AppColors.accent,
+                      size: 18,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      'NATUREZA + TECNOLOGIA',
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: colors.primary,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: 0.8,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
                 Text(
-                  'Vamos identificar?',
-                  style: Theme.of(context).textTheme.headlineSmall,
-                ),
-                const SizedBox(height: 8),
-
-                const Text(
-                  'Fotografe um animal ou planta, '
-                  'ou selecione uma imagem da galeria.',
-                ),
-                const SizedBox(height: 24),
-
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Container(
-                    height: 250,
-                    width: double.infinity,
-                    color: colors.surfaceContainerHighest,
-                    child: imageBytes == null
-                        ? const Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.add_photo_alternate_outlined,
-                                size: 65,
-                              ),
-                              SizedBox(height: 12),
-                              Text('Nenhuma imagem selecionada'),
-                            ],
-                          )
-                        : Image.memory(
-                            imageBytes,
-                            fit: BoxFit.cover,
-                            semanticLabel: 'Fotografia selecionada',
-                          ),
+                  'Observe. Fotografe. Descubra.',
+                  style: theme.textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    height: 1.18,
                   ),
                 ),
-
+                const SizedBox(height: 8),
+                Text(
+                  'Use a câmera ou escolha uma foto da galeria para '
+                  'conhecer mais sobre fauna e flora.',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: colors.onSurfaceVariant,
+                    height: 1.5,
+                  ),
+                ),
                 const SizedBox(height: 20),
-
+                _IdentificationPreview(imageBytes: imageBytes),
+                const SizedBox(height: 18),
                 if (isLoading) ...[
                   const LinearProgressIndicator(),
                   const SizedBox(height: 16),
                 ],
-
                 if (_controller.errorMessage != null) ...[
                   Text(
                     _controller.errorMessage!,
@@ -203,31 +215,43 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
                   ),
                   const SizedBox(height: 16),
                 ],
-
                 FilledButton.icon(
-                  onPressed: isLoading
-                      ? null
-                      : () {
-                          _controller.takePhoto();
-                        },
+                  onPressed: isLoading ? null : _controller.takePhoto,
                   icon: const Icon(Icons.camera_alt_outlined),
                   label: const Text('Abrir câmera'),
+                  style: FilledButton.styleFrom(
+                    backgroundColor: AppColors.accent,
+                    foregroundColor: AppColors.primary,
+                    minimumSize: const Size.fromHeight(54),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
                 ),
-
-                const SizedBox(height: 12),
-
+                const SizedBox(height: 10),
                 OutlinedButton.icon(
-                  onPressed: isLoading
-                      ? null
-                      : () {
-                          _controller.pickFromGallery();
-                        },
+                  onPressed: isLoading ? null : _controller.pickFromGallery,
                   icon: const Icon(Icons.photo_library_outlined),
                   label: const Text('Escolher da galeria'),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: colors.onSurface,
+                    backgroundColor: colors.surface,
+                    minimumSize: const Size.fromHeight(54),
+                    side: BorderSide(color: colors.outlineVariant),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
                 ),
-
                 if (imageBytes != null) ...[
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 22),
+                  Text(
+                    'Foto pronta para explorar',
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
                   if (_aiEnabled) ...[
                     OutlinedButton.icon(
                       onPressed: isLoading
@@ -238,13 +262,15 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
                     ),
                     const SizedBox(height: 12),
                   ] else ...[
-                    const Text(
+                    Text(
                       'Reconhecimento por IA em preparação. '
                       'Por enquanto, use a demonstração abaixo.',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: colors.onSurfaceVariant,
+                      ),
                     ),
                     const SizedBox(height: 12),
                   ],
-
                   FilledButton.icon(
                     onPressed: isLoading
                         ? null
@@ -252,7 +278,7 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
                             Navigator.of(context).push(
                               MaterialPageRoute<void>(
                                 builder: (context) => const SpeciesDetailScreen(
-                                 species: MockSpeciesRepository.jararaca,
+                                  species: MockSpeciesRepository.jararaca,
                                 ),
                               ),
                             );
@@ -260,15 +286,42 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
                     icon: const Icon(Icons.science_outlined),
                     label: const Text('Ver resultado demonstrativo'),
                   ),
-
-                  const SizedBox(height: 12),
-
+                  const SizedBox(height: 8),
                   TextButton.icon(
                     onPressed: isLoading ? null : _controller.clearImage,
                     icon: const Icon(Icons.delete_outline),
                     label: const Text('Remover imagem'),
                   ),
                 ],
+                const SizedBox(height: 20),
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: colors.surface,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: colors.outlineVariant),
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Icon(
+                        Icons.health_and_safety_outlined,
+                        color: colors.primary,
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          'Fotografe a uma distância segura. Não toque '
+                          'em espécies desconhecidas nem use uma sugestão '
+                          'automática como confirmação de segurança.',
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            height: 1.5,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             );
           },
@@ -276,4 +329,154 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
       ),
     );
   }
+}
+
+/// A câmera é aberta pelo seletor nativo; a área mostra a foto somente
+/// depois da captura ou escolha na galeria (não é uma câmera ao vivo).
+class _IdentificationPreview extends StatelessWidget {
+  final Uint8List? imageBytes;
+
+  const _IdentificationPreview({required this.imageBytes});
+
+  @override
+  Widget build(BuildContext context) {
+    final hasImage = imageBytes != null;
+
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(26),
+      child: AspectRatio(
+        aspectRatio: 1.1,
+        child: DecoratedBox(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [AppColors.primary, Color(0xFF081C16)],
+            ),
+          ),
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              if (hasImage)
+                Image.memory(
+                  imageBytes!,
+                  fit: BoxFit.cover,
+                  semanticLabel: 'Fotografia selecionada',
+                  errorBuilder: (context, error, stackTrace) =>
+                      const Center(
+                        child: Icon(
+                          Icons.broken_image_outlined,
+                          color: Colors.white,
+                          size: 48,
+                        ),
+                      ),
+                ),
+              if (hasImage)
+                ColoredBox(
+                  color: Colors.black.withValues(alpha: 0.13),
+                ),
+              const Center(
+                child: SizedBox(
+                  width: 204,
+                  height: 204,
+                  child: CustomPaint(painter: _ScanCornersPainter()),
+                ),
+              ),
+              if (!hasImage)
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(24),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.camera_alt_outlined,
+                          color: AppColors.accent,
+                          size: 48,
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          'Sua foto aparecerá aqui',
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                              ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Abra a câmera ou escolha uma imagem.',
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(color: const Color(0xFFE0EFE6)),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              Positioned(
+                top: 16,
+                left: 16,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.withValues(alpha: 0.82),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 7,
+                    ),
+                    child: Text(
+                      hasImage ? 'FOTO SELECIONADA' : 'PRÉ-VISUALIZAÇÃO',
+                      style: const TextStyle(
+                        color: AppColors.accent,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: 0.8,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ScanCornersPainter extends CustomPainter {
+  const _ScanCornersPainter();
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = AppColors.accent
+      ..strokeWidth = 3
+      ..strokeCap = StrokeCap.round
+      ..style = PaintingStyle.stroke;
+    const corner = 30.0;
+    final w = size.width;
+    final h = size.height;
+    final path = Path()
+      ..moveTo(0, corner)
+      ..lineTo(0, 0)
+      ..lineTo(corner, 0)
+      ..moveTo(w - corner, 0)
+      ..lineTo(w, 0)
+      ..lineTo(w, corner)
+      ..moveTo(0, h - corner)
+      ..lineTo(0, h)
+      ..lineTo(corner, h)
+      ..moveTo(w - corner, h)
+      ..lineTo(w, h)
+      ..lineTo(w, h - corner);
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant _ScanCornersPainter oldDelegate) => false;
 }
