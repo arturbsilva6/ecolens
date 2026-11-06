@@ -165,12 +165,11 @@ void main() {
         ),
       ),
     );
-    final navigation = tester.widget<NavigationBar>(
-      find.byType(NavigationBar),
-    );
+    final navigation = tester.widget<NavigationBar>(find.byType(NavigationBar));
     expect(
-      navigation.destinations
-          .map((destination) => (destination as NavigationDestination).label),
+      navigation.destinations.map(
+        (destination) => (destination as NavigationDestination).label,
+      ),
       ['Início', 'Câmera', 'Buscar', 'Favoritos', 'Perfil'],
     );
     for (final (index, label) in [
