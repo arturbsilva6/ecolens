@@ -1,5 +1,6 @@
 import 'package:ecolens/core/theme/app_theme.dart';
 import 'package:ecolens/widgets/home/home_header.dart';
+import 'package:ecolens/widgets/home/bottom_nav_bar.dart';
 import 'package:ecolens/widgets/home/identification_banner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -92,5 +93,51 @@ void main() {
     expect(find.text('Abrir câmera'), findsOneWidget);
     expect(find.text('Enviar foto'), findsOneWidget);
     expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('Barra inferior sem linha nem elevação no modo escuro', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.light,
+        darkTheme: AppTheme.dark,
+        themeMode: ThemeMode.dark,
+        home: Scaffold(
+          bottomNavigationBar: EcoLensBottomNavBar(
+            selectedIndex: 0,
+            onDestinationSelected: (_) {},
+          ),
+          body: const SizedBox(),
+        ),
+      ),
+    );
+
+    final bar = tester.widget<NavigationBar>(find.byType(NavigationBar));
+    expect(bar.elevation, 0);
+    expect(bar.shadowColor, Colors.transparent);
+    expect(bar.surfaceTintColor, Colors.transparent);
+    expect(bar.backgroundColor, AppTheme.dark.scaffoldBackgroundColor);
+  });
+
+  testWidgets('Cabeçalho não desenha borda separadora', (tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.dark,
+        home: Scaffold(
+          body: HomeHeader(
+            onNotificationsTap: () {},
+            onSettingsTap: () {},
+          ),
+        ),
+      ),
+    );
+    final outer = tester.widget<Container>(
+      find.descendant(
+        of: find.byType(HomeHeader),
+        matching: find.byType(Container),
+      ).first,
+    );
+    expect(outer.decoration, isNull);
   });
 }

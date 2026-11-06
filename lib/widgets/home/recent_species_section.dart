@@ -73,10 +73,25 @@ class _RecentSpeciesSectionState extends State<RecentSpeciesSection> {
               );
             }
             if (snapshot.hasError) {
+              // As chaves publicáveis devem ser fornecidas no início do app.
+              // Não registrar exceções nem exibir URLs ou valores de chaves.
+              const supabaseUrl = String.fromEnvironment('SUPABASE_URL');
+              const publishableKey =
+                  String.fromEnvironment('SUPABASE_PUBLISHABLE_KEY');
+              final missingConfig = widget.fetchPublishedSpecies == null &&
+                  (supabaseUrl.isEmpty || publishableKey.isEmpty);
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text('Não foi possível carregar as espécies.'),
+                  const SizedBox(height: 6),
+                  Text(
+                    missingConfig
+                        ? 'O catálogo online não está configurado nesta execução. Reinicie o app com SUPABASE_URL e SUPABASE_PUBLISHABLE_KEY.'
+                        : 'Verifique a conexão com a internet e tente novamente.',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                  const SizedBox(height: 4),
                   TextButton.icon(
                     onPressed: _retry,
                     icon: const Icon(Icons.refresh),

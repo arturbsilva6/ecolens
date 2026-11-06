@@ -21,14 +21,7 @@ class HomeHeader extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 10, 8, 10),
-      decoration: BoxDecoration(
-        color: colors.surface,
-        border: Border(
-          bottom: BorderSide(
-            color: colors.outlineVariant.withValues(alpha: 0.45),
-          ),
-        ),
-      ),
+      color: colors.surface,
       child: Row(
         children: [
           Container(

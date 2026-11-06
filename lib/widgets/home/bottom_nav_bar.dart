@@ -12,7 +12,8 @@ class EcoLensBottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
+    final theme = Theme.of(context);
+    final colors = theme.colorScheme;
     final screenWidth = MediaQuery.sizeOf(context).width;
 
     // Cinco destinos dividem a largura da tela. Em celulares estreitos,
@@ -35,7 +36,11 @@ class EcoLensBottomNavBar extends StatelessWidget {
       child: NavigationBar(
         selectedIndex: selectedIndex,
         onDestinationSelected: onDestinationSelected,
-        backgroundColor: colors.surface,
+        // Superfície contínua com o corpo da Home: sem divisor/sombra.
+        backgroundColor: theme.scaffoldBackgroundColor,
+        elevation: 0,
+        shadowColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
         indicatorColor: colors.primaryContainer,
         height: 80,
         labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
