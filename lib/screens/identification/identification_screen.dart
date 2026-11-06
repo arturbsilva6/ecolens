@@ -390,7 +390,7 @@ class _IdentificationPreview extends StatelessWidget {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.camera_alt_outlined,
                           color: AppColors.accent,
                           size: compact ? 36 : 48,
