@@ -19,11 +19,7 @@ class IdentificationScreen extends StatefulWidget {
   final IdentificationSource? initialSource;
   final SpeciesController? controller;
 
-  const IdentificationScreen({
-    super.key,
-    this.initialSource,
-    this.controller,
-  });
+  const IdentificationScreen({super.key, this.initialSource, this.controller});
 
   @override
   State<IdentificationScreen> createState() => _IdentificationScreenState();
@@ -77,8 +73,8 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
       var catalogUnavailable = false;
       if (result.identified) {
         try {
-          final publishedSpecies =
-              await SupabaseSpeciesRepository().fetchPublishedSpecies();
+          final publishedSpecies = await SupabaseSpeciesRepository()
+              .fetchPublishedSpecies();
           matchedSpecies = matchAiSuggestionToPublishedSpecies(
             result,
             publishedSpecies,
@@ -111,9 +107,8 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
     } catch (error) {
       if (!mounted) return;
       final message = aiAnalysisErrorMessage(error);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(message)),
-      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(message)));
     } finally {
       if (mounted) setState(() => _isAnalyzing = false);
     }
@@ -362,14 +357,13 @@ class _IdentificationPreview extends StatelessWidget {
                   imageBytes!,
                   fit: BoxFit.cover,
                   semanticLabel: 'Fotografia selecionada',
-                  errorBuilder: (context, error, stackTrace) =>
-                      const Center(
-                        child: Icon(
-                          Icons.broken_image_outlined,
-                          color: Colors.white,
-                          size: 48,
-                        ),
-                      ),
+                  errorBuilder: (context, error, stackTrace) => const Center(
+                    child: Icon(
+                      Icons.broken_image_outlined,
+                      color: Colors.white,
+                      size: 48,
+                    ),
+                  ),
                 ),
               if (hasImage)
                 ColoredBox(

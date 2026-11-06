@@ -79,8 +79,13 @@ void main() {
     await tester.pumpAndSettle();
     expect(service.cameraCalls, 1);
     expect(controller.imageBytes, isNotNull);
-    expect(find.text('Reconhecimento por IA em preparação. '
-        'Por enquanto, use a demonstração abaixo.'), findsOneWidget);
+    expect(
+      find.text(
+        'Reconhecimento por IA em preparação. '
+        'Por enquanto, use a demonstração abaixo.',
+      ),
+      findsOneWidget,
+    );
     await tester.scrollUntilVisible(
       find.text('Remover imagem'),
       120,
@@ -129,9 +134,8 @@ void main() {
       MaterialApp(
         theme: AppTheme.dark,
         builder: (context, child) => MediaQuery(
-          data: MediaQuery.of(context).copyWith(
-            textScaler: const TextScaler.linear(1.5),
-          ),
+          data: MediaQuery.of(context)
+              .copyWith(textScaler: const TextScaler.linear(1.5)),
           child: child!,
         ),
         home: const IdentificationScreen(),
