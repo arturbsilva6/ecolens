@@ -169,12 +169,15 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
                       size: 18,
                     ),
                     const SizedBox(width: 8),
-                    Text(
-                      'NATUREZA + TECNOLOGIA',
-                      style: theme.textTheme.labelSmall?.copyWith(
-                        color: colors.primary,
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: 0.8,
+                    Expanded(
+                      child: Text(
+                        'NATUREZA + TECNOLOGIA',
+                        softWrap: true,
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: colors.primary,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 0.8,
+                        ),
                       ),
                     ),
                   ],
@@ -336,6 +339,9 @@ class _IdentificationPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final hasImage = imageBytes != null;
+    final compact =
+        MediaQuery.sizeOf(context).width < 400 ||
+        MediaQuery.textScalerOf(context).scale(1) > 1.2;
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(26),
@@ -380,16 +386,16 @@ class _IdentificationPreview extends StatelessWidget {
               if (!hasImage)
                 Center(
                   child: Padding(
-                    padding: const EdgeInsets.all(24),
+                    padding: EdgeInsets.all(compact ? 12 : 24),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         const Icon(
                           Icons.camera_alt_outlined,
                           color: AppColors.accent,
-                          size: 48,
+                          size: compact ? 36 : 48,
                         ),
-                        const SizedBox(height: 16),
+                        SizedBox(height: compact ? 8 : 16),
                         Text(
                           'Sua foto aparecerá aqui',
                           textAlign: TextAlign.center,
@@ -399,13 +405,15 @@ class _IdentificationPreview extends StatelessWidget {
                                 fontWeight: FontWeight.w700,
                               ),
                         ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'Abra a câmera ou escolha uma imagem.',
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.bodySmall
-                              ?.copyWith(color: const Color(0xFFE0EFE6)),
-                        ),
+                        if (!compact) ...[
+                          const SizedBox(height: 8),
+                          Text(
+                            'Abra a câmera ou escolha uma imagem.',
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(color: const Color(0xFFE0EFE6)),
+                          ),
+                        ],
                       ],
                     ),
                   ),
