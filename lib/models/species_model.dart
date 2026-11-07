@@ -48,4 +48,49 @@ class SpeciesModel {
     this.sourceName,
     this.sourceUrl,
   });
+
+  /// Representação usada pelo pacote offline salvo no aparelho.
+  Map<String, dynamic> toJson() => {
+    'common_name': commonName,
+    'scientific_name': scientificName,
+    'status': status.name,
+    'image_path': imagePath,
+    'image_url': imageUrl,
+    'image_credit': imageCredit,
+    'image_source_url': imageSourceUrl,
+    'image_license_url': imageLicenseUrl,
+    'image_license_label': imageLicenseLabel,
+    'description': description,
+    'characteristics': characteristics,
+    'habitat': habitat,
+    'risk_description': riskDescription,
+    'safety_advice': safetyAdvice,
+    'source_name': sourceName,
+    'source_url': sourceUrl,
+  };
+
+  factory SpeciesModel.fromJson(Map<String, dynamic> json) {
+    final status = SpeciesStatus.values.firstWhere(
+      (value) => value.name == json['status'],
+      orElse: () => SpeciesStatus.unverified,
+    );
+    return SpeciesModel(
+      commonName: json['common_name'] as String,
+      scientificName: json['scientific_name'] as String,
+      status: status,
+      imagePath: json['image_path'] as String?,
+      imageUrl: json['image_url'] as String?,
+      imageCredit: json['image_credit'] as String?,
+      imageSourceUrl: json['image_source_url'] as String?,
+      imageLicenseUrl: json['image_license_url'] as String?,
+      imageLicenseLabel: json['image_license_label'] as String?,
+      description: json['description'] as String?,
+      characteristics: json['characteristics'] as String?,
+      habitat: json['habitat'] as String?,
+      riskDescription: json['risk_description'] as String?,
+      safetyAdvice: json['safety_advice'] as String?,
+      sourceName: json['source_name'] as String?,
+      sourceUrl: json['source_url'] as String?,
+    );
+  }
 }

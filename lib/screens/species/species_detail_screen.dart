@@ -4,6 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../models/species_model.dart';
 import '../../data/favorites_repository.dart';
 import '../../widgets/species_favorite_button.dart';
+import '../../widgets/species_photo.dart';
 
 class SpeciesDetailScreen extends StatelessWidget {
   final SpeciesModel species;
@@ -108,7 +109,7 @@ class SpeciesDetailScreen extends StatelessWidget {
 
     final Widget image;
     if (imageUrl != null) {
-      image = Image.network(
+      image = SpeciesPhoto(
         imageUrl,
         fit: BoxFit.cover,
         semanticLabel: 'Fotografia ilustrativa de ${species.commonName}',

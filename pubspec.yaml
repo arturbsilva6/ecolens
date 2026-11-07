@@ -44,6 +44,8 @@ dependencies:
   flutter_map: 8.2.2
   latlong2: 0.9.1
   uuid: 4.5.3
+  # Já era dependência transitiva; usada para o pacote offline do catálogo.
+  path_provider: ^2.1.6
 
 dev_dependencies:
   flutter_test:

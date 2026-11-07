@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../data/supabase_species_repository.dart';
 import '../../models/species_model.dart';
+import '../species_photo.dart';
 
 class RecentSpeciesSection extends StatefulWidget {
   final Future<List<SpeciesModel>> Function()? fetchPublishedSpecies;
@@ -182,7 +183,7 @@ class _SpeciesCard extends StatelessWidget {
                 height: 120,
                 width: double.infinity,
                 child: species.imageUrl != null
-                    ? Image.network(
+                    ? SpeciesPhoto(
                         species.imageUrl!,
                         fit: BoxFit.cover,
                         semanticLabel:

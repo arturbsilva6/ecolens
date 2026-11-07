@@ -2,6 +2,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../models/species_model.dart';
 import '../services/supabase_service.dart';
+import 'offline_catalog_store.dart';
 
 /// Consulta somente o catálogo de espécies publicadas.
 ///
@@ -95,11 +96,22 @@ class SupabaseSpeciesRepository {
 
   final SupabaseClient? _client;
   final SupabaseService _supabaseService;
+  final OfflineCatalogStore _offlineStore;
 
-  SupabaseSpeciesRepository({this._client, SupabaseService? supabaseService})
-    : _supabaseService = supabaseService ?? SupabaseService.instance;
+  SupabaseSpeciesRepository({
+    this._client,
+    SupabaseService? supabaseService,
+    OfflineCatalogStore? offlineStore,
+  }) : _supabaseService = supabaseService ?? SupabaseService.instance,
+       _offlineStore = offlineStore ?? OfflineCatalogStore.instance;
 
-  Future<List<SpeciesModel>> fetchPublishedSpecies() async {
+  /// Lista as espécies publicadas. Sem conexão, usa a última cópia salva
+  /// no aparelho (veja [OfflineCatalogStore]).
+  Future<List<SpeciesModel>> fetchPublishedSpecies() =>
+      _offlineStore.fetchWithFallback(fetchRemoteSpecies);
+
+  /// Consulta somente o servidor, sem usar a cópia salva no aparelho.
+  Future<List<SpeciesModel>> fetchRemoteSpecies() async {
     final client = _client ?? await _supabaseService.requireClient();
     final rows = await client
         .from('species')

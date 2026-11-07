@@ -4,6 +4,7 @@ import '../../data/supabase_species_repository.dart';
 import '../../models/species_model.dart';
 import '../../utils/species_catalog_filter.dart';
 import '../species/species_detail_screen.dart';
+import '../../widgets/species_photo.dart';
 
 /// Catálogo público: apenas espécies publicadas no Supabase.
 class SpeciesCatalogScreen extends StatefulWidget {
@@ -204,7 +205,7 @@ class _SpeciesCatalogScreenState extends State<SpeciesCatalogScreen> {
                           leading: item.imageUrl != null
                               ? ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
-                                  child: Image.network(
+                                  child: SpeciesPhoto(
                                     item.imageUrl!,
                                     width: 56,
                                     height: 56,

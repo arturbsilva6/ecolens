@@ -93,5 +93,13 @@ jobs:
           fi
 
           printf 'Verificando %s arquivos Dart alterados.\n' "${#dart_files[@]}"
-          dart format --output=none --set-exit-if-changed -- "${dart_files[@]}"
+          if ! dart format --set-exit-if-changed -- "${dart_files[@]}"; then
+            # Mostra exatamente o que precisa mudar, para corrigir sem
+            # precisar adivinhar a partir só dos nomes dos arquivos.
+            echo "::group::Diferenças de formatação"
+            git --no-pager diff
+            echo "::endgroup::"
+            echo "Rode 'dart format' nos arquivos acima e envie de novo."
+            exit 1
+          fi
 

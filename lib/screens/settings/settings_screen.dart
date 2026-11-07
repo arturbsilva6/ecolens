@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../controllers/theme_controller.dart';
 import 'appearance_screen.dart';
+import 'offline_package_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   final ThemeController themeController;
@@ -31,6 +32,22 @@ class SettingsScreen extends StatelessWidget {
                   builder: (context) => AppearanceScreen(
                     themeController: themeController,
                   ),
+                ),
+              );
+            },
+          ),
+
+          const Divider(height: 1),
+
+          ListTile(
+            leading: const Icon(Icons.download_for_offline_outlined),
+            title: const Text('Uso offline'),
+            subtitle: const Text('Fichas e fotos sem internet'),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (context) => const OfflinePackageScreen(),
                 ),
               );
             },
