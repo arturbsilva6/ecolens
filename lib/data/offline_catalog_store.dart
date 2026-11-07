@@ -61,8 +61,7 @@ class OfflineCatalogStore extends ChangeNotifier {
 
   /// Identificação enviada aos servidores de imagens. Só ASCII: o cliente
   /// HTTP do Android recusa cabeçalhos com acentos.
-  static const userAgent =
-      'EcoLens/1.0 (TCC FATEC Sao Roque; offline catalog)';
+  static const userAgent = 'EcoLens/1.0 (TCC FATEC Sao Roque; offline catalog)';
 
   /// Largura das miniaturas da Wikimedia usadas no pacote offline.
   static const thumbnailWidth = 500;
@@ -263,10 +262,7 @@ class OfflineCatalogStore extends ChangeNotifier {
     for (final candidate in downloadCandidates(url)) {
       try {
         final response = await client
-            .get(
-              candidate,
-              headers: const {'User-Agent': userAgent},
-            )
+            .get(candidate, headers: const {'User-Agent': userAgent})
             .timeout(requestTimeout);
         final type = response.headers['content-type'] ?? '';
         if (response.statusCode != 200 ||
