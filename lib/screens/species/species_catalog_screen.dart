@@ -5,6 +5,7 @@ import '../../models/species_model.dart';
 import '../../utils/species_catalog_filter.dart';
 import '../species/species_detail_screen.dart';
 import '../../widgets/species_photo.dart';
+import '../../models/species_status_style.dart';
 
 /// Catálogo público: apenas espécies publicadas no Supabase.
 class SpeciesCatalogScreen extends StatefulWidget {
@@ -223,12 +224,10 @@ class _SpeciesCatalogScreenState extends State<SpeciesCatalogScreen> {
                                   ),
                                 )
                               : Icon(
-                                  isDanger
-                                      ? Icons.warning_amber_rounded
-                                      : Icons.eco_outlined,
+                                  item.status.icon,
                                   color: isDanger
                                       ? colors.error
-                                      : colors.primary,
+                                      : item.status.color,
                                 ),
                           title: Text(item.commonName),
                           subtitle: Column(
@@ -236,12 +235,7 @@ class _SpeciesCatalogScreenState extends State<SpeciesCatalogScreen> {
                             children: [
                               Text(item.scientificName),
                               Text(
-                                switch (item.status) {
-                                  SpeciesStatus.danger => 'Espécie perigosa',
-                                  SpeciesStatus.invasive => 'Espécie invasora',
-                                  SpeciesStatus.unverified =>
-                                    'Sem alerta específico cadastrado',
-                                },
+                                item.statusSummary,
                                 style: TextStyle(
                                   color: isDanger
                                       ? colors.error

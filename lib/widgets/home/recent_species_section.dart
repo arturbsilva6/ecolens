@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../data/supabase_species_repository.dart';
 import '../../models/species_model.dart';
 import '../species_photo.dart';
+import '../../models/species_status_style.dart';
 
 class RecentSpeciesSection extends StatefulWidget {
   final Future<List<SpeciesModel>> Function()? fetchPublishedSpecies;
@@ -139,17 +140,9 @@ class _SpeciesCard extends StatelessWidget {
 
   const _SpeciesCard({required this.species, required this.onTap});
 
-  String get statusLabel => switch (species.status) {
-    SpeciesStatus.danger => 'Perigo',
-    SpeciesStatus.invasive => 'Invasora',
-    SpeciesStatus.unverified => 'Demais',
-  };
+  String get statusLabel => species.status.shortLabel;
 
-  Color get statusColor => switch (species.status) {
-    SpeciesStatus.danger => const Color(0xFFB4232C),
-    SpeciesStatus.invasive => const Color(0xFF98500B),
-    SpeciesStatus.unverified => const Color(0xFF526579),
-  };
+  Color get statusColor => species.status.color;
 
   Widget _placeholder(BuildContext context) {
     return Container(

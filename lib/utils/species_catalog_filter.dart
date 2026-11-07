@@ -1,17 +1,14 @@
 import '../models/species_model.dart';
 
 /// Filtros do catálogo público. Não alteram as permissões do Supabase.
-enum SpeciesCatalogFilter {
-  all,
-  danger,
-  invasive,
-  unverified,
-}
+enum SpeciesCatalogFilter { all, danger, caution, harmless, invasive, unverified }
 
 extension SpeciesCatalogFilterLabel on SpeciesCatalogFilter {
   String get label => switch (this) {
     SpeciesCatalogFilter.all => 'Todas',
     SpeciesCatalogFilter.danger => 'Perigosas',
+    SpeciesCatalogFilter.caution => 'Cautela',
+    SpeciesCatalogFilter.harmless => 'Inofensivas',
     SpeciesCatalogFilter.invasive => 'Invasoras',
     SpeciesCatalogFilter.unverified => 'Demais',
   };
@@ -32,7 +29,9 @@ List<SpeciesModel> filterSpeciesCatalog(
     final matchesStatus = switch (filter) {
       SpeciesCatalogFilter.all => true,
       SpeciesCatalogFilter.danger => item.status == SpeciesStatus.danger,
-      SpeciesCatalogFilter.invasive => item.status == SpeciesStatus.invasive,
+      SpeciesCatalogFilter.caution => item.status == SpeciesStatus.caution,
+      SpeciesCatalogFilter.harmless => item.status == SpeciesStatus.harmless,
+      SpeciesCatalogFilter.invasive => item.isInvasiveSpecies,
       SpeciesCatalogFilter.unverified =>
         item.status == SpeciesStatus.unverified,
     };
@@ -41,7 +40,10 @@ List<SpeciesModel> filterSpeciesCatalog(
     if (normalizedQuery.isEmpty) return true;
 
     return normalizeSpeciesSearch(item.commonName).contains(normalizedQuery) ||
-        normalizeSpeciesSearch(item.scientificName).contains(normalizedQuery);
+        normalizeSpeciesSearch(item.scientificName).contains(normalizedQuery) ||
+        item.otherNames.any(
+          (name) => normalizeSpeciesSearch(name).contains(normalizedQuery),
+        );
   }).toList(growable: false);
 }
 
