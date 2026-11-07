@@ -119,10 +119,12 @@ class SupabaseSpeciesRepository {
       'characteristics,habitat,risk_description,safety_advice,'
       'source_name,source_url,image_url';
 
-  /// Colunas criadas pela migração species_risk_categories.
+  /// Colunas criadas pelas migrações species_risk_categories e
+  /// species_photo_credits.
   static const _guideColumns =
       'is_invasive,species_group,other_names,main_colors,visual_pattern,'
-      'lookalikes,rescue_advice';
+      'lookalikes,rescue_advice,image_credit,image_source_url,'
+      'image_license_url,image_license_label';
 
   /// Código do PostgreSQL para coluna inexistente.
   static const _undefinedColumn = '42703';
@@ -156,10 +158,22 @@ class SupabaseSpeciesRepository {
 
   SpeciesModel _toSpecies(Map<String, dynamic> row) {
     final imageUrl = row['image_url'] as String?;
-    final photo = imageUrl == null ? null : _licensedImages[imageUrl];
+    final credit = row['image_credit'] as String?;
+    final licenseLabel = row['image_license_label'] as String?;
+    // Créditos vêm do banco; o mapa local cobre bancos ainda sem as colunas.
+    final fromDatabase = imageUrl != null && credit != null && licenseLabel != null
+        ? (
+            credit: credit,
+            sourceUrl: row['image_source_url'] as String? ?? imageUrl,
+            licenseUrl: row['image_license_url'] as String? ?? imageUrl,
+            licenseLabel: licenseLabel,
+          )
+        : null;
+    final photo =
+        fromDatabase ?? (imageUrl == null ? null : _licensedImages[imageUrl]);
     return SpeciesModel.fromJson({
       ...row,
-      // Só exibe fotos com autoria e licença verificadas.
+      // Só exibe fotos com autoria e licença registradas.
       'image_url': photo == null ? null : imageUrl,
       'image_credit': photo?.credit,
       'image_source_url': photo?.sourceUrl,
