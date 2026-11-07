@@ -39,15 +39,23 @@ Ser **invasora** é independente do risco (`is_invasive`). `invasive` e
 O arquivo revisado é `supabase/data/curated_species.json`; o campo
 `review_notes` guarda o motivo das correções e não vai para o banco.
 
-## Como aplicar no Supabase
+## Aplicação no Supabase (feita em 07/11/2026)
 
-No **SQL Editor** do painel, execute nesta ordem:
+As duas migrações já estão aplicadas no projeto `ecolens-tcc` e registradas
+no histórico com as mesmas versões dos arquivos:
 
-1. `supabase/migrations/20261107050000_species_risk_categories.sql`
-2. `supabase/migrations/20261107050100_curated_species_catalog.sql`
+1. `20261107053746_species_risk_categories.sql`
+2. `20261107054000_curated_species_catalog.sql`
 
-A segunda é reexecutável: atualiza as fichas existentes pelo slug (ou pelo
-nome científico) e insere as novas, **sem alterar `image_url`**.
+Resultado conferido: 54 fichas publicadas (16 perigosas, 15 de cautela,
+19 inofensivas e 4 antigas), fotos das fichas originais mantidas e RLS da
+tabela `species` ativa. Um backup das 9 fichas anteriores ficou em
+`private.species_backup_20261107` e pode ser apagado depois da validação.
+
+A migração das fichas é reexecutável: atualiza pelo slug (ou pelo nome
+científico) e insere as novas, **sem alterar `image_url`**. No SQL Editor, o
+aviso sobre RLS refere-se à tabela temporária `curated_species`, que é
+apagada ao fim da execução: escolha "Run without RLS".
 
 O app funciona antes e depois da migração: se as colunas novas não existirem,
 ele lê só as antigas.

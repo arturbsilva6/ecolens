@@ -4,7 +4,7 @@ Uso (na raiz do projeto):
     python tool/build_species_migration.py
 
 Lê supabase/data/curated_species.json e escreve
-supabase/migrations/20261107050100_curated_species_catalog.sql.
+supabase/migrations/20261107054000_curated_species_catalog.sql.
 
 A migração é reexecutável: atualiza as fichas existentes pelo slug (ou pelo
 nome científico, quando o slug antigo for diferente) e insere as novas.
@@ -15,7 +15,7 @@ from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
 ENTRADA = RAIZ / 'supabase' / 'data' / 'curated_species.json'
-SAIDA = RAIZ / 'supabase' / 'migrations' / '20261107050100_curated_species_catalog.sql'
+SAIDA = RAIZ / 'supabase' / 'migrations' / '20261107054000_curated_species_catalog.sql'
 
 COLUNAS = [
     'slug', 'common_name', 'scientific_name', 'status', 'is_invasive',
@@ -46,7 +46,7 @@ def main():
 -- GERADO por tool/build_species_migration.py a partir de
 -- supabase/data/curated_species.json. Não edite à mão: edite o JSON
 -- e gere de novo.
--- Requer a migração 20261107050000_species_risk_categories.sql.
+-- Requer a migração 20261107053746_species_risk_categories.sql.
 --
 -- Reexecutável: atualiza as fichas existentes pelo slug (ou pelo nome
 -- científico, quando o slug antigo for diferente) e insere as novas.
