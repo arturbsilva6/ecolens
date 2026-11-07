@@ -1,7 +1,14 @@
 import '../models/species_model.dart';
 
 /// Filtros do catálogo público. Não alteram as permissões do Supabase.
-enum SpeciesCatalogFilter { all, danger, caution, harmless, invasive, unverified }
+enum SpeciesCatalogFilter {
+  all,
+  danger,
+  caution,
+  harmless,
+  invasive,
+  unverified,
+}
 
 extension SpeciesCatalogFilterLabel on SpeciesCatalogFilter {
   String get label => switch (this) {
@@ -25,26 +32,31 @@ List<SpeciesModel> filterSpeciesCatalog(
 }) {
   final normalizedQuery = normalizeSpeciesSearch(query);
 
-  return species.where((item) {
-    final matchesStatus = switch (filter) {
-      SpeciesCatalogFilter.all => true,
-      SpeciesCatalogFilter.danger => item.status == SpeciesStatus.danger,
-      SpeciesCatalogFilter.caution => item.status == SpeciesStatus.caution,
-      SpeciesCatalogFilter.harmless => item.status == SpeciesStatus.harmless,
-      SpeciesCatalogFilter.invasive => item.isInvasiveSpecies,
-      SpeciesCatalogFilter.unverified =>
-        item.status == SpeciesStatus.unverified,
-    };
+  return species
+      .where((item) {
+        final matchesStatus = switch (filter) {
+          SpeciesCatalogFilter.all => true,
+          SpeciesCatalogFilter.danger => item.status == SpeciesStatus.danger,
+          SpeciesCatalogFilter.caution => item.status == SpeciesStatus.caution,
+          SpeciesCatalogFilter.harmless =>
+            item.status == SpeciesStatus.harmless,
+          SpeciesCatalogFilter.invasive => item.isInvasiveSpecies,
+          SpeciesCatalogFilter.unverified =>
+            item.status == SpeciesStatus.unverified,
+        };
 
-    if (!matchesStatus) return false;
-    if (normalizedQuery.isEmpty) return true;
+        if (!matchesStatus) return false;
+        if (normalizedQuery.isEmpty) return true;
 
-    return normalizeSpeciesSearch(item.commonName).contains(normalizedQuery) ||
-        normalizeSpeciesSearch(item.scientificName).contains(normalizedQuery) ||
-        item.otherNames.any(
-          (name) => normalizeSpeciesSearch(name).contains(normalizedQuery),
-        );
-  }).toList(growable: false);
+        return normalizeSpeciesSearch(item.commonName)
+                .contains(normalizedQuery) ||
+            normalizeSpeciesSearch(item.scientificName)
+                .contains(normalizedQuery) ||
+            item.otherNames.any(
+              (name) => normalizeSpeciesSearch(name).contains(normalizedQuery),
+            );
+      })
+      .toList(growable: false);
 }
 
 String normalizeSpeciesSearch(String text) {

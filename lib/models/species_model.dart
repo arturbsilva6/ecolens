@@ -69,8 +69,7 @@ class SpeciesModel {
   });
 
   /// Invasora pela classificação antiga ou pela marcação atual.
-  bool get isInvasiveSpecies =>
-      isInvasive || status == SpeciesStatus.invasive;
+  bool get isInvasiveSpecies => isInvasive || status == SpeciesStatus.invasive;
 
   /// Representação usada pelo pacote offline salvo no aparelho.
   Map<String, dynamic> toJson() => {

@@ -267,9 +267,15 @@ void main() {
           reason: '${ficha['slug']}: $campo',
         );
       }
-      final textos = ficha.values.whereType<String>().join(' ');
-      // Disque-Intoxicação é o número nacional; CIATox não é central única.
-      expect(textos, isNot(contains('CIATox')), reason: ficha['slug'] as String);
+      // Disque-Intoxicação é o número nacional; CIATox são os centros
+      // regionais e só podem aparecer como nome de fonte.
+      for (final campo in ['safety_advice', 'risk_description', 'rescue_advice']) {
+        expect(
+          ficha[campo] as String,
+          isNot(contains('CIATox')),
+          reason: '${ficha['slug']}: $campo',
+        );
+      }
       final url = ficha['source_url'] as String?;
       if (url != null) {
         expect(url, startsWith('https://'), reason: ficha['slug'] as String);
