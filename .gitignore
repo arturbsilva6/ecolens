@@ -62,5 +62,7 @@ supabase/.branches/
 supabase/.profiles/
 supabase/.temp/
 
+# Configuração local do catálogo (dart defines públicos; não versionar)
+ecolens.local.json
 # Intermediate task artifacts
 /work/

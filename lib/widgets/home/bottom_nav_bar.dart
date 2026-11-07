@@ -12,30 +12,38 @@ class EcoLensBottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
+    final theme = Theme.of(context);
+    final colors = theme.colorScheme;
     final screenWidth = MediaQuery.sizeOf(context).width;
 
-    // Cinco destinos dividem a largura da tela. Em celulares estreitos,
-    // reduzimos levemente o texto para evitar a quebra de "Comunidade".
+    // Mantém os cinco destinos originais e cores do Conceito 2.
     final labelFontSize = screenWidth < 400 ? 10.0 : 12.0;
 
     return NavigationBarTheme(
       data: NavigationBarThemeData(
-        labelTextStyle: WidgetStateProperty.resolveWith<TextStyle>(
-          (states) {
-            final selected = states.contains(WidgetState.selected);
-            return TextStyle(
-              fontSize: labelFontSize,
-              fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
-              color: selected ? colors.onSurface : colors.onSurfaceVariant,
-            );
-          },
-        ),
+        iconTheme: WidgetStateProperty.resolveWith<IconThemeData>((states) {
+          final selected = states.contains(WidgetState.selected);
+          return IconThemeData(
+            color: selected ? colors.primary : colors.secondary,
+          );
+        }),
+        labelTextStyle: WidgetStateProperty.resolveWith<TextStyle>((states) {
+          final selected = states.contains(WidgetState.selected);
+          return TextStyle(
+            fontSize: labelFontSize,
+            fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
+            color: selected ? colors.onSurface : colors.onSurfaceVariant,
+          );
+        }),
       ),
       child: NavigationBar(
         selectedIndex: selectedIndex,
         onDestinationSelected: onDestinationSelected,
-        backgroundColor: colors.surface,
+        // Superfície contínua com o corpo da Home: sem divisor/sombra.
+        backgroundColor: theme.scaffoldBackgroundColor,
+        elevation: 0,
+        shadowColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
         indicatorColor: colors.primaryContainer,
         height: 80,
         labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,

@@ -26,12 +26,24 @@ class HomeScreen extends StatelessWidget {
   final Future<List<SpeciesModel>> Function()? fetchPublishedSpecies;
   final VoidCallback? onProfileTap;
 
+  /// Telas abertas pelo menu inferior e pelo atalho do fórum. Os testes
+  /// substituem estas telas para não depender do Supabase nem de tiles.
+  final WidgetBuilder mapBuilder;
+  final WidgetBuilder communityBuilder;
+
   const HomeScreen({
     super.key,
     required this.themeController,
     this.fetchPublishedSpecies,
     this.onProfileTap,
+    this.mapBuilder = _defaultMap,
+    this.communityBuilder = _defaultCommunity,
   });
+
+  static Widget _defaultMap(BuildContext context) => const HeatMapScreen();
+  static Widget _defaultCommunity(BuildContext context) =>
+      const CommunityScreen();
+
   void _mostrarMensagem(BuildContext context, String mensagem) {
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text(mensagem)));
@@ -50,11 +62,8 @@ class HomeScreen extends StatelessWidget {
   }
 
   void _abrirSos(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (context) => const SosScreen(),
-      ),
-    );
+    Navigator.of(context)
+        .push(MaterialPageRoute<void>(builder: (context) => const SosScreen()));
   }
 
   @override
@@ -89,9 +98,11 @@ class HomeScreen extends StatelessWidget {
             return;
           }
           if (index == 2 || index == 3) {
-            Navigator.of(context).push(MaterialPageRoute<void>(
-              builder: (_) => index == 2 ? const HeatMapScreen() : const CommunityScreen(),
-            ));
+            Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: index == 2 ? mapBuilder : communityBuilder,
+              ),
+            );
           }
         },
       ),
@@ -133,11 +144,6 @@ class HomeScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
 
-                  SosBanner(
-                    onSosTap: () => _abrirSos(context),
-                  ),
-
-                  const SizedBox(height: 20),
                   SpeciesSearchBar(
                     onSearch: (texto) {
                       if (texto.isEmpty) {
@@ -164,7 +170,9 @@ class HomeScreen extends StatelessWidget {
                       );
                     },
                   ),
+                  const SizedBox(height: 16),
 
+                  SosBanner(onSosTap: () => _abrirSos(context)),
                   const SizedBox(height: 24),
 
                   QuickAccessSection(
@@ -194,9 +202,9 @@ class HomeScreen extends StatelessWidget {
                       );
                     },
                     onForumTap: () {
-                      Navigator.of(context).push(MaterialPageRoute<void>(
-                        builder: (_) => const CommunityScreen(),
-                      ));
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(builder: communityBuilder),
+                      );
                     },
                   ),
                   const SizedBox(height: 24),

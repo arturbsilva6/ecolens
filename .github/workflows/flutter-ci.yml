@@ -13,7 +13,7 @@ on:
       base_ref:
         description: Referência base para comparar os arquivos Dart na execução manual
         required: true
-        default: origin/feat/species-identification
+        default: origin/main
         type: string
 
 permissions:

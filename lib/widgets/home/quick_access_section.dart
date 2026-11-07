@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 
-class QuickAccessSection extends StatelessWidget {
-  final VoidCallback onVenomousTap;
-  final VoidCallback onFirstAidTap;
-  final VoidCallback onHistoryTap;
-  final VoidCallback onForumTap;
-  final VoidCallback onFavoritesTap;
+import '../ecolens_card.dart';
 
+/// Preserva todas as ações de acesso rápido ao atualizar a apresentação.
+class QuickAccessSection extends StatelessWidget {
   const QuickAccessSection({
     super.key,
     required this.onVenomousTap,
@@ -16,8 +13,15 @@ class QuickAccessSection extends StatelessWidget {
     required this.onFavoritesTap,
   });
 
+  final VoidCallback onVenomousTap;
+  final VoidCallback onFirstAidTap;
+  final VoidCallback onHistoryTap;
+  final VoidCallback onForumTap;
+  final VoidCallback onFavoritesTap;
+
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final textScale = MediaQuery.textScalerOf(context).scale(1);
 
     return Column(
@@ -25,16 +29,14 @@ class QuickAccessSection extends StatelessWidget {
       children: [
         Text(
           'Acessos rápidos',
-          style: Theme.of(context).textTheme.titleLarge
-              ?.copyWith(fontWeight: FontWeight.bold),
+          style: theme.textTheme.titleLarge?.copyWith(
+            fontWeight: FontWeight.w700,
+          ),
         ),
-
-        const SizedBox(height: 16),
-
+        const SizedBox(height: 14),
         LayoutBuilder(
           builder: (context, constraints) {
-            final oneColumn = constraints.maxWidth < 330 || textScale > 1.3;
-
+            final oneColumn = constraints.maxWidth < 340 || textScale > 1.3;
             final cardWidth = oneColumn
                 ? constraints.maxWidth
                 : (constraints.maxWidth - 12) / 2;
@@ -43,6 +45,24 @@ class QuickAccessSection extends StatelessWidget {
               spacing: 12,
               runSpacing: 12,
               children: [
+                SizedBox(
+                  width: cardWidth,
+                  child: QuickAccessCard(
+                    icon: Icons.favorite_border_rounded,
+                    title: 'Favoritos',
+                    subtitle: 'Espécies salvas no dispositivo',
+                    onTap: onFavoritesTap,
+                  ),
+                ),
+                SizedBox(
+                  width: cardWidth,
+                  child: QuickAccessCard(
+                    icon: Icons.history_rounded,
+                    title: 'Meus Registros',
+                    subtitle: 'Suas identificações',
+                    onTap: onHistoryTap,
+                  ),
+                ),
                 SizedBox(
                   width: cardWidth,
                   child: QuickAccessCard(
@@ -64,28 +84,10 @@ class QuickAccessSection extends StatelessWidget {
                 SizedBox(
                   width: cardWidth,
                   child: QuickAccessCard(
-                    icon: Icons.history,
-                    title: 'Meus Registros',
-                    subtitle: 'Suas identificações',
-                    onTap: onHistoryTap,
-                  ),
-                ),
-                SizedBox(
-                  width: cardWidth,
-                  child: QuickAccessCard(
                     icon: Icons.forum_outlined,
                     title: 'Fórum Local',
                     subtitle: 'Compartilhe descobertas',
                     onTap: onForumTap,
-                  ),
-                ),
-                SizedBox(
-                  width: cardWidth,
-                  child: QuickAccessCard(
-                    icon: Icons.favorite_border,
-                    title: 'Favoritos',
-                    subtitle: 'Espécies salvas no dispositivo',
-                    onTap: onFavoritesTap,
                   ),
                 ),
               ],
@@ -98,11 +100,6 @@ class QuickAccessSection extends StatelessWidget {
 }
 
 class QuickAccessCard extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final String subtitle;
-  final VoidCallback onTap;
-
   const QuickAccessCard({
     super.key,
     required this.icon,
@@ -111,61 +108,55 @@ class QuickAccessCard extends StatelessWidget {
     required this.onTap,
   });
 
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final VoidCallback onTap;
+
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final theme = Theme.of(context);
+    final colors = theme.colorScheme;
 
-    return Material(
-      color: isDark ? colors.surfaceContainerHigh : colors.surfaceContainerLow,
-      borderRadius: BorderRadius.circular(20),
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(20),
-        child: Container(
-          constraints: const BoxConstraints(minHeight: 170),
-          padding: const EdgeInsets.all(14),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CircleAvatar(
-                radius: 23,
-                backgroundColor: colors.primaryContainer,
-                child: Icon(icon, color: colors.onPrimaryContainer, size: 25),
+    return EcoLensCard(
+      onTap: onTap,
+      padding: const EdgeInsets.all(16),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(minHeight: 120),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CircleAvatar(
+              radius: 22,
+              backgroundColor: colors.primaryContainer,
+              child: Icon(icon, color: colors.onPrimaryContainer, size: 24),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              title,
+              style: theme.textTheme.titleSmall?.copyWith(
+                fontWeight: FontWeight.w700,
+                color: colors.onSurface,
               ),
-
-              const SizedBox(height: 12),
-
-              Text(
-                title,
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: colors.onSurface,
-                ),
+            ),
+            const SizedBox(height: 5),
+            Text(
+              subtitle,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: colors.onSurfaceVariant,
               ),
-
-              const SizedBox(height: 6),
-
-              Text(
-                subtitle,
-                style: Theme.of(context).textTheme.bodySmall
-                    ?.copyWith(color: colors.onSurfaceVariant),
+            ),
+            const SizedBox(height: 8),
+            Align(
+              alignment: Alignment.centerRight,
+              child: Icon(
+                Icons.arrow_forward_rounded,
+                color: colors.primary,
+                size: 18,
               ),
-
-              const SizedBox(height: 12),
-
-              Align(
-                alignment: Alignment.centerRight,
-                child: Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  size: 16,
-                  color: colors.primary,
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
