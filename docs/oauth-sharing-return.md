@@ -101,7 +101,11 @@ nova instância de EcoLensApp, sem as rotas/States anteriores, lendo o checkpoin
 salvo. São cobertos sucesso, cancelamento, erro de callback, callback antecipado,
 falha de armazenamento, expiração e publicação somente por nova ação explícita.
 
-A sequência real Android ainda precisa ser validada com esta versão instalada:
+**Validação manual no Android concluída em 06/11/2026**, conforme relatado pelo
+usuário: sucesso, cancelamento e encerramento do processo durante o login. Falha
+de login e os fluxos normais do item 7 não fazem parte desse registro.
+
+Roteiro da validação:
 
 1. Produzir identificação real e preencher o formulário completo.
 2. Anotar PID e horário, abrir Google e retornar sem enviar novamente.
@@ -126,10 +130,11 @@ app ou do Chrome durante a reprodução do usuário.
 - O primeiro ensaio dos testes novos de lifecycle usou uma transição inválida
   paused → resumed; a simulação foi corrigida para inactive/hidden/paused e o
   caminho inverso. Os quatro cenários dirigidos e a suíte completa passaram.
-- Login Google no navegador com este patch instalado e recuperação sob morte real
-  do processo ainda dependem de teste Android. A simulação automatizada de cold
-  start descarta todas as rotas/States, mas não equivale a executar um novo processo
-  Android nem comprova a persistência física no dispositivo.
+- Validação manual no Android concluída em 06/11/2026, conforme relatado pelo
+  usuário: sucesso, cancelamento e encerramento do processo durante o login. A
+  simulação automatizada de cold start descarta todas as rotas/States, mas não
+  equivale a executar um novo processo Android; a persistência no dispositivo vem
+  dessa validação manual.
 
 Arquivos desta correção: `lib/app.dart`,
 `lib/screens/community/sighting_form_screen.dart`,
