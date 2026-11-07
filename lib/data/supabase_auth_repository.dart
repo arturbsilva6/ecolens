@@ -50,7 +50,10 @@ class SupabaseAuthRepository implements AuthRepository {
   @override
   Stream<AccountEvent> get changes => _events.stream;
 
-  UserModel? _profile(User? user) => user == null
+  UserModel? _profile(User? user) =>
+      user == null ||
+          user.isAnonymous ||
+          _client?.auth.currentSession?.isExpired == true
       ? null
       : UserModel(
           id: user.id,

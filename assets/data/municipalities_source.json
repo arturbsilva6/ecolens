@@ -1,0 +1,9 @@
+{
+  "dataset": "kelvins/municipios-brasileiros",
+  "url": "https://github.com/kelvins/municipios-brasileiros",
+  "revision": "503e2f70bbf1b4b7ec0b1f68b09086ccc38fe861",
+  "retrieved_on": "2026-11-06",
+  "source_csv_sha256": "22bd03d004361329f69ddfa3f6c99cd53012aa53972a172e10b141288ad0b1fe",
+  "scope": "645 municípios de SP; referências municipais, não coordenadas de avistamentos",
+  "license": "MIT"
+}

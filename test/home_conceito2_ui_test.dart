@@ -206,29 +206,37 @@ void main() {
     );
   });
 
-  testWidgets('Mapa permanece visível e informa que está em desenvolvimento', (
-    tester,
-  ) async {
-    final theme = ThemeController();
-    addTearDown(theme.dispose);
-    await tester.pumpWidget(
-      MaterialApp(
-        home: HomeScreen(
-          themeController: theme,
-          fetchPublishedSpecies: () async => [],
+  for (final destino in const ['Mapa', 'Comunidade']) {
+    testWidgets('$destino no menu inferior abre a tela correspondente', (
+      tester,
+    ) async {
+      final theme = ThemeController();
+      addTearDown(theme.dispose);
+      await tester.pumpWidget(
+        MaterialApp(
+          home: HomeScreen(
+            themeController: theme,
+            fetchPublishedSpecies: () async => [],
+            mapBuilder: (_) => const Scaffold(body: Text('Tela do Mapa')),
+            communityBuilder: (_) =>
+                const Scaffold(body: Text('Tela da Comunidade')),
+          ),
         ),
-      ),
-    );
-    await tester.pumpAndSettle();
-    await tester.tap(
-      find.descendant(
-        of: find.byType(EcoLensBottomNavBar),
-        matching: find.text('Mapa'),
-      ),
-    );
-    await tester.pump();
-    expect(find.text('Mapa em desenvolvimento'), findsOneWidget);
-    expect(find.byType(HomeScreen), findsOneWidget);
-    expect(tester.takeException(), isNull);
-  });
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(
+        find.descendant(
+          of: find.byType(EcoLensBottomNavBar),
+          matching: find.text(destino),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(
+        find.text(destino == 'Mapa' ? 'Tela do Mapa' : 'Tela da Comunidade'),
+        findsOneWidget,
+      );
+      expect(find.text('$destino em desenvolvimento'), findsNothing);
+      expect(tester.takeException(), isNull);
+    });
+  }
 }
