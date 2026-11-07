@@ -114,48 +114,57 @@ class SupabaseSpeciesRepository {
   Future<List<SpeciesModel>> fetchPublishedSpecies() =>
       _offlineStore.fetchWithFallback(fetchRemoteSpecies);
 
+  static const _baseColumns =
+      'common_name,scientific_name,status,description,'
+      'characteristics,habitat,risk_description,safety_advice,'
+      'source_name,source_url,image_url';
+
+  /// Colunas criadas pela migração species_risk_categories.
+  static const _guideColumns =
+      'is_invasive,species_group,other_names,main_colors,visual_pattern,'
+      'lookalikes,rescue_advice';
+
+  /// Código do PostgreSQL para coluna inexistente.
+  static const _undefinedColumn = '42703';
+
   /// Consulta somente o servidor, sem usar a cópia salva no aparelho.
+  ///
+  /// Se o banco ainda não recebeu a migração das categorias de risco, lê só
+  /// as colunas antigas, para o catálogo continuar funcionando.
   Future<List<SpeciesModel>> fetchRemoteSpecies() async {
     final client = _client ?? await _supabaseService.requireClient();
-    final rows = await client
+    List<Map<String, dynamic>> rows;
+    try {
+      rows = await _select(client, '$_baseColumns,$_guideColumns');
+    } on PostgrestException catch (error) {
+      if (error.code != _undefinedColumn) rethrow;
+      rows = await _select(client, _baseColumns);
+    }
+    return rows.map(_toSpecies).toList(growable: false);
+  }
+
+  Future<List<Map<String, dynamic>>> _select(
+    SupabaseClient client,
+    String columns,
+  ) {
+    return client
         .from('species')
-        .select(
-          'common_name,scientific_name,status,description,'
-          'characteristics,habitat,risk_description,safety_advice,'
-          'source_name,source_url,image_url',
-        )
+        .select(columns)
         .eq('is_published', true)
         .order('common_name');
+  }
 
-    return rows
-        .map((row) {
-          final imageUrl = row['image_url'] as String?;
-          final photo = imageUrl == null ? null : _licensedImages[imageUrl];
-
-          final status = switch (row['status']) {
-            'danger' => SpeciesStatus.danger,
-            'invasive' => SpeciesStatus.invasive,
-            _ => SpeciesStatus.unverified,
-          };
-
-          return SpeciesModel(
-            commonName: row['common_name'] as String,
-            scientificName: row['scientific_name'] as String,
-            status: status,
-            imageUrl: photo == null ? null : imageUrl,
-            imageCredit: photo?.credit,
-            imageSourceUrl: photo?.sourceUrl,
-            imageLicenseUrl: photo?.licenseUrl,
-            imageLicenseLabel: photo?.licenseLabel,
-            description: row['description'] as String?,
-            characteristics: row['characteristics'] as String?,
-            habitat: row['habitat'] as String?,
-            riskDescription: row['risk_description'] as String?,
-            safetyAdvice: row['safety_advice'] as String?,
-            sourceName: row['source_name'] as String?,
-            sourceUrl: row['source_url'] as String?,
-          );
-        })
-        .toList(growable: false);
+  SpeciesModel _toSpecies(Map<String, dynamic> row) {
+    final imageUrl = row['image_url'] as String?;
+    final photo = imageUrl == null ? null : _licensedImages[imageUrl];
+    return SpeciesModel.fromJson({
+      ...row,
+      // Só exibe fotos com autoria e licença verificadas.
+      'image_url': photo == null ? null : imageUrl,
+      'image_credit': photo?.credit,
+      'image_source_url': photo?.sourceUrl,
+      'image_license_url': photo?.licenseUrl,
+      'image_license_label': photo?.licenseLabel,
+    });
   }
 }

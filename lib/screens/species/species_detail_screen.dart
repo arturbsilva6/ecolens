@@ -5,6 +5,7 @@ import '../../models/species_model.dart';
 import '../../data/favorites_repository.dart';
 import '../../widgets/species_favorite_button.dart';
 import '../../widgets/species_photo.dart';
+import '../../models/species_status_style.dart';
 
 class SpeciesDetailScreen extends StatelessWidget {
   final SpeciesModel species;
@@ -86,6 +87,49 @@ class SpeciesDetailScreen extends StatelessWidget {
                           : colors.onSurfaceVariant,
                     ),
                   ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _listCard(
+    BuildContext context, {
+    required String title,
+    required IconData icon,
+    required List<String> items,
+  }) {
+    if (items.isEmpty) return const SizedBox.shrink();
+    final colors = Theme.of(context).colorScheme;
+    return Card(
+      color: colors.surfaceContainerLow,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(icon, color: colors.primary),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: Theme.of(context).textTheme.titleMedium
+                        ?.copyWith(fontWeight: FontWeight.w700),
+                  ),
+                  for (final item in items)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: Text(
+                        '• $item',
+                        style: TextStyle(color: colors.onSurfaceVariant),
+                      ),
+                    ),
                 ],
               ),
             ),
@@ -189,12 +233,7 @@ class SpeciesDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
     final isDanger = species.status == SpeciesStatus.danger;
-
-    final statusText = switch (species.status) {
-      SpeciesStatus.danger => 'Espécie perigosa',
-      SpeciesStatus.invasive => 'Espécie invasora',
-      SpeciesStatus.unverified => 'Sem alerta específico cadastrado',
-    };
+    final statusText = species.statusSummary;
 
     return Scaffold(
       appBar: AppBar(
@@ -245,6 +284,14 @@ class SpeciesDetailScreen extends StatelessWidget {
               style: Theme.of(context).textTheme.titleMedium
                   ?.copyWith(fontStyle: FontStyle.italic),
             ),
+            if (species.otherNames.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 6),
+                child: Text(
+                  'Também conhecida como: ${species.otherNames.join(', ')}',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ),
             const SizedBox(height: 18),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
@@ -257,10 +304,10 @@ class SpeciesDetailScreen extends StatelessWidget {
               child: Row(
                 children: [
                   Icon(
-                    isDanger ? Icons.warning_amber_rounded : Icons.info_outline,
+                    species.status.icon,
                     color: isDanger
                         ? colors.onErrorContainer
-                        : colors.onSurface,
+                        : species.status.color,
                   ),
                   const SizedBox(width: 10),
                   Expanded(
@@ -298,6 +345,12 @@ class SpeciesDetailScreen extends StatelessWidget {
             ),
             _informationCard(
               context,
+              title: 'Quando chamar resgate',
+              icon: Icons.local_phone_outlined,
+              content: species.rescueAdvice,
+            ),
+            _informationCard(
+              context,
               title: 'Riscos conhecidos',
               icon: Icons.warning_amber_outlined,
               content: species.riskDescription,
@@ -308,6 +361,18 @@ class SpeciesDetailScreen extends StatelessWidget {
               title: 'Sobre a espécie',
               icon: Icons.menu_book_outlined,
               content: species.description,
+            ),
+            _informationCard(
+              context,
+              title: 'Como reconhecer',
+              icon: Icons.search_outlined,
+              content: species.visualPattern,
+            ),
+            _listCard(
+              context,
+              title: 'Pode ser confundida com',
+              icon: Icons.compare_arrows_outlined,
+              items: species.lookalikes,
             ),
             _informationCard(
               context,

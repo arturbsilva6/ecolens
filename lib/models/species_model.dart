@@ -1,4 +1,12 @@
-enum SpeciesStatus { danger, invasive, unverified }
+/// Classificação de risco exibida nas tags do app.
+///
+/// - [danger]: risco de morte ou sequela;
+/// - [caution]: dor ou reação forte, ou risco que depende de contato;
+/// - [harmless]: inofensiva;
+/// - [invasive] e [unverified]: registros antigos, anteriores às
+///   categorias de risco. Ser invasora agora é indicado por
+///   [SpeciesModel.isInvasive].
+enum SpeciesStatus { danger, caution, harmless, invasive, unverified }
 
 class SpeciesModel {
   // Identificação da espécie
@@ -25,6 +33,15 @@ class SpeciesModel {
   final String? sourceName;
   final String? sourceUrl;
 
+  // Guia de reconhecimento
+  final bool isInvasive;
+  final String? speciesGroup;
+  final List<String> otherNames;
+  final List<String> mainColors;
+  final String? visualPattern;
+  final List<String> lookalikes;
+  final String? rescueAdvice;
+
   const SpeciesModel({
     required this.commonName,
     required this.scientificName,
@@ -42,7 +59,17 @@ class SpeciesModel {
     this.safetyAdvice,
     this.sourceName,
     this.sourceUrl,
+    this.isInvasive = false,
+    this.speciesGroup,
+    this.otherNames = const [],
+    this.mainColors = const [],
+    this.visualPattern,
+    this.lookalikes = const [],
+    this.rescueAdvice,
   });
+
+  /// Invasora pela classificação antiga ou pela marcação atual.
+  bool get isInvasiveSpecies => isInvasive || status == SpeciesStatus.invasive;
 
   /// Representação usada pelo pacote offline salvo no aparelho.
   Map<String, dynamic> toJson() => {
@@ -62,7 +89,18 @@ class SpeciesModel {
     'safety_advice': safetyAdvice,
     'source_name': sourceName,
     'source_url': sourceUrl,
+    'is_invasive': isInvasive,
+    'species_group': speciesGroup,
+    'other_names': otherNames,
+    'main_colors': mainColors,
+    'visual_pattern': visualPattern,
+    'lookalikes': lookalikes,
+    'rescue_advice': rescueAdvice,
   };
+
+  static List<String> _strings(Object? value) => value is List
+      ? value.whereType<String>().toList(growable: false)
+      : const [];
 
   factory SpeciesModel.fromJson(Map<String, dynamic> json) {
     final status = SpeciesStatus.values.firstWhere(
@@ -86,6 +124,13 @@ class SpeciesModel {
       safetyAdvice: json['safety_advice'] as String?,
       sourceName: json['source_name'] as String?,
       sourceUrl: json['source_url'] as String?,
+      isInvasive: json['is_invasive'] == true,
+      speciesGroup: json['species_group'] as String?,
+      otherNames: _strings(json['other_names']),
+      mainColors: _strings(json['main_colors']),
+      visualPattern: json['visual_pattern'] as String?,
+      lookalikes: _strings(json['lookalikes']),
+      rescueAdvice: json['rescue_advice'] as String?,
     );
   }
 }
