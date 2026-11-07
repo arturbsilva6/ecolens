@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../data/community_repository.dart';
+import '../../data/share_identification_draft_store.dart';
+import '../../models/community_share_draft.dart';
 import '../../models/sighting.dart';
 import '../../models/community_identification_seed.dart';
 import '../../widgets/auth/account_navigation_scope.dart';
@@ -19,6 +21,8 @@ class SightingFormScreen extends StatefulWidget {
   final List<Municipality> municipalities;
   final Sighting? sighting;
   final CommunityIdentificationSeed? initialIdentification;
+  final CommunityShareDraft? restoredDraft;
+  final ShareIdentificationDraftStore? draftStore;
   final Future<void> Function(BuildContext)? openAccount;
   final Future<Uint8List?> Function(ImageSource)? selectPhoto;
   final CommunityPhotoService? photoService;
@@ -28,6 +32,8 @@ class SightingFormScreen extends StatefulWidget {
     required this.municipalities,
     this.sighting,
     this.initialIdentification,
+    this.restoredDraft,
+    this.draftStore,
     this.openAccount,
     this.selectPhoto,
     this.photoService,
@@ -46,21 +52,43 @@ class _SightingFormScreenState extends State<SightingFormScreen> {
   bool _busy = false, _checkRecords = false, _dirty = false;
   bool _allowPop = false, _discardOpen = false;
   Sighting? _published;
+  bool get _keepsLoginDraft =>
+      widget.sighting == null &&
+      (widget.initialIdentification != null || widget.restoredDraft != null);
+  ShareIdentificationDraftStore get _draftStore =>
+      widget.draftStore ?? ShareIdentificationDraftStore();
+
+  Future<void> _clearLoginDraft() async {
+    if (_keepsLoginDraft) await _draftStore.clear();
+  }
+
   @override
   void initState() {
     super.initState();
     final s = widget.sighting;
     final seed = widget.initialIdentification;
-    _species = TextEditingController(text: s?.species ?? seed?.hypothesis);
-    _notes = TextEditingController(text: s?.notes);
-    _date = s?.observedOn ?? (seed == null ? DateTime.now() : null);
+    final restored = widget.restoredDraft;
+    _species = TextEditingController(
+      text: s?.species ?? restored?.hypothesis ?? seed?.hypothesis,
+    );
+    _notes = TextEditingController(text: s?.notes ?? restored?.notes);
+    _date =
+        s?.observedOn ??
+        restored?.observedOn ??
+        (seed == null ? DateTime.now() : null);
     _origin =
         s?.origin ??
+        restored?.origin ??
         (seed?.hypothesis != null
             ? IdentificationOrigin.ai
             : IdentificationOrigin.unknown);
-    _municipalityId = s?.municipalityId;
-    if (seed != null) {
+    _municipalityId = s?.municipalityId ?? restored?.municipalityId;
+    if (restored != null) {
+      _photo = restored.photo;
+      _dirty = true;
+      _error = 'Rascunho recuperado neste dispositivo. Revise os dados antes de publicar. Nada foi publicado.';
+    }
+    if (seed != null && restored == null) {
       _busy = true;
       WidgetsBinding.instance.addPostFrameCallback(
         (_) => _prepareInitialPhoto(seed.originalPhoto),
@@ -120,6 +148,18 @@ class _SightingFormScreenState extends State<SightingFormScreen> {
     );
     _discardOpen = false;
     if (discard == true && mounted) {
+      try {
+        await _clearLoginDraft();
+      } catch (_) {
+        if (mounted) {
+          setState(
+            () => _error =
+                'Não foi possível descartar o rascunho local. Tente novamente.',
+          );
+        }
+        return;
+      }
+      if (!mounted) return;
       setState(() {
         _allowPop = true;
       });
@@ -128,6 +168,21 @@ class _SightingFormScreenState extends State<SightingFormScreen> {
   }
 
   Future<void> _login() async {
+    // Await persistence BEFORE opening the browser; pause is too late on Android.
+    if (_keepsLoginDraft) {
+      await _draftStore.save(
+        CommunityShareDraft(
+          photo: _photo!,
+          hypothesis: _species.text,
+          origin: _origin,
+          observedOn: _date!,
+          municipalityId: _municipalityId!,
+          municipalities: widget.municipalities,
+          notes: _notes.text,
+        ),
+      );
+    }
+    if (!mounted) return;
     final injected = widget.openAccount;
     final shared = AccountNavigationScope.maybeOf(context);
     if (injected != null) {
@@ -145,6 +200,7 @@ class _SightingFormScreenState extends State<SightingFormScreen> {
     }
     if (!mounted) return;
     final account = await widget.repository.accountId();
+    await _clearLoginDraft();
     if (mounted) {
       setState(() {
         _error = account == null
@@ -231,6 +287,9 @@ class _SightingFormScreenState extends State<SightingFormScreen> {
         if (mounted) await _login();
         return; // Never publish automatically when login returns.
       }
+      // Remove the OAuth checkpoint BEFORE any publication attempt. An uncertain
+      // send must be reconciled in Meus registros, never restored for blind retry.
+      await _clearLoginDraft();
       final draft = SightingDraft(
         observedOn: _date!,
         municipalityId: _municipalityId!,
@@ -301,9 +360,9 @@ class _SightingFormScreenState extends State<SightingFormScreen> {
                 const Text(
                   'Publicação visível a todos. Não inclua pessoas, placas, endereços, e-mail ou outros dados privados na foto ou nas observações. Os metadados da foto são removidos antes do envio.',
                 ),
-                if (widget.initialIdentification != null)
+                if (_keepsLoginDraft)
                   const Text(
-                    'Revise a sugestão não verificada, a data e o município. Nada será publicado ao entrar na conta. Dados deste formulário ficam somente em memória durante o fluxo ativo.',
+                    'Revise a sugestão não verificada, a data e o município. Nada será publicado ao entrar na conta. Antes do login, foto e campos são salvos temporariamente neste dispositivo para recuperar o formulário se o Android encerrar o app (até 24 horas).',
                   ),
                 const SizedBox(height: 16),
                 if (_photo != null)

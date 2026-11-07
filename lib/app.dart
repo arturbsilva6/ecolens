@@ -6,6 +6,10 @@ import 'controllers/theme_controller.dart';
 import 'widgets/auth/account_navigation_scope.dart';
 import 'controllers/auth_controller.dart';
 import 'data/supabase_auth_repository.dart';
+import 'data/community_repository.dart';
+import 'data/supabase_community_repository.dart';
+import 'data/share_identification_draft_store.dart';
+import 'screens/community/sighting_form_screen.dart';
 import 'screens/profile/profile_screen.dart';
 import 'models/species_model.dart';
 import 'core/theme/app_theme.dart';
@@ -16,12 +20,16 @@ class EcoLensApp extends StatefulWidget {
   final SupabaseService? supabaseService;
   final Future<List<SpeciesModel>> Function()? fetchPublishedSpecies;
   final AuthController? authController;
+  final ShareIdentificationDraftStore? shareDraftStore;
+  final CommunityRepository? communityRepository;
 
   const EcoLensApp({
     super.key,
     this.supabaseService,
     this.fetchPublishedSpecies,
     this.authController,
+    this.shareDraftStore,
+    this.communityRepository,
   });
 
   @override
@@ -34,6 +42,10 @@ class _EcoLensAppState extends State<EcoLensApp> {
   final _navigatorKey = GlobalKey<NavigatorState>();
   int _callbackRevision = 0;
   Future<void>? _profileNavigation;
+  Future<void> _draftRestoration = Future.value();
+  bool _restoredSharingForm = false;
+  ShareIdentificationDraftStore get _draftStore =>
+      widget.shareDraftStore ?? ShareIdentificationDraftStore();
 
   @override
   void initState() {
@@ -52,6 +64,9 @@ class _EcoLensAppState extends State<EcoLensApp> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
+      // Restore the caller independently of auth outcome, including cold starts
+      // and browser cancellation. Home/SOS stay available while storage loads.
+      _draftRestoration = _restoreSharingDraft();
       // A primeira tela já está disponível, mesmo sem internet ou sessão.
       unawaited(
         (widget.supabaseService ?? SupabaseService.instance).initialize(),
@@ -68,13 +83,61 @@ class _EcoLensAppState extends State<EcoLensApp> {
     super.dispose();
   }
 
+  Future<void> _restoreSharingDraft() async {
+    try {
+      final draft = await _draftStore.load();
+      if (!mounted || draft == null || _navigatorKey.currentState == null) {
+        return;
+      }
+      _restoredSharingForm = true;
+      unawaited(
+        _navigatorKey.currentState!
+            .push<void>(
+              MaterialPageRoute(
+                settings: const RouteSettings(
+                  name: '/community/resume-sharing',
+                ),
+                builder: (_) => SightingFormScreen(
+                  repository:
+                      widget.communityRepository ??
+                      SupabaseCommunityRepository(),
+                  municipalities: draft.municipalities,
+                  restoredDraft: draft,
+                  draftStore: _draftStore,
+                ),
+              ),
+            )
+            .whenComplete(() => _restoredSharingForm = false),
+      );
+    } catch (_) {
+      // Never print photo, fields, callback URI or session data.
+      if (!mounted) return;
+      final context = _navigatorKey.currentContext;
+      if (context != null && context.mounted) {
+        ScaffoldMessenger.maybeOf(context)?.showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Não foi possível recuperar o rascunho local. Seus registros publicados não foram alterados.',
+            ),
+          ),
+        );
+      }
+    }
+  }
+
   void _onAuthChanged() {
     if (!mounted || _authController.callbackRevision == _callbackRevision) {
       return;
     }
     _callbackRevision = _authController.callbackRevision;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) _openProfile();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // A callback error/recovery must not outrun local caller restoration.
+      await _draftRestoration;
+      if (mounted) {
+        _openProfile(
+          returnLabel: _restoredSharingForm ? 'Voltar ao avistamento' : null,
+        );
+      }
     });
     WidgetsBinding.instance.ensureVisualUpdate();
   }

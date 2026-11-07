@@ -7,6 +7,8 @@ import 'package:ecolens/controllers/auth_controller.dart';
 import 'package:ecolens/core/theme/app_theme.dart';
 import 'package:ecolens/data/auth_repository.dart';
 import 'package:ecolens/data/community_repository.dart';
+import 'package:ecolens/data/share_identification_draft_store.dart';
+import 'package:ecolens/models/community_share_draft.dart';
 import 'package:ecolens/data/favorites_repository.dart';
 import 'package:ecolens/data/identification_history_repository.dart';
 import 'package:ecolens/models/ai_identification_result.dart';
@@ -637,4 +639,311 @@ void main() {
       },
     );
   }
+  for (final mode in ['google', 'cancel', 'failure']) {
+    testWidgets(
+      'real result to OAuth $mode retains the same form state on lifecycle/rebuild',
+      (tester) async {
+        final authRepository = FakeAuthRepository();
+        final auth = AuthController(repository: authRepository);
+        addTearDown(auth.dispose);
+        final repository = _Repository()..currentAccount = () => auth.user?.id;
+        final photos = _Photos();
+        EcoLensApp app() => EcoLensApp(
+          authController: auth,
+          fetchPublishedSpecies: () async => [],
+          communityRepository: repository,
+        );
+        await tester.pumpWidget(app());
+        await tester.pumpAndSettle();
+        final nav = tester.state<NavigatorState>(find.byType(Navigator).first);
+        unawaited(
+          nav.push<void>(
+            MaterialPageRoute(
+              builder: (_) => IdentificationResultScreen(
+                imageBytes: png,
+                result: suggestion,
+                communityRepository: repository,
+                communityPhotoService: photos,
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+        await tap(tester, 'Compartilhar na comunidade');
+        await reviewRequired(tester);
+        await edit(tester, hypothesis, 'Hipótese mantida após OAuth');
+        await edit(tester, notes, 'Campos revisados antes do navegador');
+        final formState = tester.state(find.byType(SightingFormScreen));
+        await tap(tester, 'Publicar');
+        expect(await ShareIdentificationDraftStore().load(), isNotNull);
+        await tap(tester, 'Entrar com Google');
+        for (final state in [
+          AppLifecycleState.inactive,
+          AppLifecycleState.hidden,
+          AppLifecycleState.paused,
+        ]) {
+          tester.binding.handleAppLifecycleStateChanged(state);
+        }
+        await tester.pumpWidget(
+          app(),
+        ); // Rebuild without destroying the Navigator.
+        for (final state in [
+          AppLifecycleState.hidden,
+          AppLifecycleState.inactive,
+          AppLifecycleState.resumed,
+        ]) {
+          tester.binding.handleAppLifecycleStateChanged(state);
+        }
+        await tester.pumpAndSettle();
+        if (mode == 'google') {
+          authRepository.events.add(
+            const AccountEvent(AccountEventType.session, user: account),
+          );
+          await tester.pumpAndSettle();
+        } else {
+          if (mode == 'failure') {
+            authRepository.events.add(
+              const AccountEvent(
+                AccountEventType.callbackError,
+                message: 'Google não concluiu o acesso',
+              ),
+            );
+            await tester.pumpAndSettle();
+          }
+          expect(
+            find.byType(ProfileScreen, skipOffstage: false),
+            findsOneWidget,
+          );
+          await tap(tester, 'Voltar ao avistamento');
+        }
+        expect(tester.state(find.byType(SightingFormScreen)), same(formState));
+        expect(repository.creations, 0);
+        expect(await ShareIdentificationDraftStore().load(), isNull);
+        await reveal(tester, hypothesis);
+        expect(
+          tester.widget<TextFormField>(hypothesis).controller!.text,
+          'Hipótese mantida após OAuth',
+        );
+        expect(
+          tester
+              .widget<DropdownButtonFormField<IdentificationOrigin>>(
+                find.byType(DropdownButtonFormField<IdentificationOrigin>),
+              )
+              .initialValue,
+          IdentificationOrigin.user,
+        );
+        await reveal(tester, notes);
+        expect(
+          tester.widget<TextFormField>(notes).controller!.text,
+          'Campos revisados antes do navegador',
+        );
+        expect(photos.inputs.length, 1);
+        expect(tester.takeException(), isNull);
+      },
+    );
+  }
+
+  for (final mode in ['session', 'cancel', 'callback-error']) {
+    testWidgets(
+      'new application after process loss restores sharing draft: $mode',
+      (tester) async {
+        final firstAuth = AuthController(repository: FakeAuthRepository());
+        addTearDown(firstAuth.dispose);
+        var activeAuth = firstAuth;
+        final repository = _Repository()
+          ..currentAccount = () => activeAuth.user?.id;
+        await tester.pumpWidget(
+          EcoLensApp(
+            authController: firstAuth,
+            fetchPublishedSpecies: () async => [],
+            communityRepository: repository,
+          ),
+        );
+        await tester.pumpAndSettle();
+        final nav = tester.state<NavigatorState>(find.byType(Navigator).first);
+        unawaited(
+          nav.push<void>(
+            MaterialPageRoute(builder: (_) => form(repository, _Photos())),
+          ),
+        );
+        await tester.pumpAndSettle();
+        await reviewRequired(tester);
+        await edit(tester, hypothesis, 'Hipótese recuperável');
+        await edit(tester, notes, 'Não perder no reinício');
+        await tap(tester, 'Publicar');
+        await tap(tester, 'Entrar com Google');
+        final checkpoint = (await ShareIdentificationDraftStore().load())!;
+        expect(checkpoint.photo, png);
+        await tester.pumpWidget(
+          const SizedBox(),
+        ); // All route/form States are disposed.
+        await tester.pumpAndSettle();
+        final nextRepository = FakeAuthRepository()
+          ..restored = mode == 'session' ? account : null;
+        activeAuth = AuthController(repository: nextRepository);
+        addTearDown(activeAuth.dispose);
+        await tester.pumpWidget(
+          EcoLensApp(
+            authController: activeAuth,
+            fetchPublishedSpecies: () async => [],
+            communityRepository: repository,
+          ),
+        );
+        await tester.pumpAndSettle();
+        if (mode == 'callback-error') {
+          nextRepository.events.add(
+            const AccountEvent(
+              AccountEventType.callbackError,
+              message: 'Callback não concluído',
+            ),
+          );
+          await tester.pumpAndSettle();
+          expect(
+            find.byType(ProfileScreen, skipOffstage: false),
+            findsOneWidget,
+          );
+          await tap(tester, 'Voltar ao avistamento');
+        }
+        expect(find.byType(SightingFormScreen), findsOneWidget);
+        expect(repository.creations, 0);
+        final restored = tester
+            .widget<SightingFormScreen>(find.byType(SightingFormScreen))
+            .restoredDraft!;
+        expect(restored.photo, checkpoint.photo);
+        expect(restored.hypothesis, checkpoint.hypothesis);
+        expect(restored.origin, checkpoint.origin);
+        expect(restored.observedOn, checkpoint.observedOn);
+        expect(restored.municipalityId, checkpoint.municipalityId);
+        expect(restored.notes, checkpoint.notes);
+        await reveal(tester, hypothesis);
+        expect(
+          tester.widget<TextFormField>(hypothesis).controller!.text,
+          'Hipótese recuperável',
+        );
+        await reveal(tester, notes);
+        expect(
+          tester.widget<TextFormField>(notes).controller!.text,
+          'Não perder no reinício',
+        );
+        if (mode == 'session') {
+          await tap(
+            tester,
+            'Publicar',
+          ); // Explicit second action, after review.
+          expect(repository.creations, 1);
+          expect(repository.uploaded, checkpoint.photo);
+          expect(
+            repository.submitted!.municipalityId,
+            checkpoint.municipalityId,
+          );
+          expect(repository.submitted!.observedOn, checkpoint.observedOn);
+          expect(await ShareIdentificationDraftStore().load(), isNull);
+        } else {
+          await tester.pageBack();
+          await tester.pumpAndSettle();
+          await tap(tester, 'Descartar');
+          expect(await ShareIdentificationDraftStore().load(), isNull);
+          expect(repository.creations, 0);
+        }
+        expect(tester.takeException(), isNull);
+      },
+    );
+  }
+
+  testWidgets(
+    'storage failure keeps fields and prevents leaving for account access',
+    (tester) async {
+      final repository = _Repository();
+      var logins = 0;
+      await mount(
+        tester,
+        SightingFormScreen(
+          repository: repository,
+          municipalities: const [municipality],
+          photoService: _Photos(),
+          initialIdentification: CommunityIdentificationSeed.fromResult(
+            suggestion,
+            png,
+          ),
+          draftStore: _FailingDraftStore(),
+          openAccount: (_) async {
+            logins++;
+          },
+        ),
+      );
+      await reviewRequired(tester);
+      await edit(tester, notes, 'Não sair sem salvar o rascunho');
+      await tap(tester, 'Publicar');
+      expect(logins, 0);
+      expect(repository.creations, 0);
+      await reveal(tester, notes);
+      expect(
+        tester.widget<TextFormField>(notes).controller!.text,
+        'Não sair sem salvar o rascunho',
+      );
+    },
+  );
+  testWidgets(
+    'early callback error waits for the sharing checkpoint before opening Profile',
+    (tester) async {
+      final pending = Completer<CommunityShareDraft?>();
+      final authRepository = FakeAuthRepository();
+      final auth = AuthController(repository: authRepository);
+      addTearDown(auth.dispose);
+      await tester.pumpWidget(
+        EcoLensApp(
+          authController: auth,
+          shareDraftStore: _DelayedDraftStore(pending),
+          communityRepository: _Repository(),
+          fetchPublishedSpecies: () async => [],
+        ),
+      );
+      await tester.pumpAndSettle();
+      authRepository.events.add(
+        const AccountEvent(
+          AccountEventType.callbackError,
+          message: 'Callback antecipado',
+        ),
+      );
+      await tester.pump();
+      expect(find.byType(ProfileScreen), findsNothing);
+      pending.complete(
+        CommunityShareDraft(
+          photo: png,
+          hypothesis: 'Hipótese',
+          origin: IdentificationOrigin.ai,
+          observedOn: DateTime(2026, 11, 6),
+          municipalityId: municipality.id,
+          municipalities: const [municipality],
+          notes: 'Rascunho antes do callback',
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.byType(ProfileScreen, skipOffstage: false), findsOneWidget);
+      expect(
+        find.byType(SightingFormScreen, skipOffstage: false),
+        findsOneWidget,
+      );
+      await tap(tester, 'Voltar ao avistamento');
+      expect(find.byType(SightingFormScreen), findsOneWidget);
+      await reveal(tester, notes);
+      expect(
+        tester.widget<TextFormField>(notes).controller!.text,
+        'Rascunho antes do callback',
+      );
+    },
+  );
+}
+
+class _FailingDraftStore extends ShareIdentificationDraftStore {
+  @override
+  Future<void> save(CommunityShareDraft draft) async =>
+      throw StateError('disk unavailable');
+}
+
+class _DelayedDraftStore extends ShareIdentificationDraftStore {
+  final Completer<CommunityShareDraft?> pending;
+  _DelayedDraftStore(this.pending);
+  @override
+  Future<CommunityShareDraft?> load() => pending.future;
 }
