@@ -71,4 +71,16 @@ class FavoritesRepository {
     );
     return operation;
   }
+
+  /// Remove todos os favoritos deste aparelho.
+  Future<void> clear() {
+    final operation = (_pending[_store] ?? Future<void>.value()).then(
+      (_) => _store.write(const <String>[]),
+    );
+    _pending[_store] = operation.then<void>(
+      (_) {},
+      onError: (Object _, StackTrace _) {},
+    );
+    return operation;
+  }
 }

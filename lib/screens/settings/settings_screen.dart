@@ -1,106 +1,90 @@
 import 'package:flutter/material.dart';
 
 import '../../controllers/theme_controller.dart';
+import '../../widgets/auth/account_navigation_scope.dart';
+import 'about_screen.dart';
+import 'accessibility_screen.dart';
 import 'appearance_screen.dart';
 import 'offline_package_screen.dart';
+import 'privacy_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   final ThemeController themeController;
 
   const SettingsScreen({super.key, required this.themeController});
 
+  void _open(BuildContext context, Widget screen) {
+    Navigator.of(
+      context,
+    ).push(MaterialPageRoute<void>(builder: (context) => screen));
+  }
+
   @override
   Widget build(BuildContext context) {
+    final account = AccountNavigationScope.maybeOf(context);
+    final items = <Widget>[
+      _item(
+        icon: Icons.palette_outlined,
+        title: 'Aparência',
+        subtitle: 'Tema claro, escuro ou automático',
+        onTap: () =>
+            _open(context, AppearanceScreen(themeController: themeController)),
+      ),
+      _item(
+        icon: Icons.accessibility_new,
+        title: 'Acessibilidade',
+        subtitle: 'Tamanho do texto e leitor de tela',
+        onTap: () => _open(
+          context,
+          AccessibilityScreen(themeController: themeController),
+        ),
+      ),
+      _item(
+        icon: Icons.download_for_offline_outlined,
+        title: 'Uso offline',
+        subtitle: 'Fichas e fotos sem internet',
+        onTap: () => _open(context, const OfflinePackageScreen()),
+      ),
+      if (account != null)
+        _item(
+          icon: Icons.manage_accounts_outlined,
+          title: 'Conta e segurança',
+          subtitle: 'Senha, sessões e exclusão da conta',
+          onTap: () => account.openAccount(),
+        ),
+      _item(
+        icon: Icons.lock_outline,
+        title: 'Privacidade e dados',
+        subtitle: 'Permissões, dados no aparelho e política',
+        onTap: () => _open(context, const PrivacyScreen()),
+      ),
+      _item(
+        icon: Icons.info_outline,
+        title: 'Sobre o EcoLens',
+        subtitle: 'Versão, fontes e licenças',
+        onTap: () => _open(context, const AboutScreen()),
+      ),
+    ];
     return Scaffold(
       appBar: AppBar(title: const Text('Configurações')),
-      body: ListView(
-        children: [
-          ListTile(
-            leading: const Icon(Icons.palette_outlined),
-            title: const Text('Aparência'),
-            subtitle: const Text('Tema e personalização'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute<void>(
-                  builder: (context) =>
-                      AppearanceScreen(themeController: themeController),
-                ),
-              );
-            },
-          ),
-
-          const Divider(height: 1),
-
-          ListTile(
-            leading: const Icon(Icons.download_for_offline_outlined),
-            title: const Text('Uso offline'),
-            subtitle: const Text('Fichas e fotos sem internet'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute<void>(
-                  builder: (context) => const OfflinePackageScreen(),
-                ),
-              );
-            },
-          ),
-
-          const Divider(height: 1),
-
-          ListTile(
-            leading: const Icon(Icons.notifications_outlined),
-            title: const Text('Notificações'),
-            subtitle: const Text('Preferências de avisos'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () {
-              _showComingSoon(context);
-            },
-          ),
-
-          const Divider(height: 1),
-
-          ListTile(
-            leading: const Icon(Icons.lock_outline),
-            title: const Text('Privacidade'),
-            subtitle: const Text('Dados e permissões'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () {
-              _showComingSoon(context);
-            },
-          ),
-
-          const Divider(height: 1),
-
-          ListTile(
-            leading: const Icon(Icons.accessibility_new),
-            title: const Text('Acessibilidade'),
-            subtitle: const Text('Preferências de acessibilidade'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () {
-              _showComingSoon(context);
-            },
-          ),
-
-          const Divider(height: 1),
-
-          ListTile(
-            leading: const Icon(Icons.info_outline),
-            title: const Text('Sobre o EcoLens'),
-            subtitle: const Text('Informações do aplicativo'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () {
-              _showComingSoon(context);
-            },
-          ),
-        ],
+      body: ListView.separated(
+        itemCount: items.length,
+        itemBuilder: (context, index) => items[index],
+        separatorBuilder: (context, index) => const Divider(height: 1),
       ),
     );
   }
 
-  void _showComingSoon(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Funcionalidade em desenvolvimento')),
-    );
-  }
+  Widget _item({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required VoidCallback onTap,
+  }) => ListTile(
+    leading: Icon(icon),
+    title: Text(title),
+    subtitle: Text(subtitle),
+    trailing: const Icon(Icons.chevron_right),
+    onTap: onTap,
+  );
 }

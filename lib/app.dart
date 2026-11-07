@@ -174,8 +174,24 @@ class _EcoLensAppState extends State<EcoLensApp> {
       builder: (context, child) {
         return MaterialApp(
           navigatorKey: _navigatorKey,
-          builder: (context, child) =>
-              AccountNavigationScope(openAccount: _openProfile, child: child!),
+          builder: (context, child) {
+            final scale = _themeController.textScale;
+            final content = AccountNavigationScope(
+              openAccount: _openProfile,
+              child: child!,
+            );
+            if (scale == null) return content;
+            // Multiplica o ajuste do Android pela escolha feita no app.
+            final media = MediaQuery.of(context);
+            return MediaQuery(
+              data: media.copyWith(
+                textScaler: TextScaler.linear(
+                  media.textScaler.scale(1) * scale,
+                ),
+              ),
+              child: content,
+            );
+          },
           // O callback é processado por AuthRepository, não como rota nomeada.
           initialRoute: '/',
           title: 'EcoLens',

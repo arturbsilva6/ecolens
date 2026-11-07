@@ -15,6 +15,7 @@ import 'community_screen.dart';
 import 'sighting_detail_screen.dart';
 import '../../services/community_photo_service.dart';
 import 'community_widgets.dart';
+import '../../widgets/camera_notice.dart';
 
 class SightingFormScreen extends StatefulWidget {
   final CommunityRepository repository;
@@ -218,6 +219,12 @@ class _SightingFormScreenState extends State<SightingFormScreen> {
   }
 
   Future<void> _pick(ImageSource source) async {
+    if (source == ImageSource.camera &&
+        widget.selectPhoto == null &&
+        !await CameraNotice().confirm(context)) {
+      return;
+    }
+    if (!mounted) return;
     setState(() {
       _busy = true;
       _error = null;

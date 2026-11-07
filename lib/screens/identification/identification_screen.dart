@@ -11,6 +11,7 @@ import '../../models/species_model.dart';
 import '../../utils/ai_species_matcher.dart';
 import '../../services/ai_service.dart';
 import '../../utils/ai_analysis_error_message.dart';
+import '../../widgets/camera_notice.dart';
 import 'identification_result_screen.dart';
 
 enum IdentificationSource { camera, gallery }
@@ -125,11 +126,16 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
       if (!mounted) return;
 
       if (widget.initialSource == IdentificationSource.camera) {
-        _controller.takePhoto();
+        _openCamera();
       } else if (widget.initialSource == IdentificationSource.gallery) {
         _controller.pickFromGallery();
       }
     });
+  }
+
+  Future<void> _openCamera() async {
+    if (!await CameraNotice().confirm(context) || !mounted) return;
+    await _controller.takePhoto();
   }
 
   @override
@@ -214,7 +220,7 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
                   const SizedBox(height: 16),
                 ],
                 FilledButton.icon(
-                  onPressed: isLoading ? null : _controller.takePhoto,
+                  onPressed: isLoading ? null : _openCamera,
                   icon: const Icon(Icons.camera_alt_outlined),
                   label: const Text('Abrir câmera'),
                   style: FilledButton.styleFrom(
