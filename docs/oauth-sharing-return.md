@@ -89,6 +89,11 @@ tecla. Limpar dados, reinstalar, expirar o prazo ou morrer antes da gravação
 concluir não garante recuperação. Não há criptografia adicional nem migração do
 armazenamento da sessão nesta correção.
 
+O app declara `android:allowBackup="false"` no `AndroidManifest.xml`, para que o
+rascunho com foto, o histórico local e os demais dados do app não entrem no backup
+automático do Android. O atributo não cobre a transferência direta entre aparelhos
+no Android 12 ou superior, que exigiria regras em `dataExtractionRules`.
+
 ## Verificação e teste no Android
 
 Os testes diferenciam o mesmo State preservado após rebuild/lifecycle de uma
