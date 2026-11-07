@@ -26,7 +26,7 @@ abstract class CommunityRepository {
     bool mine = false,
   });
   Future<Uint8List> photo(String path);
-  Future<void> create(SightingDraft draft, Uint8List sanitizedPhoto);
+  Future<Sighting> create(SightingDraft draft, Uint8List sanitizedPhoto);
   Future<void> update(Sighting sighting, SightingDraft draft);
   Future<void> delete(Sighting sighting);
 }

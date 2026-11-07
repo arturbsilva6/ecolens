@@ -11,7 +11,8 @@ import 'sighting_form_screen.dart';
 
 class CommunityScreen extends StatefulWidget {
   final CommunityRepository? repository;
-  const CommunityScreen({super.key, this.repository});
+  final bool initialMine;
+  const CommunityScreen({super.key, this.repository, this.initialMine = false});
   @override
   State<CommunityScreen> createState() => _CommunityScreenState();
 }
@@ -25,6 +26,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
     _controller = CommunityController(
       widget.repository ?? SupabaseCommunityRepository(),
     );
+    _controller.mine = widget.initialMine;
     _controller.load();
   }
 

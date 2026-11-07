@@ -57,8 +57,20 @@ class CommunityFake implements CommunityRepository {
   Future<Uint8List> photo(String path) async =>
       throw const CommunityFailure('Foto indisponível');
   @override
-  Future<void> create(SightingDraft draft, Uint8List sanitizedPhoto) async {
+  Future<Sighting> create(SightingDraft draft, Uint8List sanitizedPhoto) async {
     creations++;
+    final published = Sighting(
+      id: 'published-$creations',
+      ownerId: user ?? 'author',
+      municipalityId: draft.municipalityId,
+      photoPath: 'published-$creations.png',
+      observedOn: draft.observedOn,
+      species: draft.species,
+      origin: draft.origin,
+      notes: draft.notes,
+    );
+    items.insert(0, published);
+    return published;
   }
 
   @override

@@ -14,7 +14,13 @@ import '../species/species_catalog_screen.dart';
 class HeatMapScreen extends StatefulWidget {
   final CommunityRepository? repository;
   final bool loadTiles;
-  const HeatMapScreen({super.key, this.repository, this.loadTiles = true});
+  final Municipality? initialMunicipality;
+  const HeatMapScreen({
+    super.key,
+    this.repository,
+    this.loadTiles = true,
+    this.initialMunicipality,
+  });
   @override
   State<HeatMapScreen> createState() => _HeatMapScreenState();
 }
@@ -32,6 +38,11 @@ class _HeatMapScreenState extends State<HeatMapScreen> {
     _controller = CommunityController(
       widget.repository ?? SupabaseCommunityRepository(),
     );
+    final municipality = widget.initialMunicipality;
+    if (municipality != null) {
+      _center = LatLng(municipality.latitude, municipality.longitude);
+      _controller.municipalityId = municipality.id;
+    }
     _controller.load();
   }
 

@@ -3,17 +3,26 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 
 import '../../models/ai_identification_result.dart';
+import '../../models/community_identification_seed.dart';
+import '../../data/community_repository.dart';
+import '../../data/supabase_community_repository.dart';
+import '../../services/community_photo_service.dart';
+import '../community/sighting_form_screen.dart';
 import '../../data/identification_history_repository.dart';
 import '../../models/species_model.dart';
 import '../species/species_detail_screen.dart';
 
 /// Resultado preliminar: a IA sugere um nome, mas não confirma a espécie.
 class IdentificationResultScreen extends StatelessWidget {
-  final Uint8List imageBytes;
+  final Uint8List? imageBytes;
   final AiIdentificationResult result;
   final SpeciesModel? matchedSpecies;
   final bool catalogUnavailable;
   final IdentificationHistoryRepository? historyRepository;
+  final bool isDemonstration;
+  final CommunityRepository? communityRepository;
+  final CommunityPhotoService? communityPhotoService;
+  final Future<void> Function(BuildContext)? openCommunityAccount;
 
   const IdentificationResultScreen({
     super.key,
@@ -22,6 +31,10 @@ class IdentificationResultScreen extends StatelessWidget {
     this.matchedSpecies,
     this.catalogUnavailable = false,
     this.historyRepository,
+    this.isDemonstration = false,
+    this.communityRepository,
+    this.communityPhotoService,
+    this.openCommunityAccount,
   });
 
   void _openPublishedSpecies(BuildContext context) {
@@ -30,10 +43,8 @@ class IdentificationResultScreen extends StatelessWidget {
 
     Navigator.of(context).push(
       MaterialPageRoute<void>(
-        builder: (context) => SpeciesDetailScreen(
-          species: species,
-          isDemonstration: false,
-        ),
+        builder: (context) =>
+            SpeciesDetailScreen(species: species, isDemonstration: false),
       ),
     );
   }
@@ -65,9 +76,8 @@ class IdentificationResultScreen extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
+                    style: Theme.of(context).textTheme.titleMedium
+                        ?.copyWith(fontWeight: FontWeight.w700),
                   ),
                   const SizedBox(height: 8),
                   Text(message),
@@ -85,18 +95,19 @@ class IdentificationResultScreen extends StatelessWidget {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
     final hasSuggestion = result.identified;
-    final suggestedName = result.commonName ??
+    final suggestedName =
+        result.commonName ??
         result.scientificName ??
         'Espécie não identificada';
 
     final catalogMessage = matchedSpecies != null
         ? 'Encontramos uma ficha publicada com o mesmo nome científico. '
-            'Isso não confirma a espécie da fotografia.'
+              'Isso não confirma a espécie da fotografia.'
         : catalogUnavailable
-            ? 'Não foi possível consultar o catálogo neste momento. '
-                'A sugestão da IA continua não confirmada.'
-            : 'Nenhuma ficha publicada corresponde exatamente ao nome '
-                'científico sugerido. A identificação não foi confirmada.';
+        ? 'Não foi possível consultar o catálogo neste momento. '
+              'A sugestão da IA continua não confirmada.'
+        : 'Nenhuma ficha publicada corresponde exatamente ao nome '
+              'científico sugerido. A identificação não foi confirmada.';
 
     return Scaffold(
       appBar: AppBar(title: const Text('Resultado da análise')),
@@ -111,19 +122,28 @@ class IdentificationResultScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                     child: AspectRatio(
                       aspectRatio: 16 / 11,
-                      child: Image.memory(
-                        imageBytes,
-                        fit: BoxFit.cover,
-                        semanticLabel: 'Fotografia enviada para análise',
-                        errorBuilder: (context, error, stackTrace) {
-                          return ColoredBox(
-                            color: colors.surfaceContainerHighest,
-                            child: const Center(
-                              child: Icon(Icons.broken_image_outlined, size: 48),
+                      child: imageBytes == null || imageBytes!.isEmpty
+                          ? const Center(
+                              child: Text(
+                                'Foto original indisponível. Você pode selecionar uma foto válida no formulário da comunidade.',
+                              ),
+                            )
+                          : Image.memory(
+                              imageBytes!,
+                              fit: BoxFit.cover,
+                              semanticLabel: 'Fotografia enviada para análise',
+                              errorBuilder: (context, error, stackTrace) {
+                                return ColoredBox(
+                                  color: colors.surfaceContainerHighest,
+                                  child: const Center(
+                                    child: Icon(
+                                      Icons.broken_image_outlined,
+                                      size: 48,
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
-                          );
-                        },
-                      ),
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -157,7 +177,9 @@ class IdentificationResultScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   Text(
-                    hasSuggestion ? 'Espécie sugerida' : 'Resultado inconclusivo',
+                    hasSuggestion
+                        ? 'Espécie sugerida'
+                        : 'Resultado inconclusivo',
                     style: theme.textTheme.titleMedium?.copyWith(
                       color: colors.onSurfaceVariant,
                     ),
@@ -204,6 +226,21 @@ class IdentificationResultScreen extends StatelessWidget {
                     repository: historyRepository,
                   ),
                   const SizedBox(height: 12),
+                  if (isDemonstration)
+                    const Text(
+                      'Resultado demonstrativo: não pode ser compartilhado como identificação real.',
+                    )
+                  else
+                    _ShareCommunityButton(
+                      seed: CommunityIdentificationSeed.fromResult(
+                        result,
+                        imageBytes,
+                      ),
+                      repository: communityRepository,
+                      photoService: communityPhotoService,
+                      openAccount: openCommunityAccount,
+                    ),
+                  const SizedBox(height: 12),
                   Card(
                     margin: EdgeInsets.zero,
                     color: colors.errorContainer,
@@ -224,9 +261,7 @@ class IdentificationResultScreen extends StatelessWidget {
                               'orientar primeiros socorros. Não se aproxime '
                               'nem manipule animais desconhecidos. '
                               'Consulte especialistas.',
-                              style: TextStyle(
-                                color: colors.onErrorContainer,
-                              ),
+                              style: TextStyle(color: colors.onErrorContainer),
                             ),
                           ),
                         ],
@@ -239,9 +274,7 @@ class IdentificationResultScreen extends StatelessWidget {
             DecoratedBox(
               decoration: BoxDecoration(
                 color: colors.surface,
-                border: Border(
-                  top: BorderSide(color: colors.outlineVariant),
-                ),
+                border: Border(top: BorderSide(color: colors.outlineVariant)),
               ),
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(20, 12, 20, 16),
@@ -284,10 +317,7 @@ class _AiExplanationCard extends StatefulWidget {
   final String title;
   final String message;
 
-  const _AiExplanationCard({
-    required this.title,
-    required this.message,
-  });
+  const _AiExplanationCard({required this.title, required this.message});
 
   @override
   State<_AiExplanationCard> createState() => _AiExplanationCardState();
@@ -321,9 +351,8 @@ class _AiExplanationCardState extends State<_AiExplanationCard> {
                 children: [
                   Text(
                     widget.title,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
+                    style: Theme.of(context).textTheme.titleMedium
+                        ?.copyWith(fontWeight: FontWeight.w700),
                   ),
                   const SizedBox(height: 10),
                   Text(
@@ -332,17 +361,14 @@ class _AiExplanationCardState extends State<_AiExplanationCard> {
                     overflow: canExpand && !_expanded
                         ? TextOverflow.ellipsis
                         : TextOverflow.visible,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      height: 1.5,
-                      color: colors.onSurface,
-                    ),
+                    style: Theme.of(context).textTheme.bodyMedium
+                        ?.copyWith(height: 1.5, color: colors.onSurface),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     'Explicação automática; pode conter imprecisões.',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: colors.onSurfaceVariant,
-                    ),
+                    style: Theme.of(context).textTheme.bodySmall
+                        ?.copyWith(color: colors.onSurfaceVariant),
                   ),
                   if (canExpand) ...[
                     const SizedBox(height: 4),
@@ -351,9 +377,7 @@ class _AiExplanationCardState extends State<_AiExplanationCard> {
                         setState(() => _expanded = !_expanded);
                       },
                       icon: Icon(
-                        _expanded
-                            ? Icons.expand_less
-                            : Icons.expand_more,
+                        _expanded ? Icons.expand_less : Icons.expand_more,
                       ),
                       label: Text(
                         _expanded
@@ -371,7 +395,6 @@ class _AiExplanationCardState extends State<_AiExplanationCard> {
     );
   }
 }
-
 
 /// O salvamento é opcional; só guarda o resultado textual no dispositivo.
 class _SaveHistoryButton extends StatefulWidget {
@@ -411,9 +434,7 @@ class _SaveHistoryButtonState extends State<_SaveHistoryButton> {
     } catch (_) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Não foi possível salvar o resultado.'),
-        ),
+        const SnackBar(content: Text('Não foi possível salvar o resultado.')),
       );
     } finally {
       if (mounted) setState(() => _saving = false);
@@ -432,9 +453,13 @@ class _SaveHistoryButtonState extends State<_SaveHistoryButton> {
             TextButton.icon(
               onPressed: _saving || _saved ? null : _save,
               icon: Icon(
-                _saved ? Icons.check_circle_outline : Icons.bookmark_add_outlined,
+                _saved
+                    ? Icons.check_circle_outline
+                    : Icons.bookmark_add_outlined,
               ),
-              label: Text(_saved ? 'Salvo no histórico' : 'Salvar no histórico'),
+              label: Text(
+                _saved ? 'Salvo no histórico' : 'Salvar no histórico',
+              ),
             ),
             const Text(
               'Salva somente a data, o nome sugerido e a explicação '
@@ -445,4 +470,76 @@ class _SaveHistoryButtonState extends State<_SaveHistoryButton> {
       ),
     );
   }
+}
+
+class _ShareCommunityButton extends StatefulWidget {
+  final CommunityIdentificationSeed seed;
+  final CommunityRepository? repository;
+  final CommunityPhotoService? photoService;
+  final Future<void> Function(BuildContext)? openAccount;
+  const _ShareCommunityButton({
+    required this.seed,
+    this.repository,
+    this.photoService,
+    this.openAccount,
+  });
+  @override
+  State<_ShareCommunityButton> createState() => _ShareCommunityButtonState();
+}
+
+class _ShareCommunityButtonState extends State<_ShareCommunityButton> {
+  bool _opening = false;
+  String? _error;
+  Future<void> _open() async {
+    if (_opening) return;
+    setState(() {
+      _opening = true;
+      _error = null;
+    });
+    try {
+      final repository = widget.repository ?? SupabaseCommunityRepository();
+      final municipalities = await repository.municipalities();
+      if (!mounted) return;
+      await Navigator.push<bool>(
+        context,
+        MaterialPageRoute(
+          builder: (_) => SightingFormScreen(
+            repository: repository,
+            municipalities: municipalities,
+            initialIdentification: widget.seed,
+            photoService: widget.photoService,
+            openAccount: widget.openAccount,
+          ),
+        ),
+      );
+    } catch (_) {
+      if (mounted) {
+        setState(() {
+          _error = 'Não foi possível abrir o formulário. Seu resultado foi preservado; tente novamente.';
+        });
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _opening = false;
+        });
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) => Column(
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    children: [
+      OutlinedButton.icon(
+        onPressed: _opening ? null : _open,
+        icon: const Icon(Icons.share_outlined),
+        label: const Text('Compartilhar na comunidade'),
+      ),
+      const Text(
+        'Abre um formulário revisável. Compartilhar não publica automaticamente nem salva fotos no histórico.',
+      ),
+      if (_error != null) Semantics(liveRegion: true, child: Text(_error!)),
+    ],
+  );
 }

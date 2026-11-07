@@ -128,6 +128,19 @@ void main() {
     expect(requests, isEmpty);
   });
 
+  test(
+    'Anonymous AI session and expired session are not registered profiles',
+    () async {
+      final anonymous = _session();
+      anonymous['user'] = {..._user, 'is_anonymous': true};
+      await client.auth.setInitialSession(jsonEncode(anonymous));
+      expect(await repository.connect(), isNull);
+      await client.auth.setInitialSession(jsonEncode(_session()));
+      client.auth.currentSession!.expiresAt = 1;
+      expect(await repository.connect(), isNull);
+      expect(requests, isEmpty);
+    },
+  );
   test('Cadastro pendente envia nome e redirect sem inventar sessão', () async {
     handler = (_) => http.Response(jsonEncode(_user), 200);
     expect(

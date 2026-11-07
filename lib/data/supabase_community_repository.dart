@@ -27,8 +27,14 @@ class SupabaseCommunityRepository implements CommunityRepository {
 
   @override
   Future<String?> accountId() async {
-    final user = (await clientProvider()).auth.currentUser;
-    return user == null || user.isAnonymous ? null : user.id;
+    final session = (await clientProvider()).auth.currentSession;
+    final user = session?.user;
+    return session == null ||
+            session.isExpired ||
+            user == null ||
+            user.isAnonymous
+        ? null
+        : user.id;
   }
 
   Future<String> _requireAccount() async {
@@ -88,7 +94,7 @@ class SupabaseCommunityRepository implements CommunityRepository {
   }
 
   @override
-  Future<void> create(SightingDraft draft, Uint8List sanitizedPhoto) async {
+  Future<Sighting> create(SightingDraft draft, Uint8List sanitizedPhoto) async {
     try {
       final owner = await _requireAccount();
       final client = await clientProvider();
@@ -114,12 +120,13 @@ class SupabaseCommunityRepository implements CommunityRepository {
                 upsert: false,
               ),
             );
-        await client
+        final row = await client
             .from('community_sightings')
             .update({'status': 'published'})
             .eq('id', id)
             .select()
             .single();
+        return Sighting.fromJson(row);
       } catch (e) {
         if (e is PostgrestException &&
             ['42P01', 'PGRST205', '42703'].contains(e.code)) {
