@@ -67,3 +67,25 @@ Edite `supabase/data/curated_species.json` e gere a migração de novo:
 ```bash
 python tool/build_species_migration.py
 ```
+
+## Fotos
+
+Cada ficha tem uma foto com **licença livre** (CC0, CC BY, CC BY-SA ou domínio
+público) e autoria registrada, em `supabase/data/species_photos.json`.
+
+- Origem: foto principal do artigo da espécie na Wikipédia (arquivo no
+  Wikimedia Commons) ou, quando não havia boa opção, observação confirmada
+  ("research grade") do iNaturalist.
+- Todas foram conferidas visualmente. Foram trocadas fotos de cobras sendo
+  seguradas na mão (passariam a mensagem errada), a mariposa adulta da
+  *Lonomia* (o perigo é a lagarta) e imagens pouco nítidas.
+- As URLs apontam para versões de 500 px, leves para o pacote offline.
+- Crédito, origem e licença ficam nas colunas `image_credit`,
+  `image_source_url`, `image_license_url` e `image_license_label`. O app só
+  exibe a foto quando há crédito registrado.
+
+Para trocar ou acrescentar fotos, edite o JSON e gere a migração:
+
+```bash
+python tool/build_species_photos_migration.py
+```

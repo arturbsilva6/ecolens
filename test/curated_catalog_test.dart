@@ -286,4 +286,63 @@ void main() {
       }
     }
   });
+
+  test('Créditos da foto vêm do banco quando existem', () async {
+    final transport = MockClient(
+      (request) async => json(request, [
+        {
+          ..._linha(),
+          'image_url': 'https://example.org/caramujo.jpg',
+          'image_credit': 'Autora Exemplo',
+          'image_source_url': 'https://example.org/origem',
+          'image_license_url': 'https://creativecommons.org/licenses/by/4.0/',
+          'image_license_label': 'CC BY 4.0',
+        },
+      ]),
+    );
+    addTearDown(transport.close);
+
+    final species = (await repositorio(transport).fetchRemoteSpecies()).single;
+
+    expect(species.imageUrl, 'https://example.org/caramujo.jpg');
+    expect(species.imageCredit, 'Autora Exemplo');
+    expect(species.imageLicenseLabel, 'CC BY 4.0');
+    expect(species.imageSourceUrl, 'https://example.org/origem');
+  });
+
+  test('Foto sem crédito registrado não é exibida', () async {
+    final transport = MockClient(
+      (request) async => json(request, [
+        {..._linha(), 'image_url': 'https://example.org/sem-credito.jpg'},
+      ]),
+    );
+    addTearDown(transport.close);
+
+    final species = (await repositorio(transport).fetchRemoteSpecies()).single;
+
+    expect(species.imageUrl, isNull);
+    expect(species.imageCredit, isNull);
+  });
+
+  test('Fotos do catálogo têm licença livre e autoria', () {
+    final dados = jsonDecode(
+      File('supabase/data/species_photos.json').readAsStringSync(),
+    ) as Map<String, dynamic>;
+    final fotos = [
+      ...(dados['existentes'] as List),
+      ...(dados['novas'] as List),
+    ].cast<Map<String, dynamic>>();
+    final licencas = RegExp(r'^(CC0|CC BY(-SA)? \d\.\d|Domínio público)$');
+
+    expect(fotos, hasLength(54));
+    for (final foto in fotos) {
+      expect(
+        licencas.hasMatch(foto['image_license_label'] as String),
+        isTrue,
+        reason: foto['image_url'] as String,
+      );
+      expect((foto['image_credit'] as String).trim(), isNotEmpty);
+      expect(foto['image_url'] as String, startsWith('https://'));
+    }
+  });
 }
