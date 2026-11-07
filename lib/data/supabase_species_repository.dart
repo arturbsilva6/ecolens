@@ -161,7 +161,8 @@ class SupabaseSpeciesRepository {
     final credit = row['image_credit'] as String?;
     final licenseLabel = row['image_license_label'] as String?;
     // Créditos vêm do banco; o mapa local cobre bancos ainda sem as colunas.
-    final fromDatabase = imageUrl != null && credit != null && licenseLabel != null
+    final fromDatabase =
+        imageUrl != null && credit != null && licenseLabel != null
         ? (
             credit: credit,
             sourceUrl: row['image_source_url'] as String? ?? imageUrl,

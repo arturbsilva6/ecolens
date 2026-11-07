@@ -325,11 +325,9 @@ void main() {
   });
 
   test('Fotos do catálogo têm licença livre e autoria', () {
-    final dados =
-        jsonDecode(
-              File('supabase/data/species_photos.json').readAsStringSync(),
-            )
-            as Map<String, dynamic>;
+    final dados = jsonDecode(
+      File('supabase/data/species_photos.json').readAsStringSync(),
+    ) as Map<String, dynamic>;
     final fotos = [
       ...(dados['existentes'] as List),
       ...(dados['novas'] as List),
