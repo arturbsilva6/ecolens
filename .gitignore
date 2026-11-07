@@ -61,3 +61,6 @@ android/key.properties
 supabase/.branches/
 supabase/.profiles/
 supabase/.temp/
+
+# Intermediate task artifacts
+/work/

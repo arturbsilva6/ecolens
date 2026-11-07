@@ -10,6 +10,8 @@ import '../../widgets/home/recent_species_section.dart';
 import '../../widgets/home/bottom_nav_bar.dart';
 import '../../controllers/theme_controller.dart';
 import '../settings/settings_screen.dart';
+import '../community/community_screen.dart';
+import '../map/heat_map_screen.dart';
 import '../profile/profile_screen.dart';
 import '../identification/identification_screen.dart';
 import '../identification/identification_history_screen.dart';
@@ -86,14 +88,11 @@ class HomeScreen extends StatelessWidget {
             }
             return;
           }
-          const paginas = [
-            'Início',
-            'Identificar',
-            'Mapa',
-            'Comunidade',
-            'Perfil',
-          ];
-          _mostrarMensagem(context, '${paginas[index]} em desenvolvimento');
+          if (index == 2 || index == 3) {
+            Navigator.of(context).push(MaterialPageRoute<void>(
+              builder: (_) => index == 2 ? const HeatMapScreen() : const CommunityScreen(),
+            ));
+          }
         },
       ),
 
@@ -195,10 +194,9 @@ class HomeScreen extends StatelessWidget {
                       );
                     },
                     onForumTap: () {
-                      _mostrarMensagem(
-                        context,
-                        'Fórum local em desenvolvimento',
-                      );
+                      Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (_) => const CommunityScreen(),
+                      ));
                     },
                   ),
                   const SizedBox(height: 24),

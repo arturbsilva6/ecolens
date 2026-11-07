@@ -1,0 +1,4517 @@
+[
+  {
+    "id": "3500105",
+    "name": "Adamantina",
+    "uf": "SP",
+    "latitude": -21.682,
+    "longitude": -51.0737
+  },
+  {
+    "id": "3500204",
+    "name": "Adolfo",
+    "uf": "SP",
+    "latitude": -21.2325,
+    "longitude": -49.6451
+  },
+  {
+    "id": "3500303",
+    "name": "Aguaí",
+    "uf": "SP",
+    "latitude": -22.0572,
+    "longitude": -46.9735
+  },
+  {
+    "id": "3500402",
+    "name": "Águas da Prata",
+    "uf": "SP",
+    "latitude": -21.9319,
+    "longitude": -46.7176
+  },
+  {
+    "id": "3500501",
+    "name": "Águas de Lindóia",
+    "uf": "SP",
+    "latitude": -22.4733,
+    "longitude": -46.6314
+  },
+  {
+    "id": "3500550",
+    "name": "Águas de Santa Bárbara",
+    "uf": "SP",
+    "latitude": -22.8812,
+    "longitude": -49.2421
+  },
+  {
+    "id": "3500600",
+    "name": "Águas de São Pedro",
+    "uf": "SP",
+    "latitude": -22.5977,
+    "longitude": -47.8734
+  },
+  {
+    "id": "3500709",
+    "name": "Agudos",
+    "uf": "SP",
+    "latitude": -22.4694,
+    "longitude": -48.9863
+  },
+  {
+    "id": "3500758",
+    "name": "Alambari",
+    "uf": "SP",
+    "latitude": -23.5503,
+    "longitude": -47.898
+  },
+  {
+    "id": "3500808",
+    "name": "Alfredo Marcondes",
+    "uf": "SP",
+    "latitude": -21.9527,
+    "longitude": -51.414
+  },
+  {
+    "id": "3500907",
+    "name": "Altair",
+    "uf": "SP",
+    "latitude": -20.5242,
+    "longitude": -49.0571
+  },
+  {
+    "id": "3501004",
+    "name": "Altinópolis",
+    "uf": "SP",
+    "latitude": -21.0214,
+    "longitude": -47.3712
+  },
+  {
+    "id": "3501103",
+    "name": "Alto Alegre",
+    "uf": "SP",
+    "latitude": -21.5811,
+    "longitude": -50.168
+  },
+  {
+    "id": "3501152",
+    "name": "Alumínio",
+    "uf": "SP",
+    "latitude": -23.5306,
+    "longitude": -47.2546
+  },
+  {
+    "id": "3501202",
+    "name": "Álvares Florence",
+    "uf": "SP",
+    "latitude": -20.3203,
+    "longitude": -49.9141
+  },
+  {
+    "id": "3501301",
+    "name": "Álvares Machado",
+    "uf": "SP",
+    "latitude": -22.0764,
+    "longitude": -51.4722
+  },
+  {
+    "id": "3501400",
+    "name": "Álvaro de Carvalho",
+    "uf": "SP",
+    "latitude": -22.0841,
+    "longitude": -49.719
+  },
+  {
+    "id": "3501509",
+    "name": "Alvinlândia",
+    "uf": "SP",
+    "latitude": -22.4435,
+    "longitude": -49.7623
+  },
+  {
+    "id": "3501608",
+    "name": "Americana",
+    "uf": "SP",
+    "latitude": -22.7374,
+    "longitude": -47.3331
+  },
+  {
+    "id": "3501707",
+    "name": "Américo Brasiliense",
+    "uf": "SP",
+    "latitude": -21.7288,
+    "longitude": -48.1147
+  },
+  {
+    "id": "3501806",
+    "name": "Américo de Campos",
+    "uf": "SP",
+    "latitude": -20.2985,
+    "longitude": -49.7359
+  },
+  {
+    "id": "3501905",
+    "name": "Amparo",
+    "uf": "SP",
+    "latitude": -22.7088,
+    "longitude": -46.772
+  },
+  {
+    "id": "3502002",
+    "name": "Analândia",
+    "uf": "SP",
+    "latitude": -22.1289,
+    "longitude": -47.6619
+  },
+  {
+    "id": "3502101",
+    "name": "Andradina",
+    "uf": "SP",
+    "latitude": -20.8948,
+    "longitude": -51.3786
+  },
+  {
+    "id": "3502200",
+    "name": "Angatuba",
+    "uf": "SP",
+    "latitude": -23.4917,
+    "longitude": -48.4139
+  },
+  {
+    "id": "3502309",
+    "name": "Anhembi",
+    "uf": "SP",
+    "latitude": -22.793,
+    "longitude": -48.1336
+  },
+  {
+    "id": "3502408",
+    "name": "Anhumas",
+    "uf": "SP",
+    "latitude": -22.2934,
+    "longitude": -51.3895
+  },
+  {
+    "id": "3502507",
+    "name": "Aparecida",
+    "uf": "SP",
+    "latitude": -22.8495,
+    "longitude": -45.2325
+  },
+  {
+    "id": "3502606",
+    "name": "Aparecida d'Oeste",
+    "uf": "SP",
+    "latitude": -20.4487,
+    "longitude": -50.8835
+  },
+  {
+    "id": "3502705",
+    "name": "Apiaí",
+    "uf": "SP",
+    "latitude": -24.5108,
+    "longitude": -48.8443
+  },
+  {
+    "id": "3502754",
+    "name": "Araçariguama",
+    "uf": "SP",
+    "latitude": -23.4366,
+    "longitude": -47.0608
+  },
+  {
+    "id": "3502804",
+    "name": "Araçatuba",
+    "uf": "SP",
+    "latitude": -21.2076,
+    "longitude": -50.4401
+  },
+  {
+    "id": "3502903",
+    "name": "Araçoiaba da Serra",
+    "uf": "SP",
+    "latitude": -23.5029,
+    "longitude": -47.6166
+  },
+  {
+    "id": "3503000",
+    "name": "Aramina",
+    "uf": "SP",
+    "latitude": -20.0882,
+    "longitude": -47.7873
+  },
+  {
+    "id": "3503109",
+    "name": "Arandu",
+    "uf": "SP",
+    "latitude": -23.1386,
+    "longitude": -49.0487
+  },
+  {
+    "id": "3503158",
+    "name": "Arapeí",
+    "uf": "SP",
+    "latitude": -22.6717,
+    "longitude": -44.4441
+  },
+  {
+    "id": "3503208",
+    "name": "Araraquara",
+    "uf": "SP",
+    "latitude": -21.7845,
+    "longitude": -48.178
+  },
+  {
+    "id": "3503307",
+    "name": "Araras",
+    "uf": "SP",
+    "latitude": -22.3572,
+    "longitude": -47.3842
+  },
+  {
+    "id": "3503356",
+    "name": "Arco-Íris",
+    "uf": "SP",
+    "latitude": -21.7728,
+    "longitude": -50.466
+  },
+  {
+    "id": "3503406",
+    "name": "Arealva",
+    "uf": "SP",
+    "latitude": -22.031,
+    "longitude": -48.9135
+  },
+  {
+    "id": "3503505",
+    "name": "Areias",
+    "uf": "SP",
+    "latitude": -22.5786,
+    "longitude": -44.6992
+  },
+  {
+    "id": "3503604",
+    "name": "Areiópolis",
+    "uf": "SP",
+    "latitude": -22.6672,
+    "longitude": -48.6681
+  },
+  {
+    "id": "3503703",
+    "name": "Ariranha",
+    "uf": "SP",
+    "latitude": -21.1872,
+    "longitude": -48.7904
+  },
+  {
+    "id": "3503802",
+    "name": "Artur Nogueira",
+    "uf": "SP",
+    "latitude": -22.5727,
+    "longitude": -47.1727
+  },
+  {
+    "id": "3503901",
+    "name": "Arujá",
+    "uf": "SP",
+    "latitude": -23.3965,
+    "longitude": -46.32
+  },
+  {
+    "id": "3503950",
+    "name": "Aspásia",
+    "uf": "SP",
+    "latitude": -20.16,
+    "longitude": -50.728
+  },
+  {
+    "id": "3504008",
+    "name": "Assis",
+    "uf": "SP",
+    "latitude": -22.66,
+    "longitude": -50.4183
+  },
+  {
+    "id": "3504107",
+    "name": "Atibaia",
+    "uf": "SP",
+    "latitude": -23.1171,
+    "longitude": -46.5563
+  },
+  {
+    "id": "3504206",
+    "name": "Auriflama",
+    "uf": "SP",
+    "latitude": -20.6836,
+    "longitude": -50.5572
+  },
+  {
+    "id": "3504305",
+    "name": "Avaí",
+    "uf": "SP",
+    "latitude": -22.1514,
+    "longitude": -49.3356
+  },
+  {
+    "id": "3504404",
+    "name": "Avanhandava",
+    "uf": "SP",
+    "latitude": -21.4584,
+    "longitude": -49.9509
+  },
+  {
+    "id": "3504503",
+    "name": "Avaré",
+    "uf": "SP",
+    "latitude": -23.1067,
+    "longitude": -48.9251
+  },
+  {
+    "id": "3504602",
+    "name": "Bady Bassitt",
+    "uf": "SP",
+    "latitude": -20.9197,
+    "longitude": -49.4385
+  },
+  {
+    "id": "3504701",
+    "name": "Balbinos",
+    "uf": "SP",
+    "latitude": -21.8963,
+    "longitude": -49.3619
+  },
+  {
+    "id": "3504800",
+    "name": "Bálsamo",
+    "uf": "SP",
+    "latitude": -20.7348,
+    "longitude": -49.5865
+  },
+  {
+    "id": "3504909",
+    "name": "Bananal",
+    "uf": "SP",
+    "latitude": -22.6819,
+    "longitude": -44.3281
+  },
+  {
+    "id": "3505005",
+    "name": "Barão de Antonina",
+    "uf": "SP",
+    "latitude": -23.6284,
+    "longitude": -49.5634
+  },
+  {
+    "id": "3505104",
+    "name": "Barbosa",
+    "uf": "SP",
+    "latitude": -21.2657,
+    "longitude": -49.9518
+  },
+  {
+    "id": "3505203",
+    "name": "Bariri",
+    "uf": "SP",
+    "latitude": -22.073,
+    "longitude": -48.7438
+  },
+  {
+    "id": "3505302",
+    "name": "Barra Bonita",
+    "uf": "SP",
+    "latitude": -22.4909,
+    "longitude": -48.5583
+  },
+  {
+    "id": "3505351",
+    "name": "Barra do Chapéu",
+    "uf": "SP",
+    "latitude": -24.4722,
+    "longitude": -49.0238
+  },
+  {
+    "id": "3505401",
+    "name": "Barra do Turvo",
+    "uf": "SP",
+    "latitude": -24.759,
+    "longitude": -48.5013
+  },
+  {
+    "id": "3505500",
+    "name": "Barretos",
+    "uf": "SP",
+    "latitude": -20.5531,
+    "longitude": -48.5698
+  },
+  {
+    "id": "3505609",
+    "name": "Barrinha",
+    "uf": "SP",
+    "latitude": -21.1864,
+    "longitude": -48.1636
+  },
+  {
+    "id": "3505708",
+    "name": "Barueri",
+    "uf": "SP",
+    "latitude": -23.5057,
+    "longitude": -46.879
+  },
+  {
+    "id": "3505807",
+    "name": "Bastos",
+    "uf": "SP",
+    "latitude": -21.921,
+    "longitude": -50.7357
+  },
+  {
+    "id": "3505906",
+    "name": "Batatais",
+    "uf": "SP",
+    "latitude": -20.8929,
+    "longitude": -47.5921
+  },
+  {
+    "id": "3506003",
+    "name": "Bauru",
+    "uf": "SP",
+    "latitude": -22.3246,
+    "longitude": -49.0871
+  },
+  {
+    "id": "3506102",
+    "name": "Bebedouro",
+    "uf": "SP",
+    "latitude": -20.9491,
+    "longitude": -48.4791
+  },
+  {
+    "id": "3506201",
+    "name": "Bento de Abreu",
+    "uf": "SP",
+    "latitude": -21.2686,
+    "longitude": -50.814
+  },
+  {
+    "id": "3506300",
+    "name": "Bernardino de Campos",
+    "uf": "SP",
+    "latitude": -23.0164,
+    "longitude": -49.4679
+  },
+  {
+    "id": "3506359",
+    "name": "Bertioga",
+    "uf": "SP",
+    "latitude": -23.8486,
+    "longitude": -46.1396
+  },
+  {
+    "id": "3506409",
+    "name": "Bilac",
+    "uf": "SP",
+    "latitude": -21.404,
+    "longitude": -50.4746
+  },
+  {
+    "id": "3506508",
+    "name": "Birigui",
+    "uf": "SP",
+    "latitude": -21.291,
+    "longitude": -50.3432
+  },
+  {
+    "id": "3506607",
+    "name": "Biritiba-Mirim",
+    "uf": "SP",
+    "latitude": -23.5698,
+    "longitude": -46.0407
+  },
+  {
+    "id": "3506706",
+    "name": "Boa Esperança do Sul",
+    "uf": "SP",
+    "latitude": -21.9918,
+    "longitude": -48.3906
+  },
+  {
+    "id": "3506805",
+    "name": "Bocaina",
+    "uf": "SP",
+    "latitude": -22.1365,
+    "longitude": -48.523
+  },
+  {
+    "id": "3506904",
+    "name": "Bofete",
+    "uf": "SP",
+    "latitude": -23.1055,
+    "longitude": -48.2582
+  },
+  {
+    "id": "3507001",
+    "name": "Boituva",
+    "uf": "SP",
+    "latitude": -23.2855,
+    "longitude": -47.6786
+  },
+  {
+    "id": "3507100",
+    "name": "Bom Jesus dos Perdões",
+    "uf": "SP",
+    "latitude": -23.1356,
+    "longitude": -46.4675
+  },
+  {
+    "id": "3507159",
+    "name": "Bom Sucesso de Itararé",
+    "uf": "SP",
+    "latitude": -24.3155,
+    "longitude": -49.1451
+  },
+  {
+    "id": "3507209",
+    "name": "Borá",
+    "uf": "SP",
+    "latitude": -22.2696,
+    "longitude": -50.5409
+  },
+  {
+    "id": "3507308",
+    "name": "Boracéia",
+    "uf": "SP",
+    "latitude": -22.1926,
+    "longitude": -48.7808
+  },
+  {
+    "id": "3507407",
+    "name": "Borborema",
+    "uf": "SP",
+    "latitude": -21.6214,
+    "longitude": -49.0741
+  },
+  {
+    "id": "3507456",
+    "name": "Borebi",
+    "uf": "SP",
+    "latitude": -22.5728,
+    "longitude": -48.9707
+  },
+  {
+    "id": "3507506",
+    "name": "Botucatu",
+    "uf": "SP",
+    "latitude": -22.8837,
+    "longitude": -48.4437
+  },
+  {
+    "id": "3507605",
+    "name": "Bragança Paulista",
+    "uf": "SP",
+    "latitude": -22.9527,
+    "longitude": -46.5419
+  },
+  {
+    "id": "3507704",
+    "name": "Braúna",
+    "uf": "SP",
+    "latitude": -21.499,
+    "longitude": -50.3175
+  },
+  {
+    "id": "3507753",
+    "name": "Brejo Alegre",
+    "uf": "SP",
+    "latitude": -21.1651,
+    "longitude": -50.1861
+  },
+  {
+    "id": "3507803",
+    "name": "Brodowski",
+    "uf": "SP",
+    "latitude": -20.9845,
+    "longitude": -47.6572
+  },
+  {
+    "id": "3507902",
+    "name": "Brotas",
+    "uf": "SP",
+    "latitude": -22.2795,
+    "longitude": -48.1251
+  },
+  {
+    "id": "3508009",
+    "name": "Buri",
+    "uf": "SP",
+    "latitude": -23.7977,
+    "longitude": -48.5958
+  },
+  {
+    "id": "3508108",
+    "name": "Buritama",
+    "uf": "SP",
+    "latitude": -21.0661,
+    "longitude": -50.1475
+  },
+  {
+    "id": "3508207",
+    "name": "Buritizal",
+    "uf": "SP",
+    "latitude": -20.1911,
+    "longitude": -47.7096
+  },
+  {
+    "id": "3508306",
+    "name": "Cabrália Paulista",
+    "uf": "SP",
+    "latitude": -22.4576,
+    "longitude": -49.3393
+  },
+  {
+    "id": "3508405",
+    "name": "Cabreúva",
+    "uf": "SP",
+    "latitude": -23.3053,
+    "longitude": -47.1362
+  },
+  {
+    "id": "3508504",
+    "name": "Caçapava",
+    "uf": "SP",
+    "latitude": -23.0992,
+    "longitude": -45.7076
+  },
+  {
+    "id": "3508603",
+    "name": "Cachoeira Paulista",
+    "uf": "SP",
+    "latitude": -22.6665,
+    "longitude": -45.0154
+  },
+  {
+    "id": "3508702",
+    "name": "Caconde",
+    "uf": "SP",
+    "latitude": -21.528,
+    "longitude": -46.6437
+  },
+  {
+    "id": "3508801",
+    "name": "Cafelândia",
+    "uf": "SP",
+    "latitude": -21.8031,
+    "longitude": -49.6092
+  },
+  {
+    "id": "3508900",
+    "name": "Caiabu",
+    "uf": "SP",
+    "latitude": -22.0127,
+    "longitude": -51.2394
+  },
+  {
+    "id": "3509007",
+    "name": "Caieiras",
+    "uf": "SP",
+    "latitude": -23.3607,
+    "longitude": -46.7397
+  },
+  {
+    "id": "3509106",
+    "name": "Caiuá",
+    "uf": "SP",
+    "latitude": -21.8322,
+    "longitude": -51.9969
+  },
+  {
+    "id": "3509205",
+    "name": "Cajamar",
+    "uf": "SP",
+    "latitude": -23.355,
+    "longitude": -46.8781
+  },
+  {
+    "id": "3509254",
+    "name": "Cajati",
+    "uf": "SP",
+    "latitude": -24.7324,
+    "longitude": -48.1223
+  },
+  {
+    "id": "3509304",
+    "name": "Cajobi",
+    "uf": "SP",
+    "latitude": -20.8773,
+    "longitude": -48.8063
+  },
+  {
+    "id": "3509403",
+    "name": "Cajuru",
+    "uf": "SP",
+    "latitude": -21.2749,
+    "longitude": -47.303
+  },
+  {
+    "id": "3509452",
+    "name": "Campina do Monte Alegre",
+    "uf": "SP",
+    "latitude": -23.5895,
+    "longitude": -48.4758
+  },
+  {
+    "id": "3509502",
+    "name": "Campinas",
+    "uf": "SP",
+    "latitude": -22.9053,
+    "longitude": -47.0659
+  },
+  {
+    "id": "3509601",
+    "name": "Campo Limpo Paulista",
+    "uf": "SP",
+    "latitude": -23.2078,
+    "longitude": -46.7889
+  },
+  {
+    "id": "3509700",
+    "name": "Campos do Jordão",
+    "uf": "SP",
+    "latitude": -22.7296,
+    "longitude": -45.5833
+  },
+  {
+    "id": "3509809",
+    "name": "Campos Novos Paulista",
+    "uf": "SP",
+    "latitude": -22.602,
+    "longitude": -49.9987
+  },
+  {
+    "id": "3509908",
+    "name": "Cananéia",
+    "uf": "SP",
+    "latitude": -25.0144,
+    "longitude": -47.9341
+  },
+  {
+    "id": "3509957",
+    "name": "Canas",
+    "uf": "SP",
+    "latitude": -22.7003,
+    "longitude": -45.0521
+  },
+  {
+    "id": "3510005",
+    "name": "Cândido Mota",
+    "uf": "SP",
+    "latitude": -22.7471,
+    "longitude": -50.3873
+  },
+  {
+    "id": "3510104",
+    "name": "Cândido Rodrigues",
+    "uf": "SP",
+    "latitude": -21.3275,
+    "longitude": -48.6327
+  },
+  {
+    "id": "3510153",
+    "name": "Canitar",
+    "uf": "SP",
+    "latitude": -23.004,
+    "longitude": -49.7839
+  },
+  {
+    "id": "3510203",
+    "name": "Capão Bonito",
+    "uf": "SP",
+    "latitude": -24.0113,
+    "longitude": -48.3482
+  },
+  {
+    "id": "3510302",
+    "name": "Capela do Alto",
+    "uf": "SP",
+    "latitude": -23.4685,
+    "longitude": -47.7388
+  },
+  {
+    "id": "3510401",
+    "name": "Capivari",
+    "uf": "SP",
+    "latitude": -22.9951,
+    "longitude": -47.5071
+  },
+  {
+    "id": "3510500",
+    "name": "Caraguatatuba",
+    "uf": "SP",
+    "latitude": -23.6125,
+    "longitude": -45.4125
+  },
+  {
+    "id": "3510609",
+    "name": "Carapicuíba",
+    "uf": "SP",
+    "latitude": -23.5235,
+    "longitude": -46.8407
+  },
+  {
+    "id": "3510708",
+    "name": "Cardoso",
+    "uf": "SP",
+    "latitude": -20.08,
+    "longitude": -49.9183
+  },
+  {
+    "id": "3510807",
+    "name": "Casa Branca",
+    "uf": "SP",
+    "latitude": -21.7708,
+    "longitude": -47.0852
+  },
+  {
+    "id": "3510906",
+    "name": "Cássia dos Coqueiros",
+    "uf": "SP",
+    "latitude": -21.2801,
+    "longitude": -47.1643
+  },
+  {
+    "id": "3511003",
+    "name": "Castilho",
+    "uf": "SP",
+    "latitude": -20.8689,
+    "longitude": -51.4884
+  },
+  {
+    "id": "3511102",
+    "name": "Catanduva",
+    "uf": "SP",
+    "latitude": -21.1314,
+    "longitude": -48.977
+  },
+  {
+    "id": "3511201",
+    "name": "Catiguá",
+    "uf": "SP",
+    "latitude": -21.0519,
+    "longitude": -49.0616
+  },
+  {
+    "id": "3511300",
+    "name": "Cedral",
+    "uf": "SP",
+    "latitude": -20.9009,
+    "longitude": -49.2664
+  },
+  {
+    "id": "3511409",
+    "name": "Cerqueira César",
+    "uf": "SP",
+    "latitude": -23.038,
+    "longitude": -49.1655
+  },
+  {
+    "id": "3511508",
+    "name": "Cerquilho",
+    "uf": "SP",
+    "latitude": -23.1665,
+    "longitude": -47.7459
+  },
+  {
+    "id": "3511607",
+    "name": "Cesário Lange",
+    "uf": "SP",
+    "latitude": -23.226,
+    "longitude": -47.9545
+  },
+  {
+    "id": "3511706",
+    "name": "Charqueada",
+    "uf": "SP",
+    "latitude": -22.5096,
+    "longitude": -47.7755
+  },
+  {
+    "id": "3557204",
+    "name": "Chavantes",
+    "uf": "SP",
+    "latitude": -23.0366,
+    "longitude": -49.7096
+  },
+  {
+    "id": "3511904",
+    "name": "Clementina",
+    "uf": "SP",
+    "latitude": -21.5604,
+    "longitude": -50.4525
+  },
+  {
+    "id": "3512001",
+    "name": "Colina",
+    "uf": "SP",
+    "latitude": -20.7114,
+    "longitude": -48.5387
+  },
+  {
+    "id": "3512100",
+    "name": "Colômbia",
+    "uf": "SP",
+    "latitude": -20.1768,
+    "longitude": -48.6865
+  },
+  {
+    "id": "3512209",
+    "name": "Conchal",
+    "uf": "SP",
+    "latitude": -22.3375,
+    "longitude": -47.1729
+  },
+  {
+    "id": "3512308",
+    "name": "Conchas",
+    "uf": "SP",
+    "latitude": -23.0154,
+    "longitude": -48.0134
+  },
+  {
+    "id": "3512407",
+    "name": "Cordeirópolis",
+    "uf": "SP",
+    "latitude": -22.4778,
+    "longitude": -47.4519
+  },
+  {
+    "id": "3512506",
+    "name": "Coroados",
+    "uf": "SP",
+    "latitude": -21.3521,
+    "longitude": -50.2859
+  },
+  {
+    "id": "3512605",
+    "name": "Coronel Macedo",
+    "uf": "SP",
+    "latitude": -23.6261,
+    "longitude": -49.31
+  },
+  {
+    "id": "3512704",
+    "name": "Corumbataí",
+    "uf": "SP",
+    "latitude": -22.2213,
+    "longitude": -47.6215
+  },
+  {
+    "id": "3512803",
+    "name": "Cosmópolis",
+    "uf": "SP",
+    "latitude": -22.6419,
+    "longitude": -47.1926
+  },
+  {
+    "id": "3512902",
+    "name": "Cosmorama",
+    "uf": "SP",
+    "latitude": -20.4755,
+    "longitude": -49.7827
+  },
+  {
+    "id": "3513009",
+    "name": "Cotia",
+    "uf": "SP",
+    "latitude": -23.6022,
+    "longitude": -46.919
+  },
+  {
+    "id": "3513108",
+    "name": "Cravinhos",
+    "uf": "SP",
+    "latitude": -21.338,
+    "longitude": -47.7324
+  },
+  {
+    "id": "3513207",
+    "name": "Cristais Paulista",
+    "uf": "SP",
+    "latitude": -20.4036,
+    "longitude": -47.4209
+  },
+  {
+    "id": "3513306",
+    "name": "Cruzália",
+    "uf": "SP",
+    "latitude": -22.7373,
+    "longitude": -50.7909
+  },
+  {
+    "id": "3513405",
+    "name": "Cruzeiro",
+    "uf": "SP",
+    "latitude": -22.5728,
+    "longitude": -44.969
+  },
+  {
+    "id": "3513504",
+    "name": "Cubatão",
+    "uf": "SP",
+    "latitude": -23.8911,
+    "longitude": -46.424
+  },
+  {
+    "id": "3513603",
+    "name": "Cunha",
+    "uf": "SP",
+    "latitude": -23.0731,
+    "longitude": -44.9576
+  },
+  {
+    "id": "3513702",
+    "name": "Descalvado",
+    "uf": "SP",
+    "latitude": -21.9002,
+    "longitude": -47.6181
+  },
+  {
+    "id": "3513801",
+    "name": "Diadema",
+    "uf": "SP",
+    "latitude": -23.6813,
+    "longitude": -46.6205
+  },
+  {
+    "id": "3513850",
+    "name": "Dirce Reis",
+    "uf": "SP",
+    "latitude": -20.4642,
+    "longitude": -50.6073
+  },
+  {
+    "id": "3513900",
+    "name": "Divinolândia",
+    "uf": "SP",
+    "latitude": -21.6637,
+    "longitude": -46.7361
+  },
+  {
+    "id": "3514007",
+    "name": "Dobrada",
+    "uf": "SP",
+    "latitude": -21.5155,
+    "longitude": -48.3935
+  },
+  {
+    "id": "3514106",
+    "name": "Dois Córregos",
+    "uf": "SP",
+    "latitude": -22.3673,
+    "longitude": -48.3819
+  },
+  {
+    "id": "3514205",
+    "name": "Dolcinópolis",
+    "uf": "SP",
+    "latitude": -20.124,
+    "longitude": -50.5149
+  },
+  {
+    "id": "3514304",
+    "name": "Dourado",
+    "uf": "SP",
+    "latitude": -22.1044,
+    "longitude": -48.3178
+  },
+  {
+    "id": "3514403",
+    "name": "Dracena",
+    "uf": "SP",
+    "latitude": -21.4843,
+    "longitude": -51.535
+  },
+  {
+    "id": "3514502",
+    "name": "Duartina",
+    "uf": "SP",
+    "latitude": -22.4146,
+    "longitude": -49.4084
+  },
+  {
+    "id": "3514601",
+    "name": "Dumont",
+    "uf": "SP",
+    "latitude": -21.2324,
+    "longitude": -47.9756
+  },
+  {
+    "id": "3514700",
+    "name": "Echaporã",
+    "uf": "SP",
+    "latitude": -22.4326,
+    "longitude": -50.2038
+  },
+  {
+    "id": "3514809",
+    "name": "Eldorado",
+    "uf": "SP",
+    "latitude": -24.5281,
+    "longitude": -48.1141
+  },
+  {
+    "id": "3514908",
+    "name": "Elias Fausto",
+    "uf": "SP",
+    "latitude": -23.0428,
+    "longitude": -47.3682
+  },
+  {
+    "id": "3514924",
+    "name": "Elisiário",
+    "uf": "SP",
+    "latitude": -21.1678,
+    "longitude": -49.1146
+  },
+  {
+    "id": "3514957",
+    "name": "Embaúba",
+    "uf": "SP",
+    "latitude": -20.9796,
+    "longitude": -48.8325
+  },
+  {
+    "id": "3515004",
+    "name": "Embu das Artes",
+    "uf": "SP",
+    "latitude": -23.6437,
+    "longitude": -46.8579
+  },
+  {
+    "id": "3515103",
+    "name": "Embu-Guaçu",
+    "uf": "SP",
+    "latitude": -23.8297,
+    "longitude": -46.8136
+  },
+  {
+    "id": "3515129",
+    "name": "Emilianópolis",
+    "uf": "SP",
+    "latitude": -21.8314,
+    "longitude": -51.4832
+  },
+  {
+    "id": "3515152",
+    "name": "Engenheiro Coelho",
+    "uf": "SP",
+    "latitude": -22.4836,
+    "longitude": -47.211
+  },
+  {
+    "id": "3515186",
+    "name": "Espírito Santo do Pinhal",
+    "uf": "SP",
+    "latitude": -22.1909,
+    "longitude": -46.7477
+  },
+  {
+    "id": "3515194",
+    "name": "Espírito Santo do Turvo",
+    "uf": "SP",
+    "latitude": -22.6925,
+    "longitude": -49.4341
+  },
+  {
+    "id": "3557303",
+    "name": "Estiva Gerbi",
+    "uf": "SP",
+    "latitude": -22.2713,
+    "longitude": -46.9481
+  },
+  {
+    "id": "3515202",
+    "name": "Estrela d'Oeste",
+    "uf": "SP",
+    "latitude": -20.2875,
+    "longitude": -50.4049
+  },
+  {
+    "id": "3515301",
+    "name": "Estrela do Norte",
+    "uf": "SP",
+    "latitude": -22.4859,
+    "longitude": -51.6632
+  },
+  {
+    "id": "3515350",
+    "name": "Euclides da Cunha Paulista",
+    "uf": "SP",
+    "latitude": -22.5545,
+    "longitude": -52.5928
+  },
+  {
+    "id": "3515400",
+    "name": "Fartura",
+    "uf": "SP",
+    "latitude": -23.3916,
+    "longitude": -49.5124
+  },
+  {
+    "id": "3515608",
+    "name": "Fernando Prestes",
+    "uf": "SP",
+    "latitude": -21.2661,
+    "longitude": -48.6874
+  },
+  {
+    "id": "3515509",
+    "name": "Fernandópolis",
+    "uf": "SP",
+    "latitude": -20.2806,
+    "longitude": -50.2471
+  },
+  {
+    "id": "3515657",
+    "name": "Fernão",
+    "uf": "SP",
+    "latitude": -22.3607,
+    "longitude": -49.5187
+  },
+  {
+    "id": "3515707",
+    "name": "Ferraz de Vasconcelos",
+    "uf": "SP",
+    "latitude": -23.5411,
+    "longitude": -46.371
+  },
+  {
+    "id": "3515806",
+    "name": "Flora Rica",
+    "uf": "SP",
+    "latitude": -21.6727,
+    "longitude": -51.3821
+  },
+  {
+    "id": "3515905",
+    "name": "Floreal",
+    "uf": "SP",
+    "latitude": -20.6752,
+    "longitude": -50.1513
+  },
+  {
+    "id": "3516002",
+    "name": "Flórida Paulista",
+    "uf": "SP",
+    "latitude": -21.6127,
+    "longitude": -51.1724
+  },
+  {
+    "id": "3516101",
+    "name": "Florínia",
+    "uf": "SP",
+    "latitude": -22.868,
+    "longitude": -50.6814
+  },
+  {
+    "id": "3516200",
+    "name": "Franca",
+    "uf": "SP",
+    "latitude": -20.5352,
+    "longitude": -47.4039
+  },
+  {
+    "id": "3516309",
+    "name": "Francisco Morato",
+    "uf": "SP",
+    "latitude": -23.2792,
+    "longitude": -46.7448
+  },
+  {
+    "id": "3516408",
+    "name": "Franco da Rocha",
+    "uf": "SP",
+    "latitude": -23.3229,
+    "longitude": -46.729
+  },
+  {
+    "id": "3516507",
+    "name": "Gabriel Monteiro",
+    "uf": "SP",
+    "latitude": -21.5294,
+    "longitude": -50.5573
+  },
+  {
+    "id": "3516606",
+    "name": "Gália",
+    "uf": "SP",
+    "latitude": -22.2918,
+    "longitude": -49.5504
+  },
+  {
+    "id": "3516705",
+    "name": "Garça",
+    "uf": "SP",
+    "latitude": -22.2125,
+    "longitude": -49.6546
+  },
+  {
+    "id": "3516804",
+    "name": "Gastão Vidigal",
+    "uf": "SP",
+    "latitude": -20.7948,
+    "longitude": -50.1912
+  },
+  {
+    "id": "3516853",
+    "name": "Gavião Peixoto",
+    "uf": "SP",
+    "latitude": -21.8367,
+    "longitude": -48.4957
+  },
+  {
+    "id": "3516903",
+    "name": "General Salgado",
+    "uf": "SP",
+    "latitude": -20.6485,
+    "longitude": -50.364
+  },
+  {
+    "id": "3517000",
+    "name": "Getulina",
+    "uf": "SP",
+    "latitude": -21.7961,
+    "longitude": -49.9312
+  },
+  {
+    "id": "3517109",
+    "name": "Glicério",
+    "uf": "SP",
+    "latitude": -21.3812,
+    "longitude": -50.2123
+  },
+  {
+    "id": "3517208",
+    "name": "Guaiçara",
+    "uf": "SP",
+    "latitude": -21.6195,
+    "longitude": -49.8013
+  },
+  {
+    "id": "3517307",
+    "name": "Guaimbê",
+    "uf": "SP",
+    "latitude": -21.9091,
+    "longitude": -49.8986
+  },
+  {
+    "id": "3517406",
+    "name": "Guaíra",
+    "uf": "SP",
+    "latitude": -20.3196,
+    "longitude": -48.312
+  },
+  {
+    "id": "3517505",
+    "name": "Guapiaçu",
+    "uf": "SP",
+    "latitude": -20.7959,
+    "longitude": -49.2172
+  },
+  {
+    "id": "3517604",
+    "name": "Guapiara",
+    "uf": "SP",
+    "latitude": -24.1892,
+    "longitude": -48.5295
+  },
+  {
+    "id": "3517703",
+    "name": "Guará",
+    "uf": "SP",
+    "latitude": -20.4302,
+    "longitude": -47.8236
+  },
+  {
+    "id": "3517802",
+    "name": "Guaraçaí",
+    "uf": "SP",
+    "latitude": -21.0292,
+    "longitude": -51.2119
+  },
+  {
+    "id": "3517901",
+    "name": "Guaraci",
+    "uf": "SP",
+    "latitude": -20.4977,
+    "longitude": -48.9391
+  },
+  {
+    "id": "3518008",
+    "name": "Guarani d'Oeste",
+    "uf": "SP",
+    "latitude": -20.0746,
+    "longitude": -50.3411
+  },
+  {
+    "id": "3518107",
+    "name": "Guarantã",
+    "uf": "SP",
+    "latitude": -21.8942,
+    "longitude": -49.5914
+  },
+  {
+    "id": "3518206",
+    "name": "Guararapes",
+    "uf": "SP",
+    "latitude": -21.2544,
+    "longitude": -50.6453
+  },
+  {
+    "id": "3518305",
+    "name": "Guararema",
+    "uf": "SP",
+    "latitude": -23.4112,
+    "longitude": -46.0369
+  },
+  {
+    "id": "3518404",
+    "name": "Guaratinguetá",
+    "uf": "SP",
+    "latitude": -22.8075,
+    "longitude": -45.1938
+  },
+  {
+    "id": "3518503",
+    "name": "Guareí",
+    "uf": "SP",
+    "latitude": -23.3714,
+    "longitude": -48.1837
+  },
+  {
+    "id": "3518602",
+    "name": "Guariba",
+    "uf": "SP",
+    "latitude": -21.3594,
+    "longitude": -48.2316
+  },
+  {
+    "id": "3518701",
+    "name": "Guarujá",
+    "uf": "SP",
+    "latitude": -23.9888,
+    "longitude": -46.258
+  },
+  {
+    "id": "3518800",
+    "name": "Guarulhos",
+    "uf": "SP",
+    "latitude": -23.4538,
+    "longitude": -46.5333
+  },
+  {
+    "id": "3518859",
+    "name": "Guatapará",
+    "uf": "SP",
+    "latitude": -21.4944,
+    "longitude": -48.0356
+  },
+  {
+    "id": "3518909",
+    "name": "Guzolândia",
+    "uf": "SP",
+    "latitude": -20.6467,
+    "longitude": -50.6645
+  },
+  {
+    "id": "3519006",
+    "name": "Herculândia",
+    "uf": "SP",
+    "latitude": -22.0038,
+    "longitude": -50.3907
+  },
+  {
+    "id": "3519055",
+    "name": "Holambra",
+    "uf": "SP",
+    "latitude": -22.6405,
+    "longitude": -47.0487
+  },
+  {
+    "id": "3519071",
+    "name": "Hortolândia",
+    "uf": "SP",
+    "latitude": -22.8529,
+    "longitude": -47.2143
+  },
+  {
+    "id": "3519105",
+    "name": "Iacanga",
+    "uf": "SP",
+    "latitude": -21.8896,
+    "longitude": -49.031
+  },
+  {
+    "id": "3519204",
+    "name": "Iacri",
+    "uf": "SP",
+    "latitude": -21.8572,
+    "longitude": -50.6932
+  },
+  {
+    "id": "3519253",
+    "name": "Iaras",
+    "uf": "SP",
+    "latitude": -22.8682,
+    "longitude": -49.1634
+  },
+  {
+    "id": "3519303",
+    "name": "Ibaté",
+    "uf": "SP",
+    "latitude": -21.9584,
+    "longitude": -47.9882
+  },
+  {
+    "id": "3519402",
+    "name": "Ibirá",
+    "uf": "SP",
+    "latitude": -21.083,
+    "longitude": -49.2448
+  },
+  {
+    "id": "3519501",
+    "name": "Ibirarema",
+    "uf": "SP",
+    "latitude": -22.8185,
+    "longitude": -50.0739
+  },
+  {
+    "id": "3519600",
+    "name": "Ibitinga",
+    "uf": "SP",
+    "latitude": -21.7562,
+    "longitude": -48.8319
+  },
+  {
+    "id": "3519709",
+    "name": "Ibiúna",
+    "uf": "SP",
+    "latitude": -23.6596,
+    "longitude": -47.223
+  },
+  {
+    "id": "3519808",
+    "name": "Icém",
+    "uf": "SP",
+    "latitude": -20.3391,
+    "longitude": -49.1915
+  },
+  {
+    "id": "3519907",
+    "name": "Iepê",
+    "uf": "SP",
+    "latitude": -22.6602,
+    "longitude": -51.0779
+  },
+  {
+    "id": "3520004",
+    "name": "Igaraçu do Tietê",
+    "uf": "SP",
+    "latitude": -22.509,
+    "longitude": -48.5597
+  },
+  {
+    "id": "3520103",
+    "name": "Igarapava",
+    "uf": "SP",
+    "latitude": -20.0407,
+    "longitude": -47.7466
+  },
+  {
+    "id": "3520202",
+    "name": "Igaratá",
+    "uf": "SP",
+    "latitude": -23.2037,
+    "longitude": -46.157
+  },
+  {
+    "id": "3520301",
+    "name": "Iguape",
+    "uf": "SP",
+    "latitude": -24.699,
+    "longitude": -47.5537
+  },
+  {
+    "id": "3520426",
+    "name": "Ilha Comprida",
+    "uf": "SP",
+    "latitude": -24.7307,
+    "longitude": -47.5383
+  },
+  {
+    "id": "3520442",
+    "name": "Ilha Solteira",
+    "uf": "SP",
+    "latitude": -20.4326,
+    "longitude": -51.3426
+  },
+  {
+    "id": "3520400",
+    "name": "Ilhabela",
+    "uf": "SP",
+    "latitude": -23.7785,
+    "longitude": -45.3552
+  },
+  {
+    "id": "3520509",
+    "name": "Indaiatuba",
+    "uf": "SP",
+    "latitude": -23.0816,
+    "longitude": -47.2101
+  },
+  {
+    "id": "3520608",
+    "name": "Indiana",
+    "uf": "SP",
+    "latitude": -22.1738,
+    "longitude": -51.2555
+  },
+  {
+    "id": "3520707",
+    "name": "Indiaporã",
+    "uf": "SP",
+    "latitude": -19.979,
+    "longitude": -50.2909
+  },
+  {
+    "id": "3520806",
+    "name": "Inúbia Paulista",
+    "uf": "SP",
+    "latitude": -21.7695,
+    "longitude": -50.9633
+  },
+  {
+    "id": "3520905",
+    "name": "Ipaussu",
+    "uf": "SP",
+    "latitude": -23.0575,
+    "longitude": -49.6279
+  },
+  {
+    "id": "3521002",
+    "name": "Iperó",
+    "uf": "SP",
+    "latitude": -23.3513,
+    "longitude": -47.6927
+  },
+  {
+    "id": "3521101",
+    "name": "Ipeúna",
+    "uf": "SP",
+    "latitude": -22.4355,
+    "longitude": -47.7151
+  },
+  {
+    "id": "3521150",
+    "name": "Ipiguá",
+    "uf": "SP",
+    "latitude": -20.6557,
+    "longitude": -49.3842
+  },
+  {
+    "id": "3521200",
+    "name": "Iporanga",
+    "uf": "SP",
+    "latitude": -24.5847,
+    "longitude": -48.5971
+  },
+  {
+    "id": "3521309",
+    "name": "Ipuã",
+    "uf": "SP",
+    "latitude": -20.4438,
+    "longitude": -48.0129
+  },
+  {
+    "id": "3521408",
+    "name": "Iracemápolis",
+    "uf": "SP",
+    "latitude": -22.5832,
+    "longitude": -47.523
+  },
+  {
+    "id": "3521507",
+    "name": "Irapuã",
+    "uf": "SP",
+    "latitude": -21.2768,
+    "longitude": -49.4164
+  },
+  {
+    "id": "3521606",
+    "name": "Irapuru",
+    "uf": "SP",
+    "latitude": -21.5684,
+    "longitude": -51.3472
+  },
+  {
+    "id": "3521705",
+    "name": "Itaberá",
+    "uf": "SP",
+    "latitude": -23.8638,
+    "longitude": -49.14
+  },
+  {
+    "id": "3521804",
+    "name": "Itaí",
+    "uf": "SP",
+    "latitude": -23.4213,
+    "longitude": -49.092
+  },
+  {
+    "id": "3521903",
+    "name": "Itajobi",
+    "uf": "SP",
+    "latitude": -21.3123,
+    "longitude": -49.0629
+  },
+  {
+    "id": "3522000",
+    "name": "Itaju",
+    "uf": "SP",
+    "latitude": -21.9857,
+    "longitude": -48.8116
+  },
+  {
+    "id": "3522109",
+    "name": "Itanhaém",
+    "uf": "SP",
+    "latitude": -24.1736,
+    "longitude": -46.788
+  },
+  {
+    "id": "3522158",
+    "name": "Itaóca",
+    "uf": "SP",
+    "latitude": -24.6393,
+    "longitude": -48.8413
+  },
+  {
+    "id": "3522208",
+    "name": "Itapecerica da Serra",
+    "uf": "SP",
+    "latitude": -23.7161,
+    "longitude": -46.8572
+  },
+  {
+    "id": "3522307",
+    "name": "Itapetininga",
+    "uf": "SP",
+    "latitude": -23.5886,
+    "longitude": -48.0483
+  },
+  {
+    "id": "3522406",
+    "name": "Itapeva",
+    "uf": "SP",
+    "latitude": -23.9788,
+    "longitude": -48.8764
+  },
+  {
+    "id": "3522505",
+    "name": "Itapevi",
+    "uf": "SP",
+    "latitude": -23.5488,
+    "longitude": -46.9327
+  },
+  {
+    "id": "3522604",
+    "name": "Itapira",
+    "uf": "SP",
+    "latitude": -22.4357,
+    "longitude": -46.8224
+  },
+  {
+    "id": "3522653",
+    "name": "Itapirapuã Paulista",
+    "uf": "SP",
+    "latitude": -24.572,
+    "longitude": -49.1661
+  },
+  {
+    "id": "3522703",
+    "name": "Itápolis",
+    "uf": "SP",
+    "latitude": -21.5942,
+    "longitude": -48.8149
+  },
+  {
+    "id": "3522802",
+    "name": "Itaporanga",
+    "uf": "SP",
+    "latitude": -23.7043,
+    "longitude": -49.4819
+  },
+  {
+    "id": "3522901",
+    "name": "Itapuí",
+    "uf": "SP",
+    "latitude": -22.2324,
+    "longitude": -48.7197
+  },
+  {
+    "id": "3523008",
+    "name": "Itapura",
+    "uf": "SP",
+    "latitude": -20.6419,
+    "longitude": -51.5063
+  },
+  {
+    "id": "3523107",
+    "name": "Itaquaquecetuba",
+    "uf": "SP",
+    "latitude": -23.4835,
+    "longitude": -46.3457
+  },
+  {
+    "id": "3523206",
+    "name": "Itararé",
+    "uf": "SP",
+    "latitude": -24.1085,
+    "longitude": -49.3352
+  },
+  {
+    "id": "3523305",
+    "name": "Itariri",
+    "uf": "SP",
+    "latitude": -24.2834,
+    "longitude": -47.1736
+  },
+  {
+    "id": "3523404",
+    "name": "Itatiba",
+    "uf": "SP",
+    "latitude": -23.0035,
+    "longitude": -46.8464
+  },
+  {
+    "id": "3523503",
+    "name": "Itatinga",
+    "uf": "SP",
+    "latitude": -23.1047,
+    "longitude": -48.6157
+  },
+  {
+    "id": "3523602",
+    "name": "Itirapina",
+    "uf": "SP",
+    "latitude": -22.2562,
+    "longitude": -47.8166
+  },
+  {
+    "id": "3523701",
+    "name": "Itirapuã",
+    "uf": "SP",
+    "latitude": -20.6416,
+    "longitude": -47.2194
+  },
+  {
+    "id": "3523800",
+    "name": "Itobi",
+    "uf": "SP",
+    "latitude": -21.7309,
+    "longitude": -46.9743
+  },
+  {
+    "id": "3523909",
+    "name": "Itu",
+    "uf": "SP",
+    "latitude": -23.2544,
+    "longitude": -47.2927
+  },
+  {
+    "id": "3524006",
+    "name": "Itupeva",
+    "uf": "SP",
+    "latitude": -23.1526,
+    "longitude": -47.0593
+  },
+  {
+    "id": "3524105",
+    "name": "Ituverava",
+    "uf": "SP",
+    "latitude": -20.3355,
+    "longitude": -47.7902
+  },
+  {
+    "id": "3524204",
+    "name": "Jaborandi",
+    "uf": "SP",
+    "latitude": -20.6884,
+    "longitude": -48.4112
+  },
+  {
+    "id": "3524303",
+    "name": "Jaboticabal",
+    "uf": "SP",
+    "latitude": -21.252,
+    "longitude": -48.3252
+  },
+  {
+    "id": "3524402",
+    "name": "Jacareí",
+    "uf": "SP",
+    "latitude": -23.2983,
+    "longitude": -45.9658
+  },
+  {
+    "id": "3524501",
+    "name": "Jaci",
+    "uf": "SP",
+    "latitude": -20.8805,
+    "longitude": -49.5797
+  },
+  {
+    "id": "3524600",
+    "name": "Jacupiranga",
+    "uf": "SP",
+    "latitude": -24.6963,
+    "longitude": -48.0064
+  },
+  {
+    "id": "3524709",
+    "name": "Jaguariúna",
+    "uf": "SP",
+    "latitude": -22.7037,
+    "longitude": -46.9851
+  },
+  {
+    "id": "3524808",
+    "name": "Jales",
+    "uf": "SP",
+    "latitude": -20.2672,
+    "longitude": -50.5494
+  },
+  {
+    "id": "3524907",
+    "name": "Jambeiro",
+    "uf": "SP",
+    "latitude": -23.2522,
+    "longitude": -45.6942
+  },
+  {
+    "id": "3525003",
+    "name": "Jandira",
+    "uf": "SP",
+    "latitude": -23.5275,
+    "longitude": -46.9023
+  },
+  {
+    "id": "3525102",
+    "name": "Jardinópolis",
+    "uf": "SP",
+    "latitude": -21.0176,
+    "longitude": -47.7606
+  },
+  {
+    "id": "3525201",
+    "name": "Jarinu",
+    "uf": "SP",
+    "latitude": -23.1039,
+    "longitude": -46.728
+  },
+  {
+    "id": "3525300",
+    "name": "Jaú",
+    "uf": "SP",
+    "latitude": -22.2936,
+    "longitude": -48.5592
+  },
+  {
+    "id": "3525409",
+    "name": "Jeriquara",
+    "uf": "SP",
+    "latitude": -20.3116,
+    "longitude": -47.5918
+  },
+  {
+    "id": "3525508",
+    "name": "Joanópolis",
+    "uf": "SP",
+    "latitude": -22.927,
+    "longitude": -46.2741
+  },
+  {
+    "id": "3525607",
+    "name": "João Ramalho",
+    "uf": "SP",
+    "latitude": -22.2473,
+    "longitude": -50.7694
+  },
+  {
+    "id": "3525706",
+    "name": "José Bonifácio",
+    "uf": "SP",
+    "latitude": -21.0551,
+    "longitude": -49.6892
+  },
+  {
+    "id": "3525805",
+    "name": "Júlio Mesquita",
+    "uf": "SP",
+    "latitude": -22.0112,
+    "longitude": -49.7873
+  },
+  {
+    "id": "3525854",
+    "name": "Jumirim",
+    "uf": "SP",
+    "latitude": -23.0884,
+    "longitude": -47.7868
+  },
+  {
+    "id": "3525904",
+    "name": "Jundiaí",
+    "uf": "SP",
+    "latitude": -23.1852,
+    "longitude": -46.8974
+  },
+  {
+    "id": "3526001",
+    "name": "Junqueirópolis",
+    "uf": "SP",
+    "latitude": -21.5103,
+    "longitude": -51.4342
+  },
+  {
+    "id": "3526100",
+    "name": "Juquiá",
+    "uf": "SP",
+    "latitude": -24.3101,
+    "longitude": -47.6426
+  },
+  {
+    "id": "3526209",
+    "name": "Juquitiba",
+    "uf": "SP",
+    "latitude": -23.9244,
+    "longitude": -47.0653
+  },
+  {
+    "id": "3526308",
+    "name": "Lagoinha",
+    "uf": "SP",
+    "latitude": -23.0846,
+    "longitude": -45.1944
+  },
+  {
+    "id": "3526407",
+    "name": "Laranjal Paulista",
+    "uf": "SP",
+    "latitude": -23.0506,
+    "longitude": -47.8375
+  },
+  {
+    "id": "3526506",
+    "name": "Lavínia",
+    "uf": "SP",
+    "latitude": -21.1639,
+    "longitude": -51.0412
+  },
+  {
+    "id": "3526605",
+    "name": "Lavrinhas",
+    "uf": "SP",
+    "latitude": -22.57,
+    "longitude": -44.9024
+  },
+  {
+    "id": "3526704",
+    "name": "Leme",
+    "uf": "SP",
+    "latitude": -22.1809,
+    "longitude": -47.3841
+  },
+  {
+    "id": "3526803",
+    "name": "Lençóis Paulista",
+    "uf": "SP",
+    "latitude": -22.6027,
+    "longitude": -48.8037
+  },
+  {
+    "id": "3526902",
+    "name": "Limeira",
+    "uf": "SP",
+    "latitude": -22.566,
+    "longitude": -47.397
+  },
+  {
+    "id": "3527009",
+    "name": "Lindóia",
+    "uf": "SP",
+    "latitude": -22.5226,
+    "longitude": -46.65
+  },
+  {
+    "id": "3527108",
+    "name": "Lins",
+    "uf": "SP",
+    "latitude": -21.6718,
+    "longitude": -49.7526
+  },
+  {
+    "id": "3527207",
+    "name": "Lorena",
+    "uf": "SP",
+    "latitude": -22.7334,
+    "longitude": -45.1197
+  },
+  {
+    "id": "3527256",
+    "name": "Lourdes",
+    "uf": "SP",
+    "latitude": -20.966,
+    "longitude": -50.2263
+  },
+  {
+    "id": "3527306",
+    "name": "Louveira",
+    "uf": "SP",
+    "latitude": -23.0856,
+    "longitude": -46.9484
+  },
+  {
+    "id": "3527405",
+    "name": "Lucélia",
+    "uf": "SP",
+    "latitude": -21.7182,
+    "longitude": -51.0215
+  },
+  {
+    "id": "3527504",
+    "name": "Lucianópolis",
+    "uf": "SP",
+    "latitude": -22.4294,
+    "longitude": -49.522
+  },
+  {
+    "id": "3527603",
+    "name": "Luís Antônio",
+    "uf": "SP",
+    "latitude": -21.55,
+    "longitude": -47.7801
+  },
+  {
+    "id": "3527702",
+    "name": "Luiziânia",
+    "uf": "SP",
+    "latitude": -21.6737,
+    "longitude": -50.3294
+  },
+  {
+    "id": "3527801",
+    "name": "Lupércio",
+    "uf": "SP",
+    "latitude": -22.4146,
+    "longitude": -49.818
+  },
+  {
+    "id": "3527900",
+    "name": "Lutécia",
+    "uf": "SP",
+    "latitude": -22.3384,
+    "longitude": -50.394
+  },
+  {
+    "id": "3528007",
+    "name": "Macatuba",
+    "uf": "SP",
+    "latitude": -22.5002,
+    "longitude": -48.7102
+  },
+  {
+    "id": "3528106",
+    "name": "Macaubal",
+    "uf": "SP",
+    "latitude": -20.8022,
+    "longitude": -49.9687
+  },
+  {
+    "id": "3528205",
+    "name": "Macedônia",
+    "uf": "SP",
+    "latitude": -20.1444,
+    "longitude": -50.1973
+  },
+  {
+    "id": "3528304",
+    "name": "Magda",
+    "uf": "SP",
+    "latitude": -20.6445,
+    "longitude": -50.2305
+  },
+  {
+    "id": "3528403",
+    "name": "Mairinque",
+    "uf": "SP",
+    "latitude": -23.5398,
+    "longitude": -47.185
+  },
+  {
+    "id": "3528502",
+    "name": "Mairiporã",
+    "uf": "SP",
+    "latitude": -23.3171,
+    "longitude": -46.5897
+  },
+  {
+    "id": "3528601",
+    "name": "Manduri",
+    "uf": "SP",
+    "latitude": -23.0056,
+    "longitude": -49.3202
+  },
+  {
+    "id": "3528700",
+    "name": "Marabá Paulista",
+    "uf": "SP",
+    "latitude": -22.1068,
+    "longitude": -51.9617
+  },
+  {
+    "id": "3528809",
+    "name": "Maracaí",
+    "uf": "SP",
+    "latitude": -22.6149,
+    "longitude": -50.6713
+  },
+  {
+    "id": "3528858",
+    "name": "Marapoama",
+    "uf": "SP",
+    "latitude": -21.2587,
+    "longitude": -49.13
+  },
+  {
+    "id": "3528908",
+    "name": "Mariápolis",
+    "uf": "SP",
+    "latitude": -21.7959,
+    "longitude": -51.1824
+  },
+  {
+    "id": "3529005",
+    "name": "Marília",
+    "uf": "SP",
+    "latitude": -22.2171,
+    "longitude": -49.9501
+  },
+  {
+    "id": "3529104",
+    "name": "Marinópolis",
+    "uf": "SP",
+    "latitude": -20.4389,
+    "longitude": -50.8254
+  },
+  {
+    "id": "3529203",
+    "name": "Martinópolis",
+    "uf": "SP",
+    "latitude": -22.1462,
+    "longitude": -51.1709
+  },
+  {
+    "id": "3529302",
+    "name": "Matão",
+    "uf": "SP",
+    "latitude": -21.6025,
+    "longitude": -48.364
+  },
+  {
+    "id": "3529401",
+    "name": "Mauá",
+    "uf": "SP",
+    "latitude": -23.6677,
+    "longitude": -46.4613
+  },
+  {
+    "id": "3529500",
+    "name": "Mendonça",
+    "uf": "SP",
+    "latitude": -21.1757,
+    "longitude": -49.5791
+  },
+  {
+    "id": "3529609",
+    "name": "Meridiano",
+    "uf": "SP",
+    "latitude": -20.3579,
+    "longitude": -50.1811
+  },
+  {
+    "id": "3529658",
+    "name": "Mesópolis",
+    "uf": "SP",
+    "latitude": -19.9684,
+    "longitude": -50.6326
+  },
+  {
+    "id": "3529708",
+    "name": "Miguelópolis",
+    "uf": "SP",
+    "latitude": -20.1796,
+    "longitude": -48.031
+  },
+  {
+    "id": "3529807",
+    "name": "Mineiros do Tietê",
+    "uf": "SP",
+    "latitude": -22.412,
+    "longitude": -48.451
+  },
+  {
+    "id": "3530003",
+    "name": "Mira Estrela",
+    "uf": "SP",
+    "latitude": -19.9789,
+    "longitude": -50.139
+  },
+  {
+    "id": "3529906",
+    "name": "Miracatu",
+    "uf": "SP",
+    "latitude": -24.2766,
+    "longitude": -47.4625
+  },
+  {
+    "id": "3530102",
+    "name": "Mirandópolis",
+    "uf": "SP",
+    "latitude": -21.1313,
+    "longitude": -51.1035
+  },
+  {
+    "id": "3530201",
+    "name": "Mirante do Paranapanema",
+    "uf": "SP",
+    "latitude": -22.2904,
+    "longitude": -51.9084
+  },
+  {
+    "id": "3530300",
+    "name": "Mirassol",
+    "uf": "SP",
+    "latitude": -20.8169,
+    "longitude": -49.5206
+  },
+  {
+    "id": "3530409",
+    "name": "Mirassolândia",
+    "uf": "SP",
+    "latitude": -20.6179,
+    "longitude": -49.4617
+  },
+  {
+    "id": "3530508",
+    "name": "Mococa",
+    "uf": "SP",
+    "latitude": -21.4647,
+    "longitude": -47.0024
+  },
+  {
+    "id": "3530607",
+    "name": "Mogi das Cruzes",
+    "uf": "SP",
+    "latitude": -23.5208,
+    "longitude": -46.1854
+  },
+  {
+    "id": "3530706",
+    "name": "Mogi Guaçu",
+    "uf": "SP",
+    "latitude": -22.3675,
+    "longitude": -46.9428
+  },
+  {
+    "id": "3530805",
+    "name": "Mogi Mirim",
+    "uf": "SP",
+    "latitude": -22.4332,
+    "longitude": -46.9532
+  },
+  {
+    "id": "3530904",
+    "name": "Mombuca",
+    "uf": "SP",
+    "latitude": -22.9285,
+    "longitude": -47.559
+  },
+  {
+    "id": "3531001",
+    "name": "Monções",
+    "uf": "SP",
+    "latitude": -20.8509,
+    "longitude": -50.0975
+  },
+  {
+    "id": "3531100",
+    "name": "Mongaguá",
+    "uf": "SP",
+    "latitude": -24.0809,
+    "longitude": -46.6265
+  },
+  {
+    "id": "3531209",
+    "name": "Monte Alegre do Sul",
+    "uf": "SP",
+    "latitude": -22.6817,
+    "longitude": -46.681
+  },
+  {
+    "id": "3531308",
+    "name": "Monte Alto",
+    "uf": "SP",
+    "latitude": -21.2655,
+    "longitude": -48.4971
+  },
+  {
+    "id": "3531407",
+    "name": "Monte Aprazível",
+    "uf": "SP",
+    "latitude": -20.768,
+    "longitude": -49.7184
+  },
+  {
+    "id": "3531506",
+    "name": "Monte Azul Paulista",
+    "uf": "SP",
+    "latitude": -20.9065,
+    "longitude": -48.6387
+  },
+  {
+    "id": "3531605",
+    "name": "Monte Castelo",
+    "uf": "SP",
+    "latitude": -21.2981,
+    "longitude": -51.5679
+  },
+  {
+    "id": "3531803",
+    "name": "Monte Mor",
+    "uf": "SP",
+    "latitude": -22.945,
+    "longitude": -47.3122
+  },
+  {
+    "id": "3531704",
+    "name": "Monteiro Lobato",
+    "uf": "SP",
+    "latitude": -22.9544,
+    "longitude": -45.8407
+  },
+  {
+    "id": "3531902",
+    "name": "Morro Agudo",
+    "uf": "SP",
+    "latitude": -20.7288,
+    "longitude": -48.0581
+  },
+  {
+    "id": "3532009",
+    "name": "Morungaba",
+    "uf": "SP",
+    "latitude": -22.8811,
+    "longitude": -46.7896
+  },
+  {
+    "id": "3532058",
+    "name": "Motuca",
+    "uf": "SP",
+    "latitude": -21.5103,
+    "longitude": -48.1538
+  },
+  {
+    "id": "3532108",
+    "name": "Murutinga do Sul",
+    "uf": "SP",
+    "latitude": -20.9908,
+    "longitude": -51.2774
+  },
+  {
+    "id": "3532157",
+    "name": "Nantes",
+    "uf": "SP",
+    "latitude": -22.6156,
+    "longitude": -51.24
+  },
+  {
+    "id": "3532207",
+    "name": "Narandiba",
+    "uf": "SP",
+    "latitude": -22.4057,
+    "longitude": -51.5274
+  },
+  {
+    "id": "3532306",
+    "name": "Natividade da Serra",
+    "uf": "SP",
+    "latitude": -23.3707,
+    "longitude": -45.4468
+  },
+  {
+    "id": "3532405",
+    "name": "Nazaré Paulista",
+    "uf": "SP",
+    "latitude": -23.1747,
+    "longitude": -46.3983
+  },
+  {
+    "id": "3532504",
+    "name": "Neves Paulista",
+    "uf": "SP",
+    "latitude": -20.843,
+    "longitude": -49.6358
+  },
+  {
+    "id": "3532603",
+    "name": "Nhandeara",
+    "uf": "SP",
+    "latitude": -20.6945,
+    "longitude": -50.0436
+  },
+  {
+    "id": "3532702",
+    "name": "Nipoã",
+    "uf": "SP",
+    "latitude": -20.9114,
+    "longitude": -49.7833
+  },
+  {
+    "id": "3532801",
+    "name": "Nova Aliança",
+    "uf": "SP",
+    "latitude": -21.0156,
+    "longitude": -49.4986
+  },
+  {
+    "id": "3532827",
+    "name": "Nova Campina",
+    "uf": "SP",
+    "latitude": -24.1224,
+    "longitude": -48.9022
+  },
+  {
+    "id": "3532843",
+    "name": "Nova Canaã Paulista",
+    "uf": "SP",
+    "latitude": -20.3836,
+    "longitude": -50.9483
+  },
+  {
+    "id": "3532868",
+    "name": "Nova Castilho",
+    "uf": "SP",
+    "latitude": -20.7615,
+    "longitude": -50.3477
+  },
+  {
+    "id": "3532900",
+    "name": "Nova Europa",
+    "uf": "SP",
+    "latitude": -21.7765,
+    "longitude": -48.5705
+  },
+  {
+    "id": "3533007",
+    "name": "Nova Granada",
+    "uf": "SP",
+    "latitude": -20.5321,
+    "longitude": -49.3123
+  },
+  {
+    "id": "3533106",
+    "name": "Nova Guataporanga",
+    "uf": "SP",
+    "latitude": -21.332,
+    "longitude": -51.6447
+  },
+  {
+    "id": "3533205",
+    "name": "Nova Independência",
+    "uf": "SP",
+    "latitude": -21.1026,
+    "longitude": -51.4905
+  },
+  {
+    "id": "3533304",
+    "name": "Nova Luzitânia",
+    "uf": "SP",
+    "latitude": -20.856,
+    "longitude": -50.2617
+  },
+  {
+    "id": "3533403",
+    "name": "Nova Odessa",
+    "uf": "SP",
+    "latitude": -22.7832,
+    "longitude": -47.2941
+  },
+  {
+    "id": "3533254",
+    "name": "Novais",
+    "uf": "SP",
+    "latitude": -20.9893,
+    "longitude": -48.9141
+  },
+  {
+    "id": "3533502",
+    "name": "Novo Horizonte",
+    "uf": "SP",
+    "latitude": -21.4651,
+    "longitude": -49.2234
+  },
+  {
+    "id": "3533601",
+    "name": "Nuporanga",
+    "uf": "SP",
+    "latitude": -20.7296,
+    "longitude": -47.7429
+  },
+  {
+    "id": "3533700",
+    "name": "Ocauçu",
+    "uf": "SP",
+    "latitude": -22.438,
+    "longitude": -49.922
+  },
+  {
+    "id": "3533809",
+    "name": "Óleo",
+    "uf": "SP",
+    "latitude": -22.9435,
+    "longitude": -49.3419
+  },
+  {
+    "id": "3533908",
+    "name": "Olímpia",
+    "uf": "SP",
+    "latitude": -20.7366,
+    "longitude": -48.9106
+  },
+  {
+    "id": "3534005",
+    "name": "Onda Verde",
+    "uf": "SP",
+    "latitude": -20.6042,
+    "longitude": -49.2929
+  },
+  {
+    "id": "3534104",
+    "name": "Oriente",
+    "uf": "SP",
+    "latitude": -22.1549,
+    "longitude": -50.0971
+  },
+  {
+    "id": "3534203",
+    "name": "Orindiúva",
+    "uf": "SP",
+    "latitude": -20.1861,
+    "longitude": -49.3464
+  },
+  {
+    "id": "3534302",
+    "name": "Orlândia",
+    "uf": "SP",
+    "latitude": -20.7169,
+    "longitude": -47.8852
+  },
+  {
+    "id": "3534401",
+    "name": "Osasco",
+    "uf": "SP",
+    "latitude": -23.5324,
+    "longitude": -46.7916
+  },
+  {
+    "id": "3534500",
+    "name": "Oscar Bressane",
+    "uf": "SP",
+    "latitude": -22.3149,
+    "longitude": -50.2811
+  },
+  {
+    "id": "3534609",
+    "name": "Osvaldo Cruz",
+    "uf": "SP",
+    "latitude": -21.7968,
+    "longitude": -50.8793
+  },
+  {
+    "id": "3534708",
+    "name": "Ourinhos",
+    "uf": "SP",
+    "latitude": -22.9797,
+    "longitude": -49.8697
+  },
+  {
+    "id": "3534807",
+    "name": "Ouro Verde",
+    "uf": "SP",
+    "latitude": -21.4872,
+    "longitude": -51.7024
+  },
+  {
+    "id": "3534757",
+    "name": "Ouroeste",
+    "uf": "SP",
+    "latitude": -20.0061,
+    "longitude": -50.3768
+  },
+  {
+    "id": "3534906",
+    "name": "Pacaembu",
+    "uf": "SP",
+    "latitude": -21.5627,
+    "longitude": -51.2654
+  },
+  {
+    "id": "3535002",
+    "name": "Palestina",
+    "uf": "SP",
+    "latitude": -20.39,
+    "longitude": -49.4309
+  },
+  {
+    "id": "3535101",
+    "name": "Palmares Paulista",
+    "uf": "SP",
+    "latitude": -21.0854,
+    "longitude": -48.8037
+  },
+  {
+    "id": "3535200",
+    "name": "Palmeira d'Oeste",
+    "uf": "SP",
+    "latitude": -20.4148,
+    "longitude": -50.7632
+  },
+  {
+    "id": "3535309",
+    "name": "Palmital",
+    "uf": "SP",
+    "latitude": -22.7858,
+    "longitude": -50.218
+  },
+  {
+    "id": "3535408",
+    "name": "Panorama",
+    "uf": "SP",
+    "latitude": -21.354,
+    "longitude": -51.8562
+  },
+  {
+    "id": "3535507",
+    "name": "Paraguaçu Paulista",
+    "uf": "SP",
+    "latitude": -22.4114,
+    "longitude": -50.5732
+  },
+  {
+    "id": "3535606",
+    "name": "Paraibuna",
+    "uf": "SP",
+    "latitude": -23.3872,
+    "longitude": -45.6639
+  },
+  {
+    "id": "3535705",
+    "name": "Paraíso",
+    "uf": "SP",
+    "latitude": -21.0159,
+    "longitude": -48.7761
+  },
+  {
+    "id": "3535804",
+    "name": "Paranapanema",
+    "uf": "SP",
+    "latitude": -23.3862,
+    "longitude": -48.7214
+  },
+  {
+    "id": "3535903",
+    "name": "Paranapuã",
+    "uf": "SP",
+    "latitude": -20.1048,
+    "longitude": -50.5886
+  },
+  {
+    "id": "3536000",
+    "name": "Parapuã",
+    "uf": "SP",
+    "latitude": -21.7792,
+    "longitude": -50.7949
+  },
+  {
+    "id": "3536109",
+    "name": "Pardinho",
+    "uf": "SP",
+    "latitude": -23.0841,
+    "longitude": -48.3679
+  },
+  {
+    "id": "3536208",
+    "name": "Pariquera-Açu",
+    "uf": "SP",
+    "latitude": -24.7147,
+    "longitude": -47.8742
+  },
+  {
+    "id": "3536257",
+    "name": "Parisi",
+    "uf": "SP",
+    "latitude": -20.3034,
+    "longitude": -50.0163
+  },
+  {
+    "id": "3536307",
+    "name": "Patrocínio Paulista",
+    "uf": "SP",
+    "latitude": -20.6384,
+    "longitude": -47.2801
+  },
+  {
+    "id": "3536406",
+    "name": "Paulicéia",
+    "uf": "SP",
+    "latitude": -21.3153,
+    "longitude": -51.8321
+  },
+  {
+    "id": "3536505",
+    "name": "Paulínia",
+    "uf": "SP",
+    "latitude": -22.7542,
+    "longitude": -47.1488
+  },
+  {
+    "id": "3536570",
+    "name": "Paulistânia",
+    "uf": "SP",
+    "latitude": -22.5768,
+    "longitude": -49.4008
+  },
+  {
+    "id": "3536604",
+    "name": "Paulo de Faria",
+    "uf": "SP",
+    "latitude": -20.0296,
+    "longitude": -49.4
+  },
+  {
+    "id": "3536703",
+    "name": "Pederneiras",
+    "uf": "SP",
+    "latitude": -22.3511,
+    "longitude": -48.7781
+  },
+  {
+    "id": "3536802",
+    "name": "Pedra Bela",
+    "uf": "SP",
+    "latitude": -22.7902,
+    "longitude": -46.4455
+  },
+  {
+    "id": "3536901",
+    "name": "Pedranópolis",
+    "uf": "SP",
+    "latitude": -20.2474,
+    "longitude": -50.1129
+  },
+  {
+    "id": "3537008",
+    "name": "Pedregulho",
+    "uf": "SP",
+    "latitude": -20.2535,
+    "longitude": -47.4775
+  },
+  {
+    "id": "3537107",
+    "name": "Pedreira",
+    "uf": "SP",
+    "latitude": -22.7413,
+    "longitude": -46.8948
+  },
+  {
+    "id": "3537156",
+    "name": "Pedrinhas Paulista",
+    "uf": "SP",
+    "latitude": -22.8174,
+    "longitude": -50.7933
+  },
+  {
+    "id": "3537206",
+    "name": "Pedro de Toledo",
+    "uf": "SP",
+    "latitude": -24.2764,
+    "longitude": -47.2354
+  },
+  {
+    "id": "3537305",
+    "name": "Penápolis",
+    "uf": "SP",
+    "latitude": -21.4148,
+    "longitude": -50.0769
+  },
+  {
+    "id": "3537404",
+    "name": "Pereira Barreto",
+    "uf": "SP",
+    "latitude": -20.6368,
+    "longitude": -51.1123
+  },
+  {
+    "id": "3537503",
+    "name": "Pereiras",
+    "uf": "SP",
+    "latitude": -23.0804,
+    "longitude": -47.972
+  },
+  {
+    "id": "3537602",
+    "name": "Peruíbe",
+    "uf": "SP",
+    "latitude": -24.312,
+    "longitude": -47.0012
+  },
+  {
+    "id": "3537701",
+    "name": "Piacatu",
+    "uf": "SP",
+    "latitude": -21.5921,
+    "longitude": -50.6003
+  },
+  {
+    "id": "3537800",
+    "name": "Piedade",
+    "uf": "SP",
+    "latitude": -23.7139,
+    "longitude": -47.4256
+  },
+  {
+    "id": "3537909",
+    "name": "Pilar do Sul",
+    "uf": "SP",
+    "latitude": -23.8077,
+    "longitude": -47.7222
+  },
+  {
+    "id": "3538006",
+    "name": "Pindamonhangaba",
+    "uf": "SP",
+    "latitude": -22.9246,
+    "longitude": -45.4613
+  },
+  {
+    "id": "3538105",
+    "name": "Pindorama",
+    "uf": "SP",
+    "latitude": -21.1853,
+    "longitude": -48.9086
+  },
+  {
+    "id": "3538204",
+    "name": "Pinhalzinho",
+    "uf": "SP",
+    "latitude": -22.7811,
+    "longitude": -46.5897
+  },
+  {
+    "id": "3538303",
+    "name": "Piquerobi",
+    "uf": "SP",
+    "latitude": -21.8747,
+    "longitude": -51.7282
+  },
+  {
+    "id": "3538501",
+    "name": "Piquete",
+    "uf": "SP",
+    "latitude": -22.6069,
+    "longitude": -45.1869
+  },
+  {
+    "id": "3538600",
+    "name": "Piracaia",
+    "uf": "SP",
+    "latitude": -23.0525,
+    "longitude": -46.3594
+  },
+  {
+    "id": "3538709",
+    "name": "Piracicaba",
+    "uf": "SP",
+    "latitude": -22.7338,
+    "longitude": -47.6476
+  },
+  {
+    "id": "3538808",
+    "name": "Piraju",
+    "uf": "SP",
+    "latitude": -23.1981,
+    "longitude": -49.3803
+  },
+  {
+    "id": "3538907",
+    "name": "Pirajuí",
+    "uf": "SP",
+    "latitude": -21.999,
+    "longitude": -49.4608
+  },
+  {
+    "id": "3539004",
+    "name": "Pirangi",
+    "uf": "SP",
+    "latitude": -21.0886,
+    "longitude": -48.6607
+  },
+  {
+    "id": "3539103",
+    "name": "Pirapora do Bom Jesus",
+    "uf": "SP",
+    "latitude": -23.3965,
+    "longitude": -46.9991
+  },
+  {
+    "id": "3539202",
+    "name": "Pirapozinho",
+    "uf": "SP",
+    "latitude": -22.2711,
+    "longitude": -51.4976
+  },
+  {
+    "id": "3539301",
+    "name": "Pirassununga",
+    "uf": "SP",
+    "latitude": -21.996,
+    "longitude": -47.4257
+  },
+  {
+    "id": "3539400",
+    "name": "Piratininga",
+    "uf": "SP",
+    "latitude": -22.4142,
+    "longitude": -49.1339
+  },
+  {
+    "id": "3539509",
+    "name": "Pitangueiras",
+    "uf": "SP",
+    "latitude": -21.0132,
+    "longitude": -48.221
+  },
+  {
+    "id": "3539608",
+    "name": "Planalto",
+    "uf": "SP",
+    "latitude": -21.0342,
+    "longitude": -49.933
+  },
+  {
+    "id": "3539707",
+    "name": "Platina",
+    "uf": "SP",
+    "latitude": -22.6371,
+    "longitude": -50.2104
+  },
+  {
+    "id": "3539806",
+    "name": "Poá",
+    "uf": "SP",
+    "latitude": -23.5333,
+    "longitude": -46.3473
+  },
+  {
+    "id": "3539905",
+    "name": "Poloni",
+    "uf": "SP",
+    "latitude": -20.7829,
+    "longitude": -49.8258
+  },
+  {
+    "id": "3540002",
+    "name": "Pompéia",
+    "uf": "SP",
+    "latitude": -22.107,
+    "longitude": -50.176
+  },
+  {
+    "id": "3540101",
+    "name": "Pongaí",
+    "uf": "SP",
+    "latitude": -21.7396,
+    "longitude": -49.3604
+  },
+  {
+    "id": "3540200",
+    "name": "Pontal",
+    "uf": "SP",
+    "latitude": -21.0216,
+    "longitude": -48.0423
+  },
+  {
+    "id": "3540259",
+    "name": "Pontalinda",
+    "uf": "SP",
+    "latitude": -20.4396,
+    "longitude": -50.5258
+  },
+  {
+    "id": "3540309",
+    "name": "Pontes Gestal",
+    "uf": "SP",
+    "latitude": -20.1727,
+    "longitude": -49.7064
+  },
+  {
+    "id": "3540408",
+    "name": "Populina",
+    "uf": "SP",
+    "latitude": -19.9453,
+    "longitude": -50.538
+  },
+  {
+    "id": "3540507",
+    "name": "Porangaba",
+    "uf": "SP",
+    "latitude": -23.1761,
+    "longitude": -48.1195
+  },
+  {
+    "id": "3540606",
+    "name": "Porto Feliz",
+    "uf": "SP",
+    "latitude": -23.2093,
+    "longitude": -47.5251
+  },
+  {
+    "id": "3540705",
+    "name": "Porto Ferreira",
+    "uf": "SP",
+    "latitude": -21.8498,
+    "longitude": -47.487
+  },
+  {
+    "id": "3540754",
+    "name": "Potim",
+    "uf": "SP",
+    "latitude": -22.8343,
+    "longitude": -45.2552
+  },
+  {
+    "id": "3540804",
+    "name": "Potirendaba",
+    "uf": "SP",
+    "latitude": -21.0428,
+    "longitude": -49.3815
+  },
+  {
+    "id": "3540853",
+    "name": "Pracinha",
+    "uf": "SP",
+    "latitude": -21.8496,
+    "longitude": -51.0868
+  },
+  {
+    "id": "3540903",
+    "name": "Pradópolis",
+    "uf": "SP",
+    "latitude": -21.3626,
+    "longitude": -48.0679
+  },
+  {
+    "id": "3541000",
+    "name": "Praia Grande",
+    "uf": "SP",
+    "latitude": -24.0084,
+    "longitude": -46.4121
+  },
+  {
+    "id": "3541059",
+    "name": "Pratânia",
+    "uf": "SP",
+    "latitude": -22.8112,
+    "longitude": -48.6636
+  },
+  {
+    "id": "3541109",
+    "name": "Presidente Alves",
+    "uf": "SP",
+    "latitude": -22.0999,
+    "longitude": -49.4381
+  },
+  {
+    "id": "3541208",
+    "name": "Presidente Bernardes",
+    "uf": "SP",
+    "latitude": -22.0082,
+    "longitude": -51.5565
+  },
+  {
+    "id": "3541307",
+    "name": "Presidente Epitácio",
+    "uf": "SP",
+    "latitude": -21.7651,
+    "longitude": -52.1111
+  },
+  {
+    "id": "3541406",
+    "name": "Presidente Prudente",
+    "uf": "SP",
+    "latitude": -22.1207,
+    "longitude": -51.3925
+  },
+  {
+    "id": "3541505",
+    "name": "Presidente Venceslau",
+    "uf": "SP",
+    "latitude": -21.8732,
+    "longitude": -51.8447
+  },
+  {
+    "id": "3541604",
+    "name": "Promissão",
+    "uf": "SP",
+    "latitude": -21.5356,
+    "longitude": -49.8599
+  },
+  {
+    "id": "3541653",
+    "name": "Quadra",
+    "uf": "SP",
+    "latitude": -23.2993,
+    "longitude": -48.0547
+  },
+  {
+    "id": "3541703",
+    "name": "Quatá",
+    "uf": "SP",
+    "latitude": -22.2456,
+    "longitude": -50.6966
+  },
+  {
+    "id": "3541802",
+    "name": "Queiroz",
+    "uf": "SP",
+    "latitude": -21.7969,
+    "longitude": -50.2415
+  },
+  {
+    "id": "3541901",
+    "name": "Queluz",
+    "uf": "SP",
+    "latitude": -22.5312,
+    "longitude": -44.7781
+  },
+  {
+    "id": "3542008",
+    "name": "Quintana",
+    "uf": "SP",
+    "latitude": -22.0692,
+    "longitude": -50.307
+  },
+  {
+    "id": "3542107",
+    "name": "Rafard",
+    "uf": "SP",
+    "latitude": -23.0105,
+    "longitude": -47.5318
+  },
+  {
+    "id": "3542206",
+    "name": "Rancharia",
+    "uf": "SP",
+    "latitude": -22.2269,
+    "longitude": -50.893
+  },
+  {
+    "id": "3542305",
+    "name": "Redenção da Serra",
+    "uf": "SP",
+    "latitude": -23.2638,
+    "longitude": -45.5422
+  },
+  {
+    "id": "3542404",
+    "name": "Regente Feijó",
+    "uf": "SP",
+    "latitude": -22.2181,
+    "longitude": -51.3055
+  },
+  {
+    "id": "3542503",
+    "name": "Reginópolis",
+    "uf": "SP",
+    "latitude": -21.8914,
+    "longitude": -49.2268
+  },
+  {
+    "id": "3542602",
+    "name": "Registro",
+    "uf": "SP",
+    "latitude": -24.4979,
+    "longitude": -47.8449
+  },
+  {
+    "id": "3542701",
+    "name": "Restinga",
+    "uf": "SP",
+    "latitude": -20.6056,
+    "longitude": -47.4833
+  },
+  {
+    "id": "3542800",
+    "name": "Ribeira",
+    "uf": "SP",
+    "latitude": -24.6517,
+    "longitude": -49.0044
+  },
+  {
+    "id": "3542909",
+    "name": "Ribeirão Bonito",
+    "uf": "SP",
+    "latitude": -22.0685,
+    "longitude": -48.182
+  },
+  {
+    "id": "3543006",
+    "name": "Ribeirão Branco",
+    "uf": "SP",
+    "latitude": -24.2206,
+    "longitude": -48.7635
+  },
+  {
+    "id": "3543105",
+    "name": "Ribeirão Corrente",
+    "uf": "SP",
+    "latitude": -20.4579,
+    "longitude": -47.5904
+  },
+  {
+    "id": "3543204",
+    "name": "Ribeirão do Sul",
+    "uf": "SP",
+    "latitude": -22.789,
+    "longitude": -49.933
+  },
+  {
+    "id": "3543238",
+    "name": "Ribeirão dos Índios",
+    "uf": "SP",
+    "latitude": -21.8382,
+    "longitude": -51.6103
+  },
+  {
+    "id": "3543253",
+    "name": "Ribeirão Grande",
+    "uf": "SP",
+    "latitude": -24.1011,
+    "longitude": -48.3679
+  },
+  {
+    "id": "3543303",
+    "name": "Ribeirão Pires",
+    "uf": "SP",
+    "latitude": -23.7067,
+    "longitude": -46.4058
+  },
+  {
+    "id": "3543402",
+    "name": "Ribeirão Preto",
+    "uf": "SP",
+    "latitude": -21.1699,
+    "longitude": -47.8099
+  },
+  {
+    "id": "3543600",
+    "name": "Rifaina",
+    "uf": "SP",
+    "latitude": -20.0803,
+    "longitude": -47.4291
+  },
+  {
+    "id": "3543709",
+    "name": "Rincão",
+    "uf": "SP",
+    "latitude": -21.5894,
+    "longitude": -48.0728
+  },
+  {
+    "id": "3543808",
+    "name": "Rinópolis",
+    "uf": "SP",
+    "latitude": -21.7284,
+    "longitude": -50.7239
+  },
+  {
+    "id": "3543907",
+    "name": "Rio Claro",
+    "uf": "SP",
+    "latitude": -22.3984,
+    "longitude": -47.5546
+  },
+  {
+    "id": "3544004",
+    "name": "Rio das Pedras",
+    "uf": "SP",
+    "latitude": -22.8417,
+    "longitude": -47.6047
+  },
+  {
+    "id": "3544103",
+    "name": "Rio Grande da Serra",
+    "uf": "SP",
+    "latitude": -23.7437,
+    "longitude": -46.3971
+  },
+  {
+    "id": "3544202",
+    "name": "Riolândia",
+    "uf": "SP",
+    "latitude": -19.9868,
+    "longitude": -49.6836
+  },
+  {
+    "id": "3543501",
+    "name": "Riversul",
+    "uf": "SP",
+    "latitude": -23.829,
+    "longitude": -49.429
+  },
+  {
+    "id": "3544251",
+    "name": "Rosana",
+    "uf": "SP",
+    "latitude": -22.5782,
+    "longitude": -53.0603
+  },
+  {
+    "id": "3544301",
+    "name": "Roseira",
+    "uf": "SP",
+    "latitude": -22.8938,
+    "longitude": -45.307
+  },
+  {
+    "id": "3544400",
+    "name": "Rubiácea",
+    "uf": "SP",
+    "latitude": -21.3006,
+    "longitude": -50.7296
+  },
+  {
+    "id": "3544509",
+    "name": "Rubinéia",
+    "uf": "SP",
+    "latitude": -20.1759,
+    "longitude": -51.007
+  },
+  {
+    "id": "3544608",
+    "name": "Sabino",
+    "uf": "SP",
+    "latitude": -21.4593,
+    "longitude": -49.5755
+  },
+  {
+    "id": "3544707",
+    "name": "Sagres",
+    "uf": "SP",
+    "latitude": -21.8823,
+    "longitude": -50.9594
+  },
+  {
+    "id": "3544806",
+    "name": "Sales",
+    "uf": "SP",
+    "latitude": -21.3427,
+    "longitude": -49.4897
+  },
+  {
+    "id": "3544905",
+    "name": "Sales Oliveira",
+    "uf": "SP",
+    "latitude": -20.7696,
+    "longitude": -47.8369
+  },
+  {
+    "id": "3545001",
+    "name": "Salesópolis",
+    "uf": "SP",
+    "latitude": -23.5288,
+    "longitude": -45.8465
+  },
+  {
+    "id": "3545100",
+    "name": "Salmourão",
+    "uf": "SP",
+    "latitude": -21.6267,
+    "longitude": -50.8614
+  },
+  {
+    "id": "3545159",
+    "name": "Saltinho",
+    "uf": "SP",
+    "latitude": -22.8442,
+    "longitude": -47.6754
+  },
+  {
+    "id": "3545209",
+    "name": "Salto",
+    "uf": "SP",
+    "latitude": -23.1996,
+    "longitude": -47.2931
+  },
+  {
+    "id": "3545308",
+    "name": "Salto de Pirapora",
+    "uf": "SP",
+    "latitude": -23.6474,
+    "longitude": -47.5743
+  },
+  {
+    "id": "3545407",
+    "name": "Salto Grande",
+    "uf": "SP",
+    "latitude": -22.8894,
+    "longitude": -49.9831
+  },
+  {
+    "id": "3545506",
+    "name": "Sandovalina",
+    "uf": "SP",
+    "latitude": -22.4551,
+    "longitude": -51.7648
+  },
+  {
+    "id": "3545605",
+    "name": "Santa Adélia",
+    "uf": "SP",
+    "latitude": -21.2427,
+    "longitude": -48.8063
+  },
+  {
+    "id": "3545704",
+    "name": "Santa Albertina",
+    "uf": "SP",
+    "latitude": -20.0311,
+    "longitude": -50.7297
+  },
+  {
+    "id": "3545803",
+    "name": "Santa Bárbara d'Oeste",
+    "uf": "SP",
+    "latitude": -22.7553,
+    "longitude": -47.4143
+  },
+  {
+    "id": "3546009",
+    "name": "Santa Branca",
+    "uf": "SP",
+    "latitude": -23.3933,
+    "longitude": -45.8875
+  },
+  {
+    "id": "3546108",
+    "name": "Santa Clara d'Oeste",
+    "uf": "SP",
+    "latitude": -20.09,
+    "longitude": -50.9491
+  },
+  {
+    "id": "3546207",
+    "name": "Santa Cruz da Conceição",
+    "uf": "SP",
+    "latitude": -22.1405,
+    "longitude": -47.4512
+  },
+  {
+    "id": "3546256",
+    "name": "Santa Cruz da Esperança",
+    "uf": "SP",
+    "latitude": -21.2951,
+    "longitude": -47.4304
+  },
+  {
+    "id": "3546306",
+    "name": "Santa Cruz das Palmeiras",
+    "uf": "SP",
+    "latitude": -21.8235,
+    "longitude": -47.248
+  },
+  {
+    "id": "3546405",
+    "name": "Santa Cruz do Rio Pardo",
+    "uf": "SP",
+    "latitude": -22.8988,
+    "longitude": -49.6354
+  },
+  {
+    "id": "3546504",
+    "name": "Santa Ernestina",
+    "uf": "SP",
+    "latitude": -21.4618,
+    "longitude": -48.3953
+  },
+  {
+    "id": "3546603",
+    "name": "Santa Fé do Sul",
+    "uf": "SP",
+    "latitude": -20.2083,
+    "longitude": -50.932
+  },
+  {
+    "id": "3546702",
+    "name": "Santa Gertrudes",
+    "uf": "SP",
+    "latitude": -22.4572,
+    "longitude": -47.5272
+  },
+  {
+    "id": "3546801",
+    "name": "Santa Isabel",
+    "uf": "SP",
+    "latitude": -23.3172,
+    "longitude": -46.2237
+  },
+  {
+    "id": "3546900",
+    "name": "Santa Lúcia",
+    "uf": "SP",
+    "latitude": -21.685,
+    "longitude": -48.0885
+  },
+  {
+    "id": "3547007",
+    "name": "Santa Maria da Serra",
+    "uf": "SP",
+    "latitude": -22.5661,
+    "longitude": -48.1593
+  },
+  {
+    "id": "3547106",
+    "name": "Santa Mercedes",
+    "uf": "SP",
+    "latitude": -21.3495,
+    "longitude": -51.7564
+  },
+  {
+    "id": "3547403",
+    "name": "Santa Rita d'Oeste",
+    "uf": "SP",
+    "latitude": -20.1414,
+    "longitude": -50.8358
+  },
+  {
+    "id": "3547502",
+    "name": "Santa Rita do Passa Quatro",
+    "uf": "SP",
+    "latitude": -21.7083,
+    "longitude": -47.478
+  },
+  {
+    "id": "3547601",
+    "name": "Santa Rosa de Viterbo",
+    "uf": "SP",
+    "latitude": -21.4776,
+    "longitude": -47.3622
+  },
+  {
+    "id": "3547650",
+    "name": "Santa Salete",
+    "uf": "SP",
+    "latitude": -20.2429,
+    "longitude": -50.6887
+  },
+  {
+    "id": "3547205",
+    "name": "Santana da Ponte Pensa",
+    "uf": "SP",
+    "latitude": -20.2523,
+    "longitude": -50.8014
+  },
+  {
+    "id": "3547304",
+    "name": "Santana de Parnaíba",
+    "uf": "SP",
+    "latitude": -23.4439,
+    "longitude": -46.9178
+  },
+  {
+    "id": "3547700",
+    "name": "Santo Anastácio",
+    "uf": "SP",
+    "latitude": -21.9747,
+    "longitude": -51.6527
+  },
+  {
+    "id": "3547809",
+    "name": "Santo André",
+    "uf": "SP",
+    "latitude": -23.6737,
+    "longitude": -46.5432
+  },
+  {
+    "id": "3547908",
+    "name": "Santo Antônio da Alegria",
+    "uf": "SP",
+    "latitude": -21.0864,
+    "longitude": -47.1464
+  },
+  {
+    "id": "3548005",
+    "name": "Santo Antônio de Posse",
+    "uf": "SP",
+    "latitude": -22.6029,
+    "longitude": -46.9192
+  },
+  {
+    "id": "3548054",
+    "name": "Santo Antônio do Aracanguá",
+    "uf": "SP",
+    "latitude": -20.9331,
+    "longitude": -50.498
+  },
+  {
+    "id": "3548104",
+    "name": "Santo Antônio do Jardim",
+    "uf": "SP",
+    "latitude": -22.1121,
+    "longitude": -46.6845
+  },
+  {
+    "id": "3548203",
+    "name": "Santo Antônio do Pinhal",
+    "uf": "SP",
+    "latitude": -22.827,
+    "longitude": -45.663
+  },
+  {
+    "id": "3548302",
+    "name": "Santo Expedito",
+    "uf": "SP",
+    "latitude": -21.8467,
+    "longitude": -51.3929
+  },
+  {
+    "id": "3548401",
+    "name": "Santópolis do Aguapeí",
+    "uf": "SP",
+    "latitude": -21.6376,
+    "longitude": -50.5044
+  },
+  {
+    "id": "3548500",
+    "name": "Santos",
+    "uf": "SP",
+    "latitude": -23.9535,
+    "longitude": -46.335
+  },
+  {
+    "id": "3548609",
+    "name": "São Bento do Sapucaí",
+    "uf": "SP",
+    "latitude": -22.6837,
+    "longitude": -45.7287
+  },
+  {
+    "id": "3548708",
+    "name": "São Bernardo do Campo",
+    "uf": "SP",
+    "latitude": -23.6914,
+    "longitude": -46.5646
+  },
+  {
+    "id": "3548807",
+    "name": "São Caetano do Sul",
+    "uf": "SP",
+    "latitude": -23.6229,
+    "longitude": -46.5548
+  },
+  {
+    "id": "3548906",
+    "name": "São Carlos",
+    "uf": "SP",
+    "latitude": -22.0174,
+    "longitude": -47.886
+  },
+  {
+    "id": "3549003",
+    "name": "São Francisco",
+    "uf": "SP",
+    "latitude": -20.3623,
+    "longitude": -50.6952
+  },
+  {
+    "id": "3549102",
+    "name": "São João da Boa Vista",
+    "uf": "SP",
+    "latitude": -21.9707,
+    "longitude": -46.7944
+  },
+  {
+    "id": "3549201",
+    "name": "São João das Duas Pontes",
+    "uf": "SP",
+    "latitude": -20.3879,
+    "longitude": -50.3792
+  },
+  {
+    "id": "3549250",
+    "name": "São João de Iracema",
+    "uf": "SP",
+    "latitude": -20.5111,
+    "longitude": -50.3561
+  },
+  {
+    "id": "3549300",
+    "name": "São João do Pau d'Alho",
+    "uf": "SP",
+    "latitude": -21.2662,
+    "longitude": -51.6672
+  },
+  {
+    "id": "3549409",
+    "name": "São Joaquim da Barra",
+    "uf": "SP",
+    "latitude": -20.5812,
+    "longitude": -47.8593
+  },
+  {
+    "id": "3549508",
+    "name": "São José da Bela Vista",
+    "uf": "SP",
+    "latitude": -20.5935,
+    "longitude": -47.6424
+  },
+  {
+    "id": "3549607",
+    "name": "São José do Barreiro",
+    "uf": "SP",
+    "latitude": -22.6414,
+    "longitude": -44.5774
+  },
+  {
+    "id": "3549706",
+    "name": "São José do Rio Pardo",
+    "uf": "SP",
+    "latitude": -21.5953,
+    "longitude": -46.8873
+  },
+  {
+    "id": "3549805",
+    "name": "São José do Rio Preto",
+    "uf": "SP",
+    "latitude": -20.8113,
+    "longitude": -49.3758
+  },
+  {
+    "id": "3549904",
+    "name": "São José dos Campos",
+    "uf": "SP",
+    "latitude": -23.1896,
+    "longitude": -45.8841
+  },
+  {
+    "id": "3549953",
+    "name": "São Lourenço da Serra",
+    "uf": "SP",
+    "latitude": -23.8491,
+    "longitude": -46.9432
+  },
+  {
+    "id": "3550001",
+    "name": "São Luiz do Paraitinga",
+    "uf": "SP",
+    "latitude": -23.222,
+    "longitude": -45.3109
+  },
+  {
+    "id": "3550100",
+    "name": "São Manuel",
+    "uf": "SP",
+    "latitude": -22.7321,
+    "longitude": -48.5723
+  },
+  {
+    "id": "3550209",
+    "name": "São Miguel Arcanjo",
+    "uf": "SP",
+    "latitude": -23.8782,
+    "longitude": -47.9935
+  },
+  {
+    "id": "3550308",
+    "name": "São Paulo",
+    "uf": "SP",
+    "latitude": -23.5329,
+    "longitude": -46.6395
+  },
+  {
+    "id": "3550407",
+    "name": "São Pedro",
+    "uf": "SP",
+    "latitude": -22.5483,
+    "longitude": -47.9096
+  },
+  {
+    "id": "3550506",
+    "name": "São Pedro do Turvo",
+    "uf": "SP",
+    "latitude": -22.7453,
+    "longitude": -49.7428
+  },
+  {
+    "id": "3550605",
+    "name": "São Roque",
+    "uf": "SP",
+    "latitude": -23.5226,
+    "longitude": -47.1357
+  },
+  {
+    "id": "3550704",
+    "name": "São Sebastião",
+    "uf": "SP",
+    "latitude": -23.7951,
+    "longitude": -45.4143
+  },
+  {
+    "id": "3550803",
+    "name": "São Sebastião da Grama",
+    "uf": "SP",
+    "latitude": -21.7041,
+    "longitude": -46.8208
+  },
+  {
+    "id": "3550902",
+    "name": "São Simão",
+    "uf": "SP",
+    "latitude": -21.4732,
+    "longitude": -47.5518
+  },
+  {
+    "id": "3551009",
+    "name": "São Vicente",
+    "uf": "SP",
+    "latitude": -23.9574,
+    "longitude": -46.3883
+  },
+  {
+    "id": "3551108",
+    "name": "Sarapuí",
+    "uf": "SP",
+    "latitude": -23.6397,
+    "longitude": -47.8249
+  },
+  {
+    "id": "3551207",
+    "name": "Sarutaiá",
+    "uf": "SP",
+    "latitude": -23.2721,
+    "longitude": -49.4763
+  },
+  {
+    "id": "3551306",
+    "name": "Sebastianópolis do Sul",
+    "uf": "SP",
+    "latitude": -20.6523,
+    "longitude": -49.925
+  },
+  {
+    "id": "3551405",
+    "name": "Serra Azul",
+    "uf": "SP",
+    "latitude": -21.3074,
+    "longitude": -47.5602
+  },
+  {
+    "id": "3551603",
+    "name": "Serra Negra",
+    "uf": "SP",
+    "latitude": -22.6139,
+    "longitude": -46.7033
+  },
+  {
+    "id": "3551504",
+    "name": "Serrana",
+    "uf": "SP",
+    "latitude": -21.2043,
+    "longitude": -47.5952
+  },
+  {
+    "id": "3551702",
+    "name": "Sertãozinho",
+    "uf": "SP",
+    "latitude": -21.1316,
+    "longitude": -47.9875
+  },
+  {
+    "id": "3551801",
+    "name": "Sete Barras",
+    "uf": "SP",
+    "latitude": -24.382,
+    "longitude": -47.9279
+  },
+  {
+    "id": "3551900",
+    "name": "Severínia",
+    "uf": "SP",
+    "latitude": -20.8108,
+    "longitude": -48.8054
+  },
+  {
+    "id": "3552007",
+    "name": "Silveiras",
+    "uf": "SP",
+    "latitude": -22.6638,
+    "longitude": -44.8522
+  },
+  {
+    "id": "3552106",
+    "name": "Socorro",
+    "uf": "SP",
+    "latitude": -22.5903,
+    "longitude": -46.5251
+  },
+  {
+    "id": "3552205",
+    "name": "Sorocaba",
+    "uf": "SP",
+    "latitude": -23.4969,
+    "longitude": -47.4451
+  },
+  {
+    "id": "3552304",
+    "name": "Sud Mennucci",
+    "uf": "SP",
+    "latitude": -20.6872,
+    "longitude": -50.9238
+  },
+  {
+    "id": "3552403",
+    "name": "Sumaré",
+    "uf": "SP",
+    "latitude": -22.8204,
+    "longitude": -47.2728
+  },
+  {
+    "id": "3552551",
+    "name": "Suzanápolis",
+    "uf": "SP",
+    "latitude": -20.4981,
+    "longitude": -51.0268
+  },
+  {
+    "id": "3552502",
+    "name": "Suzano",
+    "uf": "SP",
+    "latitude": -23.5448,
+    "longitude": -46.3112
+  },
+  {
+    "id": "3552601",
+    "name": "Tabapuã",
+    "uf": "SP",
+    "latitude": -20.9602,
+    "longitude": -49.0307
+  },
+  {
+    "id": "3552700",
+    "name": "Tabatinga",
+    "uf": "SP",
+    "latitude": -21.7239,
+    "longitude": -48.6896
+  },
+  {
+    "id": "3552809",
+    "name": "Taboão da Serra",
+    "uf": "SP",
+    "latitude": -23.6019,
+    "longitude": -46.7526
+  },
+  {
+    "id": "3552908",
+    "name": "Taciba",
+    "uf": "SP",
+    "latitude": -22.3866,
+    "longitude": -51.2882
+  },
+  {
+    "id": "3553005",
+    "name": "Taguaí",
+    "uf": "SP",
+    "latitude": -23.4452,
+    "longitude": -49.4024
+  },
+  {
+    "id": "3553104",
+    "name": "Taiaçu",
+    "uf": "SP",
+    "latitude": -21.1431,
+    "longitude": -48.5112
+  },
+  {
+    "id": "3553203",
+    "name": "Taiúva",
+    "uf": "SP",
+    "latitude": -21.1223,
+    "longitude": -48.4528
+  },
+  {
+    "id": "3553302",
+    "name": "Tambaú",
+    "uf": "SP",
+    "latitude": -21.7029,
+    "longitude": -47.2703
+  },
+  {
+    "id": "3553401",
+    "name": "Tanabi",
+    "uf": "SP",
+    "latitude": -20.6228,
+    "longitude": -49.6563
+  },
+  {
+    "id": "3553500",
+    "name": "Tapiraí",
+    "uf": "SP",
+    "latitude": -23.9612,
+    "longitude": -47.5062
+  },
+  {
+    "id": "3553609",
+    "name": "Tapiratiba",
+    "uf": "SP",
+    "latitude": -21.4713,
+    "longitude": -46.7448
+  },
+  {
+    "id": "3553658",
+    "name": "Taquaral",
+    "uf": "SP",
+    "latitude": -21.0737,
+    "longitude": -48.4126
+  },
+  {
+    "id": "3553708",
+    "name": "Taquaritinga",
+    "uf": "SP",
+    "latitude": -21.4049,
+    "longitude": -48.5103
+  },
+  {
+    "id": "3553807",
+    "name": "Taquarituba",
+    "uf": "SP",
+    "latitude": -23.5307,
+    "longitude": -49.241
+  },
+  {
+    "id": "3553856",
+    "name": "Taquarivaí",
+    "uf": "SP",
+    "latitude": -23.9211,
+    "longitude": -48.6948
+  },
+  {
+    "id": "3553906",
+    "name": "Tarabai",
+    "uf": "SP",
+    "latitude": -22.3016,
+    "longitude": -51.5621
+  },
+  {
+    "id": "3553955",
+    "name": "Tarumã",
+    "uf": "SP",
+    "latitude": -22.7429,
+    "longitude": -50.5786
+  },
+  {
+    "id": "3554003",
+    "name": "Tatuí",
+    "uf": "SP",
+    "latitude": -23.3487,
+    "longitude": -47.8461
+  },
+  {
+    "id": "3554102",
+    "name": "Taubaté",
+    "uf": "SP",
+    "latitude": -23.0104,
+    "longitude": -45.5593
+  },
+  {
+    "id": "3554201",
+    "name": "Tejupá",
+    "uf": "SP",
+    "latitude": -23.3425,
+    "longitude": -49.3722
+  },
+  {
+    "id": "3554300",
+    "name": "Teodoro Sampaio",
+    "uf": "SP",
+    "latitude": -22.5299,
+    "longitude": -52.1682
+  },
+  {
+    "id": "3554409",
+    "name": "Terra Roxa",
+    "uf": "SP",
+    "latitude": -20.787,
+    "longitude": -48.3314
+  },
+  {
+    "id": "3554508",
+    "name": "Tietê",
+    "uf": "SP",
+    "latitude": -23.1101,
+    "longitude": -47.7164
+  },
+  {
+    "id": "3554607",
+    "name": "Timburi",
+    "uf": "SP",
+    "latitude": -23.2057,
+    "longitude": -49.6096
+  },
+  {
+    "id": "3554656",
+    "name": "Torre de Pedra",
+    "uf": "SP",
+    "latitude": -23.2462,
+    "longitude": -48.1955
+  },
+  {
+    "id": "3554706",
+    "name": "Torrinha",
+    "uf": "SP",
+    "latitude": -22.4237,
+    "longitude": -48.1731
+  },
+  {
+    "id": "3554755",
+    "name": "Trabiju",
+    "uf": "SP",
+    "latitude": -22.0388,
+    "longitude": -48.3342
+  },
+  {
+    "id": "3554805",
+    "name": "Tremembé",
+    "uf": "SP",
+    "latitude": -22.9571,
+    "longitude": -45.5475
+  },
+  {
+    "id": "3554904",
+    "name": "Três Fronteiras",
+    "uf": "SP",
+    "latitude": -20.2344,
+    "longitude": -50.8905
+  },
+  {
+    "id": "3554953",
+    "name": "Tuiuti",
+    "uf": "SP",
+    "latitude": -22.8193,
+    "longitude": -46.6937
+  },
+  {
+    "id": "3555000",
+    "name": "Tupã",
+    "uf": "SP",
+    "latitude": -21.9335,
+    "longitude": -50.5191
+  },
+  {
+    "id": "3555109",
+    "name": "Tupi Paulista",
+    "uf": "SP",
+    "latitude": -21.3825,
+    "longitude": -51.575
+  },
+  {
+    "id": "3555208",
+    "name": "Turiúba",
+    "uf": "SP",
+    "latitude": -20.9428,
+    "longitude": -50.1135
+  },
+  {
+    "id": "3555307",
+    "name": "Turmalina",
+    "uf": "SP",
+    "latitude": -20.0486,
+    "longitude": -50.4792
+  },
+  {
+    "id": "3555356",
+    "name": "Ubarana",
+    "uf": "SP",
+    "latitude": -21.165,
+    "longitude": -49.7198
+  },
+  {
+    "id": "3555406",
+    "name": "Ubatuba",
+    "uf": "SP",
+    "latitude": -23.4332,
+    "longitude": -45.0834
+  },
+  {
+    "id": "3555505",
+    "name": "Ubirajara",
+    "uf": "SP",
+    "latitude": -22.5272,
+    "longitude": -49.6613
+  },
+  {
+    "id": "3555604",
+    "name": "Uchoa",
+    "uf": "SP",
+    "latitude": -20.9511,
+    "longitude": -49.1713
+  },
+  {
+    "id": "3555703",
+    "name": "União Paulista",
+    "uf": "SP",
+    "latitude": -20.8862,
+    "longitude": -49.9025
+  },
+  {
+    "id": "3555802",
+    "name": "Urânia",
+    "uf": "SP",
+    "latitude": -20.2455,
+    "longitude": -50.6455
+  },
+  {
+    "id": "3555901",
+    "name": "Uru",
+    "uf": "SP",
+    "latitude": -21.7866,
+    "longitude": -49.2848
+  },
+  {
+    "id": "3556008",
+    "name": "Urupês",
+    "uf": "SP",
+    "latitude": -21.2032,
+    "longitude": -49.2931
+  },
+  {
+    "id": "3556107",
+    "name": "Valentim Gentil",
+    "uf": "SP",
+    "latitude": -20.4217,
+    "longitude": -50.0889
+  },
+  {
+    "id": "3556206",
+    "name": "Valinhos",
+    "uf": "SP",
+    "latitude": -22.9698,
+    "longitude": -46.9974
+  },
+  {
+    "id": "3556305",
+    "name": "Valparaíso",
+    "uf": "SP",
+    "latitude": -21.2229,
+    "longitude": -50.8699
+  },
+  {
+    "id": "3556354",
+    "name": "Vargem",
+    "uf": "SP",
+    "latitude": -22.887,
+    "longitude": -46.4124
+  },
+  {
+    "id": "3556404",
+    "name": "Vargem Grande do Sul",
+    "uf": "SP",
+    "latitude": -21.8322,
+    "longitude": -46.8913
+  },
+  {
+    "id": "3556453",
+    "name": "Vargem Grande Paulista",
+    "uf": "SP",
+    "latitude": -23.5993,
+    "longitude": -47.022
+  },
+  {
+    "id": "3556503",
+    "name": "Várzea Paulista",
+    "uf": "SP",
+    "latitude": -23.2136,
+    "longitude": -46.8234
+  },
+  {
+    "id": "3556602",
+    "name": "Vera Cruz",
+    "uf": "SP",
+    "latitude": -22.2183,
+    "longitude": -49.8207
+  },
+  {
+    "id": "3556701",
+    "name": "Vinhedo",
+    "uf": "SP",
+    "latitude": -23.0302,
+    "longitude": -46.9833
+  },
+  {
+    "id": "3556800",
+    "name": "Viradouro",
+    "uf": "SP",
+    "latitude": -20.8734,
+    "longitude": -48.293
+  },
+  {
+    "id": "3556909",
+    "name": "Vista Alegre do Alto",
+    "uf": "SP",
+    "latitude": -21.1692,
+    "longitude": -48.6284
+  },
+  {
+    "id": "3556958",
+    "name": "Vitória Brasil",
+    "uf": "SP",
+    "latitude": -20.1956,
+    "longitude": -50.4875
+  },
+  {
+    "id": "3557006",
+    "name": "Votorantim",
+    "uf": "SP",
+    "latitude": -23.5446,
+    "longitude": -47.4388
+  },
+  {
+    "id": "3557105",
+    "name": "Votuporanga",
+    "uf": "SP",
+    "latitude": -20.4237,
+    "longitude": -49.9781
+  },
+  {
+    "id": "3557154",
+    "name": "Zacarias",
+    "uf": "SP",
+    "latitude": -21.0506,
+    "longitude": -50.0552
+  }
+]
