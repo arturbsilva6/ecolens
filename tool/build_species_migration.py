@@ -26,56 +26,52 @@ COLUNAS = [
 ]
 
 
-def texto(valor):
-    if valor is None:
-        return 'null'
-    return "'" + str(valor).replace("'", "''") + "'"
-
-
-def valor_sql(valor):
-    if isinstance(valor, bool):
-        return 'true' if valor else 'false'
-    if isinstance(valor, list):
-        if not valor:
-            return "'{}'::text[]"
-        return 'array[' + ', '.join(texto(v) for v in valor) + ']::text[]'
-    return texto(valor)
-
-
 def main():
     fichas = json.loads(ENTRADA.read_text(encoding='utf-8'))
-    linhas = [
-        '-- EcoLens: catálogo curado de fauna e flora da região de São Roque.',
-        '-- GERADO por tool/build_species_migration.py a partir de',
-        '-- supabase/data/curated_species.json. Não edite à mão: edite o JSON',
-        '-- e gere de novo.',
-        '-- Requer a migração 20261107050000_species_risk_categories.sql.',
-        '',
-        'begin;',
-        '',
-    ]
-    for ficha in fichas:
-        slug = texto(ficha['slug'])
-        cientifico = texto(ficha['scientific_name'])
-        linhas += [
-            f"-- {ficha['common_name']} ({ficha['scientific_name']})",
-            f'update public.species set slug = {slug}',
-            f'  where scientific_name = {cientifico} and slug <> {slug}',
-            f'  and not exists (select 1 from public.species s where s.slug = {slug});',
-            'insert into public.species (',
-            '  ' + ', '.join(COLUNAS) + ', is_published',
-            ') values (',
-            '  ' + ',\n  '.join(valor_sql(ficha[c]) for c in COLUNAS) + ',\n  true',
-            ')',
-            'on conflict (slug) do update set',
-            '  ' + ',\n  '.join(
-                f'{c} = excluded.{c}' for c in COLUNAS if c != 'slug'
-            ) + ',\n  is_published = true;',
-            '',
-        ]
-    linhas += ['commit;', '']
-    SAIDA.write_text('\n'.join(linhas), encoding='utf-8')
-    print(f'{len(fichas)} fichas -> {SAIDA.relative_to(RAIZ)}')
+    dados = [{c: f[c] for c in COLUNAS} for f in fichas]
+    conteudo = json.dumps(dados, ensure_ascii=False, separators=(',', ':'))
+    marcador = '$ecolens$'
+    assert marcador not in conteudo
+    tipos = {
+        'is_invasive': 'boolean',
+        'other_names': 'text[]',
+        'main_colors': 'text[]',
+        'lookalikes': 'text[]',
+    }
+    definicao = ', '.join(f'{c} {tipos.get(c, "text")}' for c in COLUNAS)
+    atualizacao = ',\n  '.join(
+        f'{c} = excluded.{c}' for c in COLUNAS if c != 'slug'
+    )
+    sql = f"""-- EcoLens: catálogo curado de fauna e flora da região de São Roque.
+-- GERADO por tool/build_species_migration.py a partir de
+-- supabase/data/curated_species.json. Não edite à mão: edite o JSON
+-- e gere de novo.
+-- Requer a migração 20261107050000_species_risk_categories.sql.
+--
+-- Reexecutável: atualiza as fichas existentes pelo slug (ou pelo nome
+-- científico, quando o slug antigo for diferente) e insere as novas.
+-- Nunca altera image_url, porque as fotos têm licença verificada à parte.
+
+create temporary table curated_species on commit drop as
+select * from jsonb_to_recordset({marcador}{conteudo}{marcador}::jsonb)
+  as d({definicao});
+
+update public.species s
+set slug = d.slug
+from curated_species d
+where s.scientific_name = d.scientific_name
+  and s.slug <> d.slug
+  and not exists (select 1 from public.species x where x.slug = d.slug);
+
+insert into public.species ({', '.join(COLUNAS)}, is_published)
+select {', '.join('d.' + c for c in COLUNAS)}, true
+from curated_species d
+on conflict (slug) do update set
+  {atualizacao},
+  is_published = true;
+"""
+    SAIDA.write_text(sql, encoding='utf-8')
+    print(f'{len(fichas)} fichas -> {SAIDA.relative_to(RAIZ)} ({len(sql)} bytes)')
 
 
 if __name__ == '__main__':
