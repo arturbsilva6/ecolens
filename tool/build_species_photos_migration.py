@@ -4,7 +4,7 @@ Uso (na raiz do projeto):
     python tool/build_species_photos_migration.py
 
 Lê supabase/data/species_photos.json e escreve a migração
-supabase/migrations/20261107070000_species_photo_credits.sql, que:
+supabase/migrations/20261107060546_species_photo_credits.sql, que:
 - cria as colunas de crédito e licença da foto;
 - preenche os créditos das fotos que já existiam (pela image_url);
 - define foto e créditos das fichas novas (pelo slug).
@@ -18,7 +18,7 @@ from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
 ENTRADA = RAIZ / 'supabase' / 'data' / 'species_photos.json'
-SAIDA = RAIZ / 'supabase' / 'migrations' / '20261107070000_species_photo_credits.sql'
+SAIDA = RAIZ / 'supabase' / 'migrations' / '20261107060546_species_photo_credits.sql'
 
 LICENCAS = re.compile(r'^(CC0|CC BY(-SA)? \d\.\d|Domínio público)$')
 CAMPOS = ['image_credit', 'image_source_url', 'image_license_url',
