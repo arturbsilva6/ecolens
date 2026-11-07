@@ -6,12 +6,14 @@ on:
       - feat/auth-profile
       - feat/uiux-home-conceito2
       - main
+      - feat/species-identification
+      - feat/community-map
   workflow_dispatch:
     inputs:
       base_ref:
         description: Referência base para comparar os arquivos Dart na execução manual
         required: true
-        default: origin/feat/auth-profile
+        default: origin/main
         type: string
 
 permissions:

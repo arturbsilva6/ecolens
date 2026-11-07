@@ -10,6 +10,8 @@ import '../../widgets/home/recent_species_section.dart';
 import '../../widgets/home/bottom_nav_bar.dart';
 import '../../controllers/theme_controller.dart';
 import '../settings/settings_screen.dart';
+import '../community/community_screen.dart';
+import '../map/heat_map_screen.dart';
 import '../profile/profile_screen.dart';
 import '../identification/identification_screen.dart';
 import '../identification/identification_history_screen.dart';
@@ -24,12 +26,24 @@ class HomeScreen extends StatelessWidget {
   final Future<List<SpeciesModel>> Function()? fetchPublishedSpecies;
   final VoidCallback? onProfileTap;
 
+  /// Telas abertas pelo menu inferior e pelo atalho do fórum. Os testes
+  /// substituem estas telas para não depender do Supabase nem de tiles.
+  final WidgetBuilder mapBuilder;
+  final WidgetBuilder communityBuilder;
+
   const HomeScreen({
     super.key,
     required this.themeController,
     this.fetchPublishedSpecies,
     this.onProfileTap,
+    this.mapBuilder = _defaultMap,
+    this.communityBuilder = _defaultCommunity,
   });
+
+  static Widget _defaultMap(BuildContext context) => const HeatMapScreen();
+  static Widget _defaultCommunity(BuildContext context) =>
+      const CommunityScreen();
+
   void _mostrarMensagem(BuildContext context, String mensagem) {
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text(mensagem)));
@@ -83,14 +97,13 @@ class HomeScreen extends StatelessWidget {
             }
             return;
           }
-          const paginas = [
-            'Início',
-            'Identificar',
-            'Mapa',
-            'Comunidade',
-            'Perfil',
-          ];
-          _mostrarMensagem(context, '${paginas[index]} em desenvolvimento');
+          if (index == 2 || index == 3) {
+            Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: index == 2 ? mapBuilder : communityBuilder,
+              ),
+            );
+          }
         },
       ),
 
@@ -189,9 +202,8 @@ class HomeScreen extends StatelessWidget {
                       );
                     },
                     onForumTap: () {
-                      _mostrarMensagem(
-                        context,
-                        'Fórum local em desenvolvimento',
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(builder: communityBuilder),
                       );
                     },
                   ),
