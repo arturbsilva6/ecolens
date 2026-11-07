@@ -15,3 +15,9 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+## Comunidade e Mapa
+
+Configuração do Supabase, migração preparada, resultados dos testes e roteiro Android: [docs/community-map.md](docs/community-map.md). A configuração remota não foi aplicada nesta entrega.
+
+Compartilhamento de resultado de identificação, retomada do login e roteiro Android da issue #14: [docs/share-identification-community.md](docs/share-identification-community.md).

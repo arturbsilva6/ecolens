@@ -46,3 +46,21 @@ app.*.map.json
 
 # Widget Preview related
 .widget_preview/
+
+# EcoLens - arquivos locais e segredos (nunca versionar)
+.env
+.env.*
+!.env.example
+*.secret
+*.secrets
+*.pem
+*.p12
+*.jks
+*.keystore
+android/key.properties
+supabase/.branches/
+supabase/.profiles/
+supabase/.temp/
+
+# Intermediate task artifacts
+/work/

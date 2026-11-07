@@ -1,0 +1,4 @@
+# Configuração inicial para futuras implantações.
+# O cliente deve possuir um JWT válido do Supabase Auth.
+[functions.identify-species]
+verify_jwt = true

@@ -5,6 +5,7 @@ class QuickAccessSection extends StatelessWidget {
   final VoidCallback onFirstAidTap;
   final VoidCallback onHistoryTap;
   final VoidCallback onForumTap;
+  final VoidCallback onFavoritesTap;
 
   const QuickAccessSection({
     super.key,
@@ -12,6 +13,7 @@ class QuickAccessSection extends StatelessWidget {
     required this.onFirstAidTap,
     required this.onHistoryTap,
     required this.onForumTap,
+    required this.onFavoritesTap,
   });
 
   @override
@@ -75,6 +77,15 @@ class QuickAccessSection extends StatelessWidget {
                     title: 'Fórum Local',
                     subtitle: 'Compartilhe descobertas',
                     onTap: onForumTap,
+                  ),
+                ),
+                SizedBox(
+                  width: cardWidth,
+                  child: QuickAccessCard(
+                    icon: Icons.favorite_border,
+                    title: 'Favoritos',
+                    subtitle: 'Espécies salvas no dispositivo',
+                    onTap: onFavoritesTap,
                   ),
                 ),
               ],

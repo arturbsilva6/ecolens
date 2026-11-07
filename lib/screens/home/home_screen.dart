@@ -10,55 +10,89 @@ import '../../widgets/home/recent_species_section.dart';
 import '../../widgets/home/bottom_nav_bar.dart';
 import '../../controllers/theme_controller.dart';
 import '../settings/settings_screen.dart';
+import '../community/community_screen.dart';
+import '../map/heat_map_screen.dart';
+import '../profile/profile_screen.dart';
+import '../identification/identification_screen.dart';
+import '../identification/identification_history_screen.dart';
+import '../species/species_catalog_screen.dart';
+import '../species/favorites_screen.dart';
+import '../species/species_detail_screen.dart';
+import '../sos/sos_screen.dart';
+import '../../utils/species_catalog_filter.dart';
 
 class HomeScreen extends StatelessWidget {
   final ThemeController themeController;
+  final Future<List<SpeciesModel>> Function()? fetchPublishedSpecies;
+  final VoidCallback? onProfileTap;
 
-  const HomeScreen({super.key, required this.themeController});
-  static const List<SpeciesModel> _recentSpecies = [
-    SpeciesModel(
-      commonName: 'Jararaca',
-      scientificName: 'Bothrops jararaca',
-      status: SpeciesStatus.danger,
-      imagePath: 'assets/images/jararaca.jpg',
-    ),
-    SpeciesModel(
-      commonName: 'Cambará',
-      scientificName: 'Lantana camara',
-      status: SpeciesStatus.invasive,
-      imagePath: 'assets/images/cambara.jpg',
-    ),
-    SpeciesModel(
-      commonName: 'Sagui',
-      scientificName: 'Callithrix sp.',
-      imagePath: 'assets/images/sagui_banner.jpg',
-      status: SpeciesStatus.unverified,
-    ),
-  ];
-
+  const HomeScreen({
+    super.key,
+    required this.themeController,
+    this.fetchPublishedSpecies,
+    this.onProfileTap,
+  });
   void _mostrarMensagem(BuildContext context, String mensagem) {
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text(mensagem)));
   }
 
+  void _abrirIdentificacao(
+    BuildContext context, {
+    IdentificationSource? initialSource,
+  }) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (context) =>
+            IdentificationScreen(initialSource: initialSource),
+      ),
+    );
+  }
+
+  void _abrirSos(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (context) => const SosScreen(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'ecolens-sos-home',
+        tooltip: 'Abrir SOS ambiental',
+        onPressed: () => _abrirSos(context),
+        icon: const Icon(Icons.shield_outlined),
+        label: const Text('SOS'),
+        backgroundColor: const Color(0xFFD9292F),
+        foregroundColor: Colors.white,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       bottomNavigationBar: EcoLensBottomNavBar(
         selectedIndex: 0,
-
         onDestinationSelected: (index) {
           if (index == 0) return;
-
-          const paginas = [
-            'Início',
-            'Identificar',
-            'Mapa',
-            'Comunidade',
-            'Perfil',
-          ];
-
-          _mostrarMensagem(context, '${paginas[index]} em desenvolvimento');
+          if (index == 1) {
+            _abrirIdentificacao(context);
+            return;
+          }
+          if (index == 4) {
+            if (onProfileTap != null) {
+              onProfileTap!();
+            } else {
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(builder: (_) => const ProfileScreen()),
+              );
+            }
+            return;
+          }
+          if (index == 2 || index == 3) {
+            Navigator.of(context).push(MaterialPageRoute<void>(
+              builder: (_) => index == 2 ? const HeatMapScreen() : const CommunityScreen(),
+            ));
+          }
         },
       ),
 
@@ -81,28 +115,29 @@ class HomeScreen extends StatelessWidget {
 
             Expanded(
               child: ListView(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 8,
-                ),
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 100),
                 children: [
                   IdentificationBanner(
                     onCameraTap: () {
-                      _mostrarMensagem(context, 'Câmera em desenvolvimento');
+                      _abrirIdentificacao(
+                        context,
+                        initialSource: IdentificationSource.camera,
+                      );
                     },
                     onGalleryTap: () {
-                      _mostrarMensagem(context, 'Galeria em desenvolvimento');
+                      _abrirIdentificacao(
+                        context,
+                        initialSource: IdentificationSource.gallery,
+                      );
                     },
                   ),
                   const SizedBox(height: 16),
 
                   SosBanner(
-                    onSosTap: () {
-                      _mostrarMensagem(context, 'Tela SOS em desenvolvimento');
-                    },
+                    onSosTap: () => _abrirSos(context),
                   ),
-                  const SizedBox(height: 20),
 
+                  const SizedBox(height: 20),
                   SpeciesSearchBar(
                     onSearch: (texto) {
                       if (texto.isEmpty) {
@@ -113,61 +148,78 @@ class HomeScreen extends StatelessWidget {
                         return;
                       }
 
-                      _mostrarMensagem(
-                        context,
-                        'Pesquisa por "$texto" em desenvolvimento',
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (context) =>
+                              SpeciesCatalogScreen(initialQuery: texto),
+                        ),
                       );
                     },
 
                     onFilterTap: () {
-                      _mostrarMensagem(context, 'Filtros em desenvolvimento');
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (context) => const SpeciesCatalogScreen(),
+                        ),
+                      );
                     },
                   ),
 
                   const SizedBox(height: 24),
 
                   QuickAccessSection(
+                    onFavoritesTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (_) => const FavoritesScreen(),
+                        ),
+                      );
+                    },
                     onVenomousTap: () {
-                      _mostrarMensagem(
-                        context,
-                        'Animais peçonhentos em desenvolvimento',
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (context) => const SpeciesCatalogScreen(
+                            initialFilter: SpeciesCatalogFilter.danger,
+                          ),
+                        ),
                       );
                     },
-                    onFirstAidTap: () {
-                      _mostrarMensagem(
-                        context,
-                        'Primeiros socorros em desenvolvimento',
-                      );
-                    },
+                    onFirstAidTap: () => _abrirSos(context),
                     onHistoryTap: () {
-                      _mostrarMensagem(
-                        context,
-                        'Meus registros em desenvolvimento',
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (context) =>
+                              const IdentificationHistoryScreen(),
+                        ),
                       );
                     },
                     onForumTap: () {
-                      _mostrarMensagem(
-                        context,
-                        'Fórum local em desenvolvimento',
-                      );
+                      Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (_) => const CommunityScreen(),
+                      ));
                     },
                   ),
                   const SizedBox(height: 24),
 
                   RecentSpeciesSection(
-                    species: _recentSpecies,
+                    fetchPublishedSpecies: fetchPublishedSpecies,
 
                     onSpeciesTap: (species) {
-                      _mostrarMensagem(
-                        context,
-                        'Detalhes de ${species.commonName} em desenvolvimento',
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (context) => SpeciesDetailScreen(
+                            species: species,
+                            isDemonstration: false,
+                          ),
+                        ),
                       );
                     },
 
                     onViewAllTap: () {
-                      _mostrarMensagem(
-                        context,
-                        'Todos os registros em desenvolvimento',
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (context) => const SpeciesCatalogScreen(),
+                        ),
                       );
                     },
                   ),
