@@ -25,10 +25,7 @@ class SpeciesDetailScreen extends StatelessWidget {
     }
 
     try {
-      final opened = await launchUrl(
-        uri,
-        mode: LaunchMode.externalApplication,
-      );
+      final opened = await launchUrl(uri, mode: LaunchMode.externalApplication);
       if (!opened && context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Não foi possível abrir o link.')),
@@ -120,7 +117,7 @@ class SpeciesDetailScreen extends StatelessWidget {
               value: progress.expectedTotalBytes == null
                   ? null
                   : progress.cumulativeBytesLoaded /
-                      progress.expectedTotalBytes!,
+                        progress.expectedTotalBytes!,
             ),
           );
         },
@@ -171,18 +168,14 @@ class SpeciesDetailScreen extends StatelessWidget {
                 ),
                 if (species.imageSourceUrl != null)
                   TextButton(
-                    onPressed: () => _openExternalLink(
-                      context,
-                      species.imageSourceUrl!,
-                    ),
+                    onPressed: () =>
+                        _openExternalLink(context, species.imageSourceUrl!),
                     child: const Text('Origem'),
                   ),
                 if (species.imageLicenseUrl != null)
                   TextButton(
-                    onPressed: () => _openExternalLink(
-                      context,
-                      species.imageLicenseUrl!,
-                    ),
+                    onPressed: () =>
+                        _openExternalLink(context, species.imageLicenseUrl!),
                     child: Text(species.imageLicenseLabel ?? 'Licença'),
                   ),
               ],
@@ -243,23 +236,18 @@ class SpeciesDetailScreen extends StatelessWidget {
             const SizedBox(height: 18),
             Text(
               species.commonName,
-              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
+              style: Theme.of(context).textTheme.headlineMedium
+                  ?.copyWith(fontWeight: FontWeight.w700),
             ),
             const SizedBox(height: 4),
             Text(
               species.scientificName,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontStyle: FontStyle.italic,
-              ),
+              style: Theme.of(context).textTheme.titleMedium
+                  ?.copyWith(fontStyle: FontStyle.italic),
             ),
             const SizedBox(height: 18),
             Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 14,
-                vertical: 12,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(14),
                 color: isDanger
@@ -269,9 +257,7 @@ class SpeciesDetailScreen extends StatelessWidget {
               child: Row(
                 children: [
                   Icon(
-                    isDanger
-                        ? Icons.warning_amber_rounded
-                        : Icons.info_outline,
+                    isDanger ? Icons.warning_amber_rounded : Icons.info_outline,
                     color: isDanger
                         ? colors.onErrorContainer
                         : colors.onSurface,
@@ -343,17 +329,12 @@ class SpeciesDetailScreen extends StatelessWidget {
                     color: colors.primary,
                   ),
                   title: const Text('Fontes das informações'),
-                  subtitle: Text(
-                    species.sourceName ?? 'Consultar referência',
-                  ),
+                  subtitle: Text(species.sourceName ?? 'Consultar referência'),
                   trailing: species.sourceUrl != null
                       ? const Icon(Icons.open_in_new)
                       : null,
                   onTap: species.sourceUrl != null
-                      ? () => _openExternalLink(
-                          context,
-                          species.sourceUrl!,
-                        )
+                      ? () => _openExternalLink(context, species.sourceUrl!)
                       : null,
                 ),
               ),
@@ -374,10 +355,10 @@ class SpeciesDetailScreen extends StatelessWidget {
                       child: Text(
                         isDemonstration
                             ? 'Este exemplo não identifica espécies reais. '
-                              'Não toque ou manipule animais desconhecidos.'
+                                  'Não toque ou manipule animais desconhecidos.'
                             : 'Esta ficha é informativa. A fotografia não '
-                              'substitui a identificação por especialistas '
-                              'nem o atendimento médico.',
+                                  'substitui a identificação por especialistas '
+                                  'nem o atendimento médico.',
                         style: TextStyle(color: colors.onErrorContainer),
                       ),
                     ),

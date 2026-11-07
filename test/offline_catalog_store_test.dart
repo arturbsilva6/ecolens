@@ -29,12 +29,13 @@ const _leucena = SpeciesModel(
   status: SpeciesStatus.invasive,
 );
 
-http.Response _image(http.Request request, {int size = 10}) => http.Response.bytes(
-  List<int>.filled(size, 7),
-  200,
-  headers: {'content-type': 'image/jpeg'},
-  request: request,
-);
+http.Response _image(http.Request request, {int size = 10}) =>
+    http.Response.bytes(
+      List<int>.filled(size, 7),
+      200,
+      headers: {'content-type': 'image/jpeg'},
+      request: request,
+    );
 
 void main() {
   late Directory dir;
@@ -164,10 +165,10 @@ void main() {
     await store.init();
     final progress = <String>[];
 
-    final first = await store.downloadPhotos(
-      [_jararaca, _leucena],
-      onProgress: (done, total) => progress.add('$done/$total'),
-    );
+    final first = await store.downloadPhotos([
+      _jararaca,
+      _leucena,
+    ], onProgress: (done, total) => progress.add('$done/$total'));
 
     expect(first.downloaded, 1);
     expect(first.failed, 0);
@@ -224,27 +225,30 @@ void main() {
     expect(store.cachedPhoto(_jararacaUrl), isNull);
   });
 
-  test('Status resume fichas e fotos, e as fotos podem ser removidas', () async {
-    final store = storeWith();
-    await store.init();
-    await store.saveCatalog([_jararaca, _leucena]);
+  test(
+    'Status resume fichas e fotos, e as fotos podem ser removidas',
+    () async {
+      final store = storeWith();
+      await store.init();
+      await store.saveCatalog([_jararaca, _leucena]);
 
-    var status = await store.status();
-    expect(status.speciesCount, 2);
-    expect(status.photosAvailable, 1);
-    expect(status.photosDownloaded, 0);
-    expect(status.allPhotosDownloaded, isFalse);
+      var status = await store.status();
+      expect(status.speciesCount, 2);
+      expect(status.photosAvailable, 1);
+      expect(status.photosDownloaded, 0);
+      expect(status.allPhotosDownloaded, isFalse);
 
-    await store.downloadPhotos([_jararaca, _leucena]);
-    status = await store.status();
-    expect(status.photosDownloaded, 1);
-    expect(status.photoBytes, 10);
-    expect(status.allPhotosDownloaded, isTrue);
+      await store.downloadPhotos([_jararaca, _leucena]);
+      status = await store.status();
+      expect(status.photosDownloaded, 1);
+      expect(status.photoBytes, 10);
+      expect(status.allPhotosDownloaded, isTrue);
 
-    await store.removePhotos();
-    status = await store.status();
-    expect(status.photosDownloaded, 0);
-    expect(status.photoBytes, 0);
-    expect(status.speciesCount, 2);
-  });
+      await store.removePhotos();
+      status = await store.status();
+      expect(status.photosDownloaded, 0);
+      expect(status.photoBytes, 0);
+      expect(status.speciesCount, 2);
+    },
+  );
 }

@@ -1,9 +1,4 @@
-
-enum SpeciesStatus {
-  danger,
-  invasive,
-  unverified,
-}
+enum SpeciesStatus { danger, invasive, unverified }
 
 class SpeciesModel {
   // Identificação da espécie

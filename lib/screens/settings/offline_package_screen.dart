@@ -64,9 +64,8 @@ class _OfflinePackageScreenState extends State<OfflinePackageScreen> {
       _busy = false;
       _progress = null;
     });
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
 
   Future<String> _downloadPackage() async {

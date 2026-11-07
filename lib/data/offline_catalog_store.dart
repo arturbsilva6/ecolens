@@ -71,11 +71,10 @@ class OfflineCatalogStore extends ChangeNotifier {
 
   OfflineCatalogStore({
     Future<Directory> Function()? baseDirectory,
-    http.Client? httpClient,
+    this._httpClient,
     this.maxPhotoBytes = 3 * 1024 * 1024,
     this.requestTimeout = const Duration(seconds: 30),
-  }) : _baseDirectory = baseDirectory ?? getApplicationSupportDirectory,
-       _httpClient = httpClient;
+  }) : _baseDirectory = baseDirectory ?? getApplicationSupportDirectory;
 
   Directory? _root;
   Future<bool>? _initFuture;
@@ -134,8 +133,7 @@ class OfflineCatalogStore extends ChangeNotifier {
     try {
       if (!await _catalogFile.exists()) return null;
       final json = jsonDecode(await _catalogFile.readAsString());
-      if (json is! Map<String, dynamic> ||
-          json['version'] != _formatVersion) {
+      if (json is! Map<String, dynamic> || json['version'] != _formatVersion) {
         return null;
       }
       final species = (json['species'] as List)
@@ -292,7 +290,8 @@ class OfflineCatalogStore extends ChangeNotifier {
   static List<Uri> downloadCandidates(String url) {
     final original = Uri.parse(url);
     final segments = original.pathSegments;
-    final isWikimediaOriginal = original.host == 'upload.wikimedia.org' &&
+    final isWikimediaOriginal =
+        original.host == 'upload.wikimedia.org' &&
         segments.length == 5 &&
         segments[0] == 'wikipedia' &&
         segments[1] == 'commons';

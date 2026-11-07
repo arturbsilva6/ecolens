@@ -45,10 +45,18 @@ void main() {
     if (await dir.exists()) await dir.delete(recursive: true);
   });
 
-  Future<void> settle(WidgetTester tester) async {
-    await tester.runAsync(
-      () => Future<void>.delayed(const Duration(milliseconds: 300)),
-    );
+  /// Executa [action] fora do relógio simulado, para que o acesso real a
+  /// arquivos termine, e depois redesenha a tela.
+  Future<void> act(
+    WidgetTester tester, [
+    Future<void> Function()? action,
+  ]) async {
+    await tester.runAsync(() async {
+      await action?.call();
+      for (var i = 0; i < 5; i++) {
+        await Future<void>.delayed(const Duration(milliseconds: 100));
+      }
+    });
     await tester.pump();
   }
 
@@ -56,12 +64,19 @@ void main() {
     WidgetTester tester,
     Future<List<SpeciesModel>> Function() fetchRemote,
   ) async {
-    await tester.pumpWidget(
-      MaterialApp(
-        home: OfflinePackageScreen(store: store, fetchRemote: fetchRemote),
+    await act(
+      tester,
+      () => tester.pumpWidget(
+        MaterialApp(
+          home: OfflinePackageScreen(store: store, fetchRemote: fetchRemote),
+        ),
       ),
     );
-    await settle(tester);
+  }
+
+  Future<void> tapDownload(WidgetTester tester) async {
+    await act(tester, () => tester.tap(find.text('Baixar pacote offline')));
+    await act(tester);
   }
 
   testWidgets('Baixa fichas e fotos e mostra o resumo', (tester) async {
@@ -70,9 +85,7 @@ void main() {
     expect(find.text('Nenhuma ficha salva ainda'), findsOneWidget);
     expect(find.text('0 de 0 fotos no aparelho'), findsOneWidget);
 
-    await tester.tap(find.text('Baixar pacote offline'));
-    await settle(tester);
-    await settle(tester);
+    await tapDownload(tester);
 
     expect(find.text('2 fichas salvas'), findsOneWidget);
     expect(find.text('1 de 1 fotos no aparelho'), findsOneWidget);
@@ -86,7 +99,7 @@ void main() {
   });
 
   testWidgets('Sem conexão, mantém as fichas salvas e avisa', (tester) async {
-    await tester.runAsync(() async {
+    await act(tester, () async {
       await store.init();
       await store.saveCatalog(_species);
     });
@@ -94,9 +107,7 @@ void main() {
 
     expect(find.text('2 fichas salvas'), findsOneWidget);
 
-    await tester.tap(find.text('Baixar pacote offline'));
-    await settle(tester);
-    await settle(tester);
+    await tapDownload(tester);
 
     expect(find.textContaining('Sem conexão.'), findsOneWidget);
     expect(find.text('2 fichas salvas'), findsOneWidget);
@@ -106,9 +117,7 @@ void main() {
   testWidgets('Sem conexão e sem fichas, mostra erro amigável', (tester) async {
     await open(tester, () async => throw const SocketException('sem rede'));
 
-    await tester.tap(find.text('Baixar pacote offline'));
-    await settle(tester);
-    await settle(tester);
+    await tapDownload(tester);
 
     expect(
       find.textContaining('Não foi possível baixar o pacote.'),

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import '../../controllers/theme_controller.dart';
@@ -8,17 +7,12 @@ import 'offline_package_screen.dart';
 class SettingsScreen extends StatelessWidget {
   final ThemeController themeController;
 
-  const SettingsScreen({
-    super.key,
-    required this.themeController,
-  });
+  const SettingsScreen({super.key, required this.themeController});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Configurações'),
-      ),
+      appBar: AppBar(title: const Text('Configurações')),
       body: ListView(
         children: [
           ListTile(
@@ -29,9 +23,8 @@ class SettingsScreen extends StatelessWidget {
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute<void>(
-                  builder: (context) => AppearanceScreen(
-                    themeController: themeController,
-                  ),
+                  builder: (context) =>
+                      AppearanceScreen(themeController: themeController),
                 ),
               );
             },
@@ -56,9 +49,7 @@ class SettingsScreen extends StatelessWidget {
           const Divider(height: 1),
 
           ListTile(
-            leading: const Icon(
-              Icons.notifications_outlined,
-            ),
+            leading: const Icon(Icons.notifications_outlined),
             title: const Text('Notificações'),
             subtitle: const Text('Preferências de avisos'),
             trailing: const Icon(Icons.chevron_right),
@@ -109,9 +100,7 @@ class SettingsScreen extends StatelessWidget {
 
   void _showComingSoon(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Funcionalidade em desenvolvimento'),
-      ),
+      const SnackBar(content: Text('Funcionalidade em desenvolvimento')),
     );
   }
 }

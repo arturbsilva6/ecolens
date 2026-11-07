@@ -98,8 +98,7 @@ class _SpeciesCatalogScreenState extends State<SpeciesCatalogScreen> {
                 scrollDirection: Axis.horizontal,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 itemCount: SpeciesCatalogFilter.values.length,
-                separatorBuilder: (context, index) =>
-                    const SizedBox(width: 8),
+                separatorBuilder: (context, index) => const SizedBox(width: 8),
                 itemBuilder: (context, index) {
                   final filter = SpeciesCatalogFilter.values[index];
                   return ChoiceChip(
@@ -171,11 +170,11 @@ class _SpeciesCatalogScreenState extends State<SpeciesCatalogScreen> {
                         child: Text(
                           species.isEmpty
                               ? '0 espécies encontradas. '
-                                'Ainda não há espécies publicadas.'
+                                    'Ainda não há espécies publicadas.'
                               : _searchController.text.trim().isEmpty
-                                  ? 'Nenhuma espécie publicada '
+                              ? 'Nenhuma espécie publicada '
                                     'nesta classificação.'
-                                  : 'Nenhuma espécie publicada encontrada '
+                              : 'Nenhuma espécie publicada encontrada '
                                     'para esta pesquisa e filtro.',
                           textAlign: TextAlign.center,
                         ),
@@ -227,8 +226,9 @@ class _SpeciesCatalogScreenState extends State<SpeciesCatalogScreen> {
                                   isDanger
                                       ? Icons.warning_amber_rounded
                                       : Icons.eco_outlined,
-                                  color:
-                                      isDanger ? colors.error : colors.primary,
+                                  color: isDanger
+                                      ? colors.error
+                                      : colors.primary,
                                 ),
                           title: Text(item.commonName),
                           subtitle: Column(
