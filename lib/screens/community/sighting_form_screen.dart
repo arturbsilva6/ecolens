@@ -221,7 +221,7 @@ class _SightingFormScreenState extends State<SightingFormScreen> {
   Future<void> _pick(ImageSource source) async {
     if (source == ImageSource.camera &&
         widget.selectPhoto == null &&
-        !await CameraNotice().confirm(context)) {
+        !await const CameraNotice().confirm(context)) {
       return;
     }
     if (!mounted) return;

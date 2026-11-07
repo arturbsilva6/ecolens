@@ -117,9 +117,10 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
                   'As análises salvas neste aparelho serão removidas. '
                   'Não é possível desfazer.',
               done: 'Histórico apagado.',
-              action: () => (widget.historyRepository ??
-                      IdentificationHistoryRepository())
-                  .clear(),
+              action: () =>
+                  (widget.historyRepository ??
+                          IdentificationHistoryRepository())
+                      .clear(),
             ),
           ),
           ListTile(
@@ -189,10 +190,7 @@ class _Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Padding(
     padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
-    child: Semantics(
-      header: true,
-      child: Text(text, style: style),
-    ),
+    child: Semantics(header: true, child: Text(text, style: style)),
   );
 }
 
@@ -204,9 +202,6 @@ class _Info extends StatelessWidget {
   const _Info({required this.icon, required this.title, required this.text});
 
   @override
-  Widget build(BuildContext context) => ListTile(
-    leading: Icon(icon),
-    title: Text(title),
-    subtitle: Text(text),
-  );
+  Widget build(BuildContext context) =>
+      ListTile(leading: Icon(icon), title: Text(title), subtitle: Text(text));
 }

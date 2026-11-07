@@ -104,20 +104,29 @@ void main() {
       ),
     );
 
-    await tester.tap(find.text('Apagar histórico de identificações'));
+    Future<void> tapItem(String text) async {
+      await tester.scrollUntilVisible(
+        find.text(text),
+        200,
+        scrollable: find.byType(Scrollable).first,
+      );
+      await tester.tap(find.text(text));
+    }
+
+    await tapItem('Apagar histórico de identificações');
     await tester.pumpAndSettle();
     await tester.tap(find.text('Cancelar'));
     await tester.pumpAndSettle();
     expect(history.values, isNotEmpty);
 
-    await tester.tap(find.text('Apagar histórico de identificações'));
+    await tapItem('Apagar histórico de identificações');
     await tester.pumpAndSettle();
     await tester.tap(find.text('Apagar'));
     await tester.pumpAndSettle();
     expect(history.values, isEmpty);
     expect(find.text('Histórico apagado.'), findsOneWidget);
 
-    await tester.tap(find.text('Apagar favoritos'));
+    await tapItem('Apagar favoritos');
     await tester.pumpAndSettle();
     await tester.tap(find.text('Apagar'));
     await tester.pumpAndSettle();
@@ -138,7 +147,7 @@ void main() {
         home: Builder(
           builder: (context) => TextButton(
             onPressed: () async =>
-                results.add(await CameraNotice().confirm(context)),
+                results.add(await const CameraNotice().confirm(context)),
             child: const Text('Abrir'),
           ),
         ),

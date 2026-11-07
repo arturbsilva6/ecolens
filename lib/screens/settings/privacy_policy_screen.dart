@@ -69,10 +69,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          Text(
-            'Atualizada em $updatedAt',
-            style: theme.textTheme.bodySmall,
-          ),
+          Text('Atualizada em $updatedAt', style: theme.textTheme.bodySmall),
           for (final (title, body) in sections) ...[
             const SizedBox(height: 20),
             Semantics(

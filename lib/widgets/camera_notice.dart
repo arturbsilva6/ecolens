@@ -9,17 +9,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 class CameraNotice {
   static const storageKey = 'ecolens_camera_notice_seen_v1';
 
-  final SharedPreferencesAsync? _preferences;
+  final SharedPreferencesAsync? preferences;
 
-  CameraNotice({SharedPreferencesAsync? preferences})
-    : _preferences = preferences;
+  const CameraNotice({this.preferences});
 
   /// Retorna `true` quando a câmera pode ser aberta.
   Future<bool> confirm(BuildContext context) async {
-    final SharedPreferencesAsync preferences;
+    final SharedPreferencesAsync store;
     try {
-      preferences = _preferences ?? SharedPreferencesAsync();
-      if (await preferences.getBool(storageKey) == true) return true;
+      store = preferences ?? SharedPreferencesAsync();
+      if (await store.getBool(storageKey) == true) return true;
     } catch (_) {
       // Sem armazenamento local, não bloqueia a câmera.
       return true;
@@ -50,7 +49,7 @@ class CameraNotice {
     );
     if (accepted != true) return false;
     try {
-      await preferences.setBool(storageKey, true);
+      await store.setBool(storageKey, true);
     } catch (_) {
       // O aviso volta a aparecer na próxima vez; a câmera abre mesmo assim.
     }

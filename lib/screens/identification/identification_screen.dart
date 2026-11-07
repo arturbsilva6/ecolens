@@ -134,7 +134,7 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
   }
 
   Future<void> _openCamera() async {
-    if (!await CameraNotice().confirm(context) || !mounted) return;
+    if (!await const CameraNotice().confirm(context) || !mounted) return;
     await _controller.takePhoto();
   }
 

@@ -14,9 +14,8 @@ class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key, required this.themeController});
 
   void _open(BuildContext context, Widget screen) {
-    Navigator.of(
-      context,
-    ).push(MaterialPageRoute<void>(builder: (context) => screen));
+    Navigator.of(context)
+        .push(MaterialPageRoute<void>(builder: (context) => screen));
   }
 
   @override
