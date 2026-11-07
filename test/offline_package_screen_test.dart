@@ -30,6 +30,8 @@ void main() {
     dir = await Directory.systemTemp.createTemp('ecolens_offline_ui');
     store = OfflineCatalogStore(
       baseDirectory: () async => dir,
+      requestInterval: Duration.zero,
+      rateLimitWait: Duration.zero,
       httpClient: MockClient(
         (request) async => http.Response.bytes(
           List<int>.filled(2048, 1),

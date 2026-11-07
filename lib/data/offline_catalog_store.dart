@@ -59,9 +59,15 @@ class PhotoDownloadResult {
 class OfflineCatalogStore extends ChangeNotifier {
   static const _formatVersion = 1;
 
-  /// Identificação enviada aos servidores de imagens. Só ASCII: o cliente
-  /// HTTP do Android recusa cabeçalhos com acentos.
-  static const userAgent = 'EcoLens/1.0 (TCC FATEC Sao Roque; offline catalog)';
+  /// Identificação enviada aos servidores de imagens, com link de contato,
+  /// como pede a política da Wikimedia para aplicativos. Só ASCII: o
+  /// cliente HTTP do Android recusa cabeçalhos com acentos.
+  static const userAgent =
+      'EcoLens/1.0 (https://github.com/arturbsilva6/ecolens; '
+      'TCC FATEC Sao Roque) dart-http';
+
+  /// Quantas vezes repetir um endereço que respondeu 429 (limite de uso).
+  static const maxRateLimitRetries = 2;
 
   /// Largura das miniaturas da Wikimedia usadas no pacote offline.
   static const thumbnailWidth = 500;
@@ -73,11 +79,19 @@ class OfflineCatalogStore extends ChangeNotifier {
   final int maxPhotoBytes;
   final Duration requestTimeout;
 
+  /// Pausa entre downloads, para não estourar o limite da Wikimedia.
+  final Duration requestInterval;
+
+  /// Espera padrão após HTTP 429 quando o servidor não informa o tempo.
+  final Duration rateLimitWait;
+
   OfflineCatalogStore({
     Future<Directory> Function()? baseDirectory,
     this._httpClient,
     this.maxPhotoBytes = 3 * 1024 * 1024,
     this.requestTimeout = const Duration(seconds: 30),
+    this.requestInterval = const Duration(milliseconds: 800),
+    this.rateLimitWait = const Duration(seconds: 5),
   }) : _baseDirectory = baseDirectory ?? getApplicationSupportDirectory;
 
   Directory? _root;
@@ -260,33 +274,68 @@ class OfflineCatalogStore extends ChangeNotifier {
 
   Future<bool> _downloadPhoto(http.Client client, String url) async {
     for (final candidate in downloadCandidates(url)) {
-      try {
-        final response = await client
-            .get(candidate, headers: const {'User-Agent': userAgent})
-            .timeout(requestTimeout);
-        final type = response.headers['content-type'] ?? '';
-        if (response.statusCode != 200 ||
-            !type.startsWith('image/') ||
-            response.bodyBytes.isEmpty ||
-            response.bodyBytes.length > maxPhotoBytes) {
+      for (var attempt = 0; attempt <= maxRateLimitRetries; attempt++) {
+        final http.Response response;
+        try {
+          await Future<void>.delayed(requestInterval);
+          response = await client
+              .get(candidate, headers: const {'User-Agent': userAgent})
+              .timeout(requestTimeout);
+        } catch (error) {
+          // O log ajuda a diagnosticar no aparelho.
+          debugPrint('EcoLens offline: falha ao baixar $candidate: $error');
+          break;
+        }
+        if (response.statusCode == 429 && attempt < maxRateLimitRetries) {
+          final wait = _retryAfter(response) ?? rateLimitWait;
           debugPrint(
-            'EcoLens offline: foto recusada ($candidate): '
-            'HTTP ${response.statusCode}, tipo "$type", '
-            '${response.bodyBytes.length} bytes',
+            'EcoLens offline: limite de uso em $candidate; '
+            'nova tentativa em ${wait.inSeconds} s',
           );
+          await Future<void>.delayed(wait);
           continue;
         }
-        final target = _photoFile(url);
-        final temp = File('${target.path}.tmp');
-        await temp.writeAsBytes(response.bodyBytes, flush: true);
-        await temp.rename(target.path);
-        return true;
-      } catch (error) {
-        // Tenta o próximo endereço; o log ajuda a diagnosticar no aparelho.
-        debugPrint('EcoLens offline: falha ao baixar $candidate: $error');
+        if (await _savePhoto(url, candidate, response)) return true;
+        break;
       }
     }
     return false;
+  }
+
+  Future<bool> _savePhoto(
+    String url,
+    Uri candidate,
+    http.Response response,
+  ) async {
+    final type = response.headers['content-type'] ?? '';
+    if (response.statusCode != 200 ||
+        !type.startsWith('image/') ||
+        response.bodyBytes.isEmpty ||
+        response.bodyBytes.length > maxPhotoBytes) {
+      debugPrint(
+        'EcoLens offline: foto recusada ($candidate): '
+        'HTTP ${response.statusCode}, tipo "$type", '
+        '${response.bodyBytes.length} bytes',
+      );
+      return false;
+    }
+    try {
+      final target = _photoFile(url);
+      final temp = File('${target.path}.tmp');
+      await temp.writeAsBytes(response.bodyBytes, flush: true);
+      await temp.rename(target.path);
+      return true;
+    } catch (error) {
+      debugPrint('EcoLens offline: falha ao salvar $candidate: $error');
+      return false;
+    }
+  }
+
+  /// Tempo pedido pelo servidor no cabeçalho Retry-After, limitado a 30 s.
+  Duration? _retryAfter(http.Response response) {
+    final seconds = int.tryParse(response.headers['retry-after'] ?? '');
+    if (seconds == null || seconds < 0) return null;
+    return Duration(seconds: seconds > 30 ? 30 : seconds);
   }
 
   /// Endereços tentados para baixar a foto: primeiro a miniatura da

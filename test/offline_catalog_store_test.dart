@@ -50,6 +50,8 @@ void main() {
 
   OfflineCatalogStore storeWith([MockClient? client]) => OfflineCatalogStore(
     baseDirectory: () async => dir,
+    requestInterval: Duration.zero,
+    rateLimitWait: Duration.zero,
     httpClient: client ?? MockClient((request) async => _image(request)),
   );
 
@@ -204,6 +206,8 @@ void main() {
   test('Recusa respostas que não são imagem ou são grandes demais', () async {
     final store = OfflineCatalogStore(
       baseDirectory: () async => dir,
+    requestInterval: Duration.zero,
+    rateLimitWait: Duration.zero,
       maxPhotoBytes: 5,
       httpClient: MockClient((request) async {
         if (request.url.path.contains('/thumb/')) {
@@ -269,5 +273,46 @@ void main() {
     await store.downloadPhotos([_jararaca]);
 
     expect(sent, OfflineCatalogStore.userAgent);
+  });
+
+  test('Após HTTP 429, espera e tenta de novo o mesmo endereço', () async {
+    var calls = 0;
+    final store = storeWith(
+      MockClient((request) async {
+        calls++;
+        if (calls == 1) {
+          return http.Response(
+            'Too many requests',
+            429,
+            headers: {'content-type': 'text/html', 'retry-after': '0'},
+            request: request,
+          );
+        }
+        return _image(request);
+      }),
+    );
+    await store.init();
+
+    final result = await store.downloadPhotos([_jararaca]);
+
+    expect(result.downloaded, 1);
+    expect(calls, 2);
+  });
+
+  test('Desiste após repetidos HTTP 429 sem travar o pacote', () async {
+    var calls = 0;
+    final store = storeWith(
+      MockClient((request) async {
+        calls++;
+        return http.Response('Too many requests', 429, request: request);
+      }),
+    );
+    await store.init();
+
+    final result = await store.downloadPhotos([_jararaca]);
+
+    expect(result.failed, 1);
+    // Miniatura e original, cada um com a tentativa inicial e 2 repetições.
+    expect(calls, 2 * (1 + OfflineCatalogStore.maxRateLimitRetries));
   });
 }
