@@ -269,7 +269,11 @@ void main() {
       }
       // Disque-Intoxicação é o número nacional; CIATox são os centros
       // regionais e só podem aparecer como nome de fonte.
-      for (final campo in ['safety_advice', 'risk_description', 'rescue_advice']) {
+      for (final campo in [
+        'safety_advice',
+        'risk_description',
+        'rescue_advice',
+      ]) {
         expect(
           ficha[campo] as String,
           isNot(contains('CIATox')),
