@@ -251,4 +251,23 @@ void main() {
       expect(status.speciesCount, 2);
     },
   );
+
+  test('Cabeçalho User-Agent só usa ASCII e é enviado', () async {
+    expect(
+      OfflineCatalogStore.userAgent.codeUnits.every((unit) => unit < 128),
+      isTrue,
+    );
+    String? sent;
+    final store = storeWith(
+      MockClient((request) async {
+        sent = request.headers['User-Agent'];
+        return _image(request);
+      }),
+    );
+    await store.init();
+
+    await store.downloadPhotos([_jararaca]);
+
+    expect(sent, OfflineCatalogStore.userAgent);
+  });
 }

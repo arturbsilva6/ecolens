@@ -59,6 +59,11 @@ class PhotoDownloadResult {
 class OfflineCatalogStore extends ChangeNotifier {
   static const _formatVersion = 1;
 
+  /// Identificação enviada aos servidores de imagens. Só ASCII: o cliente
+  /// HTTP do Android recusa cabeçalhos com acentos.
+  static const userAgent =
+      'EcoLens/1.0 (TCC FATEC Sao Roque; offline catalog)';
+
   /// Largura das miniaturas da Wikimedia usadas no pacote offline.
   static const thumbnailWidth = 500;
 
@@ -260,9 +265,7 @@ class OfflineCatalogStore extends ChangeNotifier {
         final response = await client
             .get(
               candidate,
-              headers: const {
-                'User-Agent': 'EcoLens/1.0 (app de TCC; catálogo offline)',
-              },
+              headers: const {'User-Agent': userAgent},
             )
             .timeout(requestTimeout);
         final type = response.headers['content-type'] ?? '';
@@ -270,6 +273,11 @@ class OfflineCatalogStore extends ChangeNotifier {
             !type.startsWith('image/') ||
             response.bodyBytes.isEmpty ||
             response.bodyBytes.length > maxPhotoBytes) {
+          debugPrint(
+            'EcoLens offline: foto recusada ($candidate): '
+            'HTTP ${response.statusCode}, tipo "$type", '
+            '${response.bodyBytes.length} bytes',
+          );
           continue;
         }
         final target = _photoFile(url);
@@ -277,8 +285,9 @@ class OfflineCatalogStore extends ChangeNotifier {
         await temp.writeAsBytes(response.bodyBytes, flush: true);
         await temp.rename(target.path);
         return true;
-      } catch (_) {
-        // Tenta o próximo endereço ou registra a falha.
+      } catch (error) {
+        // Tenta o próximo endereço; o log ajuda a diagnosticar no aparelho.
+        debugPrint('EcoLens offline: falha ao baixar $candidate: $error');
       }
     }
     return false;
