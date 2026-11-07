@@ -206,8 +206,8 @@ void main() {
   test('Recusa respostas que não são imagem ou são grandes demais', () async {
     final store = OfflineCatalogStore(
       baseDirectory: () async => dir,
-    requestInterval: Duration.zero,
-    rateLimitWait: Duration.zero,
+      requestInterval: Duration.zero,
+      rateLimitWait: Duration.zero,
       maxPhotoBytes: 5,
       httpClient: MockClient((request) async {
         if (request.url.path.contains('/thumb/')) {
