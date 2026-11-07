@@ -262,6 +262,47 @@ class AuthController extends ChangeNotifier {
     linkProblem = false;
   });
 
+  Future<void> changePassword(String password, String confirmation) =>
+      _run(() async {
+        if (user == null) {
+          throw const AuthFailure('Entre na sua conta para alterar a senha.');
+        }
+        final error = passwordError(password);
+        if (error != null) throw AuthFailure(error);
+        if (password != confirmation) {
+          throw const AuthFailure('As senhas não coincidem.');
+        }
+        await repository.updatePassword(password);
+        if (!_disposed) message = 'Senha alterada.';
+      });
+
+  Future<void> signOutEverywhere() => _run(() async {
+    await repository.signOutEverywhere();
+    if (_disposed) return;
+    _clearAccount();
+    message = 'Você saiu da conta em todos os aparelhos.';
+  });
+
+  Future<void> deleteAccount() => _run(() async {
+    if (user == null) {
+      throw const AuthFailure('Entre na sua conta para excluí-la.');
+    }
+    await repository.deleteAccount();
+    if (_disposed) return;
+    _clearAccount();
+    message =
+        'Conta excluída. Seus avistamentos e fotos foram apagados do servidor; '
+        'favoritos e histórico continuam só neste aparelho.';
+  });
+
+  void _clearAccount() {
+    user = null;
+    pendingEmail = null;
+    recoveryRequired = false;
+    canRetryCallback = false;
+    linkProblem = false;
+  }
+
   static String? emailError(String value) =>
       RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$').hasMatch(value.trim()) &&
           value.trim().length <= 254

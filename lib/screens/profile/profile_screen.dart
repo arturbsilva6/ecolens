@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../controllers/auth_controller.dart';
+import '../../widgets/auth/account_security_section.dart';
 
 enum _AccessForm { guest, login, register, requestReset }
 
@@ -340,6 +341,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         onPressed: _auth.busy ? null : _auth.signOut,
                         child: const Text('Sair da conta'),
                       ),
+                      AccountSecuritySection(controller: _auth),
                     ] else ...[
                       if (_mode == _AccessForm.guest) ...[
                         FilledButton(

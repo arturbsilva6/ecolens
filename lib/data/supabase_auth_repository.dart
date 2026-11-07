@@ -340,6 +340,43 @@ class SupabaseAuthRepository implements AuthRepository {
   });
 
   @override
+  Future<void> signOutEverywhere() => _call((auth) async {
+    await auth.signOut(scope: SignOutScope.global);
+  });
+
+  @override
+  Future<void> deleteAccount() async {
+    try {
+      await connect();
+      final client = _client!;
+      if (client.auth.currentSession == null ||
+          client.auth.currentUser?.isAnonymous == true) {
+        throw const AuthFailure('Entre na sua conta para excluí-la.');
+      }
+      // A função confere a sessão, apaga fotos e avistamentos e, por último,
+      // a conta. A confirmação evita exclusão por chamada acidental.
+      await client.functions.invoke(
+        'delete-account',
+        body: {'confirm': 'EXCLUIR'},
+      );
+    } on AuthFailure {
+      rethrow;
+    } on FunctionException {
+      throw const AuthFailure(
+        'Não foi possível excluir a conta agora. Verifique a conexão e tente novamente.',
+      );
+    } catch (error) {
+      throw AuthFailure(authErrorMessage(error));
+    }
+    // A sessão já não vale no servidor; remove a cópia local.
+    try {
+      await _client!.auth.signOut(scope: SignOutScope.local);
+    } catch (_) {
+      // A conta foi excluída; falhas ao limpar a sessão local não a recriam.
+    }
+  }
+
+  @override
   Future<void> dispose() async {
     _disposed = true;
     _retryableCallback = null;

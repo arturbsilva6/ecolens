@@ -83,6 +83,20 @@ class FakeAuthRepository implements AuthRepository {
 
   @override
   Future<void> signOut() => _call();
+  int signOutEverywhereCalls = 0;
+  int deleteAccountCalls = 0;
+  @override
+  Future<void> signOutEverywhere() {
+    signOutEverywhereCalls++;
+    return _call();
+  }
+
+  @override
+  Future<void> deleteAccount() {
+    deleteAccountCalls++;
+    return _call();
+  }
+
   @override
   Future<void> dispose() async {
     disposed = true;

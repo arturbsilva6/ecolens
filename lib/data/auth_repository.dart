@@ -38,5 +38,11 @@ abstract class AuthRepository {
   Future<bool> signInWithGoogle();
   Future<UserModel> updateName(String name);
   Future<void> signOut();
+
+  /// Encerra a sessão em todos os aparelhos (revoga os refresh tokens).
+  Future<void> signOutEverywhere();
+
+  /// Exclui a conta, os avistamentos e as fotos do usuário no servidor.
+  Future<void> deleteAccount();
   Future<void> dispose();
 }
