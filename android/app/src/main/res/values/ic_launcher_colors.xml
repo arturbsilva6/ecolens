@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="ic_launcher_background">#F5F8F3</color>
+    <!-- Sem placa atrás do logo: o launcher mostra só o desenho. -->
+    <color name="ic_launcher_background">#00000000</color>
+    <!-- Mesmo fundo da primeira tela do Flutter (AppColors.background). -->
+    <color name="splash_background">#F5F8F3</color>
 </resources>
