@@ -16,6 +16,7 @@ import 'core/theme/app_theme.dart';
 import 'screens/home/home_screen.dart';
 import 'services/supabase_service.dart';
 import 'widgets/intro/app_intro.dart';
+import 'widgets/intro/intro_status.dart';
 
 class EcoLensApp extends StatefulWidget {
   final SupabaseService? supabaseService;
@@ -45,6 +46,7 @@ class _EcoLensAppState extends State<EcoLensApp> {
   late final ThemeController _themeController;
   late final AuthController _authController;
   late bool _showIntro = widget.showIntro;
+  late final _introDone = ValueNotifier<bool>(!widget.showIntro);
   final _navigatorKey = GlobalKey<NavigatorState>();
   int _callbackRevision = 0;
   Future<void>? _profileNavigation;
@@ -86,6 +88,7 @@ class _EcoLensAppState extends State<EcoLensApp> {
     _authController.removeListener(_onAuthChanged);
     if (widget.authController == null) _authController.dispose();
     _themeController.dispose();
+    _introDone.dispose();
     super.dispose();
   }
 
@@ -183,7 +186,9 @@ class _EcoLensAppState extends State<EcoLensApp> {
           builder: (context, child) {
             final scale = _themeController.textScale;
             // A Home já carrega por baixo enquanto a abertura toca.
-            final content = Stack(
+            final content = IntroStatus(
+              done: _introDone,
+              child: Stack(
               fit: StackFit.expand,
               children: [
                 ExcludeSemantics(
@@ -196,10 +201,14 @@ class _EcoLensAppState extends State<EcoLensApp> {
                 if (_showIntro)
                   Positioned.fill(
                     child: AppIntro(
-                      onFinished: () => setState(() => _showIntro = false),
+                      onFinished: () {
+                        setState(() => _showIntro = false);
+                        _introDone.value = true;
+                      },
                     ),
                   ),
               ],
+            ),
             );
             if (scale == null) return content;
             // Multiplica o ajuste do Android pela escolha feita no app.

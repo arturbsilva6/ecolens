@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../core/theme/app_colors.dart';
+import 'header_vine.dart';
 
 /// Cabeçalho da Home com o símbolo simplificado do Conceito 2.
 class HomeHeader extends StatelessWidget {
@@ -21,10 +22,15 @@ class HomeHeader extends StatelessWidget {
     final isDark = theme.brightness == Brightness.dark;
 
     return Container(
-      padding: const EdgeInsets.fromLTRB(16, 8, 8, 8),
       color: theme.scaffoldBackgroundColor,
-      child: Row(
+      child: Stack(
         children: [
+          // Galho que cresce do símbolo logo depois da abertura.
+          const Positioned.fill(child: HeaderVine(startX: 58)),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 8, 12),
+            child: Row(
+              children: [
           Image.asset(
             'assets/branding/ecolens_logo_loader.png',
             width: 42,
@@ -98,6 +104,9 @@ class HomeHeader extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+        ],
+      ),
           ),
         ],
       ),
