@@ -62,10 +62,14 @@ abstract final class AppTheme {
       ),
     );
     return base.copyWith(
+      // Cabeçalho na mesma cor do fundo da tela, sem faixa nem sombra,
+      // inclusive ao rolar o conteúdo.
       appBarTheme: AppBarThemeData(
-        backgroundColor: colors.surface,
+        backgroundColor: base.scaffoldBackgroundColor,
         foregroundColor: colors.onSurface,
+        surfaceTintColor: Colors.transparent,
         elevation: 0,
+        scrolledUnderElevation: 0,
         centerTitle: false,
         titleTextStyle: base.textTheme.titleLarge?.copyWith(
           fontWeight: FontWeight.w700,
