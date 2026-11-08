@@ -61,8 +61,9 @@ class _RegionAlertCarouselState extends State<RegionAlertCarousel> {
 
   Future<List<SpeciesModel>> _load() async {
     try {
-      final all = await (widget.fetchPublishedSpecies ??
-          SupabaseSpeciesRepository().fetchPublishedSpecies)();
+      final all =
+          await (widget.fetchPublishedSpecies ??
+              SupabaseSpeciesRepository().fetchPublishedSpecies)();
       return RegionAlertCarousel.pick(all);
     } catch (_) {
       // Sem catálogo, a seção simplesmente não aparece.

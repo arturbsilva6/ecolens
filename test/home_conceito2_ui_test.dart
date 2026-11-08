@@ -20,9 +20,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         theme: AppTheme.light,
-        home: Scaffold(
-          body: HomeHeader(onSettingsTap: () => settings++),
-        ),
+        home: Scaffold(body: HomeHeader(onSettingsTap: () => settings++)),
       ),
     );
 
@@ -140,9 +138,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         theme: AppTheme.dark,
-        home: Scaffold(
-          body: HomeHeader(onSettingsTap: () {}),
-        ),
+        home: Scaffold(body: HomeHeader(onSettingsTap: () {})),
       ),
     );
     final outer = tester.widget<Container>(

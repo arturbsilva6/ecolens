@@ -360,9 +360,7 @@ void main() {
     },
   );
 
-  testWidgets('Home abre os quatro atalhos compactos', (
-    tester,
-  ) async {
+  testWidgets('Home abre os quatro atalhos compactos', (tester) async {
     final themeController = ThemeController();
     addTearDown(themeController.dispose);
     await tester.pumpWidget(
