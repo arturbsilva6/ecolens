@@ -204,8 +204,16 @@ class _AppIntroState extends State<AppIntro>
       alignment: WrapAlignment.center,
       spacing: 7,
       children: [
-        _zoomIn(AppInfo.taglineFirst, _words[0].value, style?.copyWith(color: cyan)),
-        _zoomIn(AppInfo.taglineSecond, _words[1].value, style?.copyWith(color: green)),
+        _zoomIn(
+          AppInfo.taglineFirst,
+          _words[0].value,
+          style?.copyWith(color: cyan),
+        ),
+        _zoomIn(
+          AppInfo.taglineSecond,
+          _words[1].value,
+          style?.copyWith(color: green),
+        ),
       ],
     );
   }
