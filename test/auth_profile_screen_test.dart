@@ -256,7 +256,7 @@ void main() {
       expect(find.text(account.email), findsOneWidget);
       repository.failure = null;
       await tap(tester, 'Sair da conta');
-      expect(find.textContaining('Você saiu da conta'), findsOneWidget);
+      expect(find.textContaining('Você saiu da conta.'), findsOneWidget);
       expect(find.text('Sair da conta'), findsNothing);
     },
   );
