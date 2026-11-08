@@ -13,15 +13,17 @@ void main() {
         ),
       );
 
-  double start(WidgetTester tester) => (tester
-          .widget<ClipPath>(
-            find.descendant(
-              of: find.byType(EcoSpinner),
-              matching: find.byType(ClipPath),
-            ),
-          )
-          .clipper! as EcoArcClipper)
-      .from;
+  double start(WidgetTester tester) =>
+      (tester
+                  .widget<ClipPath>(
+                    find.descendant(
+                      of: find.byType(EcoSpinner),
+                      matching: find.byType(ClipPath),
+                    ),
+                  )
+                  .clipper!
+              as EcoArcClipper)
+          .from;
 
   testWidgets('Sem valor, o símbolo gira enquanto carrega', (tester) async {
     await show(tester, const EcoSpinner());
