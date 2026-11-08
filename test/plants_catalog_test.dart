@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:ecolens/models/species_model.dart';
-import 'package:ecolens/models/species_status_style.dart';
 import 'package:ecolens/utils/species_catalog_filter.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -61,25 +60,17 @@ void main() {
       _nomes(SpeciesKindFilter.plants, filter: SpeciesCatalogFilter.danger),
       ['Chapéu-de-napoleão'],
     );
-    expect(_nomes(SpeciesKindFilter.plants, query: 'pitanga'), [
-      'Pitangueira',
-    ]);
+    expect(_nomes(SpeciesKindFilter.plants, query: 'pitanga'), ['Pitangueira']);
     expect(_nomes(SpeciesKindFilter.animals, query: 'pitanga'), isEmpty);
   });
 
   test('Plantas novas estão completas e com orientação correta', () {
-    final fichas =
-        (jsonDecode(
-                  File('supabase/data/curated_plants.json').readAsStringSync(),
-                )
-                as List)
-            .cast<Map<String, dynamic>>();
-    final atuais =
-        (jsonDecode(
-                  File('supabase/data/curated_species.json').readAsStringSync(),
-                )
-                as List)
-            .cast<Map<String, dynamic>>();
+    final fichas = (jsonDecode(
+      File('supabase/data/curated_plants.json').readAsStringSync(),
+    ) as List).cast<Map<String, dynamic>>();
+    final atuais = (jsonDecode(
+      File('supabase/data/curated_species.json').readAsStringSync(),
+    ) as List).cast<Map<String, dynamic>>();
 
     expect(fichas, hasLength(12));
     final slugs = fichas.map((f) => f['slug']).toSet();
@@ -130,12 +121,9 @@ void main() {
                     as Map<String, dynamic>)['novas']
                 as List)
             .cast<Map<String, dynamic>>();
-    final fichas =
-        (jsonDecode(
-                  File('supabase/data/curated_plants.json').readAsStringSync(),
-                )
-                as List)
-            .cast<Map<String, dynamic>>();
+    final fichas = (jsonDecode(
+      File('supabase/data/curated_plants.json').readAsStringSync(),
+    ) as List).cast<Map<String, dynamic>>();
     final licencas = RegExp(r'^(CC0|CC BY(-SA)? \d\.\d|Domínio público)$');
 
     expect(
