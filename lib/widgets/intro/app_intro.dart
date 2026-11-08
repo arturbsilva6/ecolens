@@ -93,7 +93,10 @@ class _AppIntroState extends State<AppIntro>
       try {
         await Future.wait([
           for (final name in AppIntro.layers)
-            precacheImage(AssetImage('assets/branding/intro/$name.png'), context),
+            precacheImage(
+              AssetImage('assets/branding/intro/$name.png'),
+              context,
+            ),
         ]).timeout(const Duration(seconds: 3));
       } catch (_) {
         // Se a imagem demorar, a animação segue mesmo assim.
