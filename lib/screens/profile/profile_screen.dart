@@ -568,19 +568,28 @@ class _OrDivider extends StatelessWidget {
   }
 }
 
-/// Letra "G" neutra (sem reproduzir o logotipo do Google).
+/// Logo "G" oficial, baixado das diretrizes de marca do Google
+/// (assets/branding/google_g.png). Sem o arquivo, mostra uma letra G neutra.
 class _GoogleMark extends StatelessWidget {
+  static const asset = 'assets/branding/google_g.png';
+
   const _GoogleMark();
 
   @override
-  Widget build(BuildContext context) => ExcludeSemantics(
-    child: Text(
-      'G',
-      style: TextStyle(
-        fontSize: 20,
-        fontWeight: FontWeight.w800,
-        height: 1,
-        color: Theme.of(context).colorScheme.primary,
+  Widget build(BuildContext context) => Image.asset(
+    asset,
+    width: 20,
+    height: 20,
+    excludeFromSemantics: true,
+    errorBuilder: (context, _, _) => ExcludeSemantics(
+      child: Text(
+        'G',
+        style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.w800,
+          height: 1,
+          color: Theme.of(context).colorScheme.primary,
+        ),
       ),
     ),
   );
