@@ -53,8 +53,9 @@ class _SightingDetailScreenState extends State<SightingDetailScreen> {
     final label = widget.sighting.species;
     if (label == null) return;
     try {
-      final catalog = await (widget.loadSpecies ??
-          () => SupabaseSpeciesRepository().fetchPublishedSpecies())();
+      final catalog =
+          await (widget.loadSpecies ??
+              () => SupabaseSpeciesRepository().fetchPublishedSpecies())();
       final parts = label.split(' — ').map(normalizeSpeciesSearch).toList();
       final match = catalog.where((sp) {
         final names = {
@@ -92,6 +93,7 @@ class _SightingDetailScreenState extends State<SightingDetailScreen> {
       );
     }
   }
+
   Future<void> _delete() async {
     final confirmed = await showDialog<bool>(
       context: context,
@@ -201,7 +203,10 @@ class _SightingDetailScreenState extends State<SightingDetailScreen> {
             Align(
               alignment: Alignment.centerLeft,
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: colors.secondaryContainer,
                   borderRadius: BorderRadius.circular(8),
@@ -228,8 +233,12 @@ class _SightingDetailScreenState extends State<SightingDetailScreen> {
                   ),
                   ListTile(
                     leading: const Icon(Icons.location_on_outlined),
-                    title: Text(municipality?.label ?? 'Município indisponível'),
-                    subtitle: const Text('Referência do município, não o local exato'),
+                    title: Text(
+                      municipality?.label ?? 'Município indisponível',
+                    ),
+                    subtitle: const Text(
+                      'Referência do município, não o local exato',
+                    ),
                   ),
                   ListTile(
                     leading: CircleAvatar(
@@ -263,7 +272,12 @@ class _SightingDetailScreenState extends State<SightingDetailScreen> {
                       children: [
                         const Icon(Icons.notes, size: 20),
                         const SizedBox(width: 8),
-                        Text('Observações', style: theme.textTheme.titleSmall),
+                        Flexible(
+                          child: Text(
+                            'Observações',
+                            style: theme.textTheme.titleSmall,
+                          ),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 8),
@@ -284,7 +298,10 @@ class _SightingDetailScreenState extends State<SightingDetailScreen> {
                     children: [
                       Row(
                         children: [
-                          Icon(species.status.icon, color: species.status.color),
+                          Icon(
+                            species.status.icon,
+                            color: species.status.color,
+                          ),
                           const SizedBox(width: 8),
                           Expanded(
                             child: Text(
@@ -349,45 +366,36 @@ class _SightingDetailScreenState extends State<SightingDetailScreen> {
                 ),
               ),
             if (mine) ...[
+              if (s.status == 'published') ...[
+                const SizedBox(height: 8),
+                OutlinedButton.icon(
+                  icon: const Icon(Icons.edit_outlined),
+                  onPressed: _busy
+                      ? null
+                      : () async {
+                          final changed = await Navigator.push<bool>(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => SightingFormScreen(
+                                repository: widget.repository,
+                                municipalities: widget.municipalities,
+                                sighting: s,
+                              ),
+                            ),
+                          );
+                          if (changed == true && context.mounted) {
+                            Navigator.pop(context, true);
+                          }
+                        },
+                  label: const Text('Editar'),
+                ),
+              ],
               const SizedBox(height: 8),
-              Row(
-                children: [
-                  if (s.status == 'published')
-                    Expanded(
-                      child: OutlinedButton.icon(
-                        icon: const Icon(Icons.edit_outlined),
-                        onPressed: _busy
-                            ? null
-                            : () async {
-                                final changed = await Navigator.push<bool>(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => SightingFormScreen(
-                                      repository: widget.repository,
-                                      municipalities: widget.municipalities,
-                                      sighting: s,
-                                    ),
-                                  ),
-                                );
-                                if (changed == true && context.mounted) {
-                                  Navigator.pop(context, true);
-                                }
-                              },
-                        label: const Text('Editar'),
-                      ),
-                    ),
-                  if (s.status == 'published') const SizedBox(width: 8),
-                  Expanded(
-                    child: OutlinedButton.icon(
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: colors.error,
-                      ),
-                      icon: const Icon(Icons.delete_outline),
-                      onPressed: _busy ? null : _delete,
-                      label: const Text('Excluir'),
-                    ),
-                  ),
-                ],
+              OutlinedButton.icon(
+                style: OutlinedButton.styleFrom(foregroundColor: colors.error),
+                icon: const Icon(Icons.delete_outline),
+                onPressed: _busy ? null : _delete,
+                label: const Text('Excluir'),
               ),
             ],
             if (_busy)
