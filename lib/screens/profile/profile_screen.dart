@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../controllers/auth_controller.dart';
 import '../../widgets/auth/account_security_section.dart';
 import '../settings/privacy_policy_screen.dart';
+import 'public_profile_screen.dart';
 
 enum _AccessForm { guest, login, register, requestReset }
 
@@ -348,6 +349,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       OutlinedButton(
                         onPressed: _auth.busy ? null : _auth.signOut,
                         child: const Text('Sair da conta'),
+                      ),
+                      const SizedBox(height: 16),
+                      Card(
+                        margin: EdgeInsets.zero,
+                        child: ListTile(
+                          leading: const Icon(Icons.badge_outlined),
+                          title: const Text('Perfil público'),
+                          subtitle: const Text(
+                            'Nome e avatar mostrados nos seus avistamentos',
+                          ),
+                          trailing: const Icon(Icons.chevron_right),
+                          onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute<void>(
+                              builder: (_) => const PublicProfileScreen(),
+                            ),
+                          ),
+                        ),
                       ),
                       AccountSecuritySection(controller: _auth),
                     ] else ...[

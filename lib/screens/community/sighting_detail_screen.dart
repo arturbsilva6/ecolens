@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../data/community_repository.dart';
 import '../../data/favorites_repository.dart';
+import '../../data/public_profile_repository.dart';
 import '../../data/supabase_species_repository.dart';
 import '../../models/sighting.dart';
 import '../../models/species_model.dart';
@@ -9,6 +10,7 @@ import '../../models/species_status_style.dart';
 import '../../utils/species_catalog_filter.dart';
 import '../map/heat_map_screen.dart';
 import '../species/species_detail_screen.dart';
+import '../../widgets/eco_avatar.dart';
 import 'community_widgets.dart';
 import 'sighting_form_screen.dart';
 
@@ -21,6 +23,9 @@ class SightingDetailScreen extends StatefulWidget {
   /// Catálogo usado para ligar o avistamento à ficha da espécie.
   final Future<List<SpeciesModel>> Function()? loadSpecies;
   final FavoritesRepository? favoritesRepository;
+
+  /// Perfil público do autor (nome e avatar escolhidos por ele).
+  final Future<PublicProfile?> Function(String userId)? loadAuthor;
   const SightingDetailScreen({
     super.key,
     required this.repository,
@@ -29,6 +34,7 @@ class SightingDetailScreen extends StatefulWidget {
     this.accountId,
     this.loadSpecies,
     this.favoritesRepository,
+    this.loadAuthor,
   });
   @override
   State<SightingDetailScreen> createState() => _SightingDetailScreenState();
@@ -38,6 +44,7 @@ class _SightingDetailScreenState extends State<SightingDetailScreen> {
   bool _busy = false;
   String? _error;
   SpeciesModel? _species;
+  PublicProfile? _author;
   bool _favorite = false;
   late final FavoritesRepository _favorites =
       widget.favoritesRepository ?? FavoritesRepository();
@@ -46,6 +53,18 @@ class _SightingDetailScreenState extends State<SightingDetailScreen> {
   void initState() {
     super.initState();
     _findSpecies();
+    _findAuthor();
+  }
+
+  Future<void> _findAuthor() async {
+    try {
+      final load =
+          widget.loadAuthor ?? SupabasePublicProfileRepository().fetch;
+      final author = await load(widget.sighting.ownerId);
+      if (mounted && author != null) setState(() => _author = author);
+    } catch (_) {
+      // Sem perfil público (ou offline): mostra "membro da comunidade".
+    }
   }
 
   /// Procura a espécie no catálogo (com cópia offline) pelo nome informado.
@@ -241,17 +260,12 @@ class _SightingDetailScreenState extends State<SightingDetailScreen> {
                     ),
                   ),
                   ListTile(
-                    leading: CircleAvatar(
-                      radius: 14,
-                      backgroundColor: colors.primaryContainer,
-                      child: Icon(
-                        Icons.person,
-                        size: 16,
-                        color: colors.onPrimaryContainer,
-                      ),
-                    ),
+                    leading: EcoAvatar(avatar: _author?.avatar, radius: 16),
                     title: Text(
-                      mine
+                      _author != null
+                          ? 'Publicado por ${_author!.displayName}'
+                                '${mine ? ' (você)' : ''}'
+                          : mine
                           ? 'Publicado por você'
                           : 'Publicado por um membro da comunidade',
                     ),
