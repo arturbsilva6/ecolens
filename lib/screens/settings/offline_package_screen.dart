@@ -4,6 +4,7 @@ import '../../data/offline_catalog_store.dart';
 import '../../data/supabase_species_repository.dart';
 import '../../models/species_model.dart';
 import '../../widgets/result_dialog.dart';
+import '../../widgets/eco_spinner.dart';
 
 /// Permite baixar as fichas e fotos do catálogo para usar sem internet.
 class OfflinePackageScreen extends StatefulWidget {
@@ -25,6 +26,7 @@ class _OfflinePackageScreenState extends State<OfflinePackageScreen> {
   bool _ready = false;
   bool _busy = false;
   String? _progress;
+  double? _fraction;
 
   @override
   void initState() {
@@ -64,6 +66,7 @@ class _OfflinePackageScreenState extends State<OfflinePackageScreen> {
     setState(() {
       _busy = false;
       _progress = null;
+      _fraction = null;
     });
     final ok = message.startsWith('Pacote offline pronto');
     await showResultDialog(
@@ -84,7 +87,10 @@ class _OfflinePackageScreenState extends State<OfflinePackageScreen> {
       species,
       onProgress: (done, total) {
         if (!mounted) return;
-        setState(() => _progress = 'Baixando fotos: $done de $total');
+        setState(() {
+          _progress = 'Baixando fotos: $done de $total';
+          _fraction = total == 0 ? null : done / total;
+        });
       },
     );
     if (result.failed == 0) {
@@ -130,7 +136,7 @@ class _OfflinePackageScreenState extends State<OfflinePackageScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('Uso offline')),
       body: status == null
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(child: EcoSpinner())
           : ListView(
               padding: const EdgeInsets.all(16),
               children: [
@@ -186,7 +192,13 @@ class _OfflinePackageScreenState extends State<OfflinePackageScreen> {
                   ),
                   const SizedBox(height: 16),
                   if (_progress != null) ...[
-                    const LinearProgressIndicator(),
+                    Center(
+                      child: EcoSpinner(
+                        size: 56,
+                        value: _fraction,
+                        semanticsLabel: 'Baixando pacote offline',
+                      ),
+                    ),
                     const SizedBox(height: 8),
                     Text(_progress!, textAlign: TextAlign.center),
                     const SizedBox(height: 16),

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ecolens/widgets/eco_spinner.dart';
 import 'package:ecolens/data/favorites_repository.dart';
 import 'package:ecolens/data/identification_history_repository.dart';
 import 'package:ecolens/controllers/theme_controller.dart';
@@ -574,7 +575,7 @@ void main() {
       ),
     );
     await tester.pump();
-    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    expect(find.byType(EcoSpinner), findsOneWidget);
     await tester.pumpWidget(const SizedBox());
     pending.complete([species]);
     await tester.pump();

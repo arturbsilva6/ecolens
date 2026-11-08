@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ecolens/widgets/eco_spinner.dart';
 import 'package:ecolens/controllers/theme_controller.dart';
 import 'package:ecolens/core/theme/app_theme.dart';
 import 'package:ecolens/models/species_model.dart';
@@ -95,7 +96,7 @@ void main() {
       200,
       scrollable: find.byType(Scrollable).first,
     );
-    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    expect(find.byType(EcoSpinner), findsOneWidget);
     expect(find.text('Dados de demonstração'), findsNothing);
     pending.complete([first]);
     await tester.pumpAndSettle();
@@ -306,7 +307,7 @@ void main() {
         await tester.pumpWidget(section(fetch, dark: dark, scale: 2));
         if (state == 'carregando') {
           await tester.pump();
-          expect(find.byType(CircularProgressIndicator), findsOneWidget);
+          expect(find.byType(EcoSpinner), findsOneWidget);
         } else {
           await tester.pumpAndSettle();
           if (state == 'sucesso') {

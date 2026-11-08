@@ -13,6 +13,7 @@ import '../species/species_detail_screen.dart';
 import '../../widgets/eco_avatar.dart';
 import 'community_widgets.dart';
 import 'sighting_form_screen.dart';
+import '../../widgets/eco_spinner.dart';
 
 class SightingDetailScreen extends StatefulWidget {
   final CommunityRepository repository;
@@ -414,7 +415,7 @@ class _SightingDetailScreenState extends State<SightingDetailScreen> {
             if (_busy)
               const Padding(
                 padding: EdgeInsets.all(16),
-                child: Center(child: CircularProgressIndicator()),
+                child: Center(child: EcoSpinner()),
               ),
             if (_error != null)
               Semantics(liveRegion: true, child: Text(_error!)),

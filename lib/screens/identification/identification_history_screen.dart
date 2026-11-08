@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../data/identification_history_repository.dart';
 import '../../models/identification_history_entry.dart';
 import '../species/species_catalog_screen.dart';
+import '../../widgets/eco_spinner.dart';
 
 String formatIdentificationDate(DateTime date) {
   final local = date.toLocal();
@@ -117,7 +118,7 @@ class _IdentificationHistoryScreenState
                 future: _entries,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState != ConnectionState.done) {
-                    return const Center(child: CircularProgressIndicator());
+                    return const Center(child: EcoSpinner());
                   }
                   if (snapshot.hasError) {
                     return Center(

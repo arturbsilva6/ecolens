@@ -4,6 +4,7 @@ import '../../data/favorites_repository.dart';
 import '../../data/supabase_species_repository.dart';
 import '../../models/species_model.dart';
 import 'species_detail_screen.dart';
+import '../../widgets/eco_spinner.dart';
 
 class FavoritesScreen extends StatefulWidget {
   final FavoritesRepository? repository;
@@ -131,7 +132,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     appBar: AppBar(title: const Text('Favoritos')),
     body: SafeArea(
       child: _loading
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(child: EcoSpinner())
           : ListView(
               padding: const EdgeInsets.all(16),
               children: [

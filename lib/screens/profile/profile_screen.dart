@@ -5,6 +5,7 @@ import '../../widgets/auth/account_security_section.dart';
 import '../settings/privacy_policy_screen.dart';
 import 'public_profile_screen.dart';
 import '../../widgets/result_dialog.dart';
+import '../../widgets/eco_spinner.dart';
 
 enum _AccessForm { guest, login, register, requestReset }
 
@@ -308,7 +309,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       const Padding(
                         padding: EdgeInsets.all(12),
                         child: Center(
-                          child: CircularProgressIndicator(
+                          child: EcoSpinner(
                             semanticsLabel: 'Processando acesso',
                           ),
                         ),

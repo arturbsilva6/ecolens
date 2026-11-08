@@ -4,6 +4,7 @@ import '../../data/supabase_species_repository.dart';
 import '../../models/species_model.dart';
 import '../species_photo.dart';
 import '../../models/species_status_style.dart';
+import '../eco_spinner.dart';
 
 class RecentSpeciesSection extends StatefulWidget {
   final Future<List<SpeciesModel>> Function()? fetchPublishedSpecies;
@@ -69,7 +70,7 @@ class _RecentSpeciesSectionState extends State<RecentSpeciesSection> {
           builder: (context, snapshot) {
             if (snapshot.connectionState != ConnectionState.done) {
               return const Center(
-                child: CircularProgressIndicator(
+                child: EcoSpinner(
                   semanticsLabel: 'Carregando espécies do catálogo',
                 ),
               );

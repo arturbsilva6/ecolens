@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../data/public_profile_repository.dart';
 import '../../widgets/eco_avatar.dart';
 import '../../widgets/result_dialog.dart';
+import '../../widgets/eco_spinner.dart';
 
 /// Escolha do nome e do avatar mostrados nos avistamentos.
 class PublicProfileScreen extends StatefulWidget {
@@ -119,7 +120,7 @@ class _PublicProfileScreenState extends State<PublicProfileScreen> {
       appBar: AppBar(title: const Text('Perfil público')),
       body: SafeArea(
         child: _loading
-            ? const Center(child: CircularProgressIndicator())
+            ? const Center(child: EcoSpinner())
             : ListView(
                 padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
                 children: [

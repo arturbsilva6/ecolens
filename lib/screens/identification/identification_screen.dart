@@ -13,6 +13,7 @@ import '../../services/ai_service.dart';
 import '../../utils/ai_analysis_error_message.dart';
 import '../../widgets/camera_notice.dart';
 import 'identification_result_screen.dart';
+import '../../widgets/eco_spinner.dart';
 
 enum IdentificationSource { camera, gallery }
 
@@ -209,7 +210,12 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
                 _IdentificationPreview(imageBytes: imageBytes),
                 const SizedBox(height: 18),
                 if (isLoading) ...[
-                  const LinearProgressIndicator(),
+                  const Center(
+                    child: EcoSpinner(
+                      size: 48,
+                      semanticsLabel: 'Analisando a foto',
+                    ),
+                  ),
                   const SizedBox(height: 16),
                 ],
                 if (_controller.errorMessage != null) ...[

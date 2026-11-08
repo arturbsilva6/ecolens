@@ -8,6 +8,7 @@ import '../profile/profile_screen.dart';
 import 'community_widgets.dart';
 import 'sighting_detail_screen.dart';
 import 'sighting_form_screen.dart';
+import '../../widgets/eco_spinner.dart';
 
 class CommunityScreen extends StatefulWidget {
   final CommunityRepository? repository;
@@ -279,7 +280,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                 if (c.loading)
                   const Padding(
                     padding: EdgeInsets.all(16),
-                    child: Center(child: CircularProgressIndicator()),
+                    child: Center(child: EcoSpinner()),
                   ),
                 if (c.hasMore && c.items.isNotEmpty && !c.loading)
                   OutlinedButton.icon(

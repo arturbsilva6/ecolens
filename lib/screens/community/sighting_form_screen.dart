@@ -16,6 +16,7 @@ import 'sighting_detail_screen.dart';
 import '../../services/community_photo_service.dart';
 import 'community_widgets.dart';
 import '../../widgets/camera_notice.dart';
+import '../../widgets/eco_spinner.dart';
 
 class SightingFormScreen extends StatefulWidget {
   final CommunityRepository repository;
@@ -532,7 +533,7 @@ class _SightingFormScreenState extends State<SightingFormScreen> {
                     ),
                     child: const Text('Conferir Meus registros'),
                   ),
-                if (_busy) const Center(child: CircularProgressIndicator()),
+                if (_busy) const Center(child: EcoSpinner()),
                 FilledButton(
                   onPressed: _busy || _checkRecords ? null : _save,
                   child: Text(

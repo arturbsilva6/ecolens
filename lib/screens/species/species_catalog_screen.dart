@@ -6,6 +6,7 @@ import '../../utils/species_catalog_filter.dart';
 import '../species/species_detail_screen.dart';
 import '../../widgets/species_photo.dart';
 import '../../models/species_status_style.dart';
+import '../../widgets/eco_spinner.dart';
 
 /// Catálogo público: apenas espécies publicadas no Supabase.
 class SpeciesCatalogScreen extends StatefulWidget {
@@ -154,7 +155,7 @@ class _SpeciesCatalogScreenState extends State<SpeciesCatalogScreen> {
                 future: _speciesFuture,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState != ConnectionState.done) {
-                    return const Center(child: CircularProgressIndicator());
+                    return const Center(child: EcoSpinner());
                   }
 
                   if (snapshot.hasError) {

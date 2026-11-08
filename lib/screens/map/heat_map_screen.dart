@@ -10,6 +10,7 @@ import '../../models/sighting.dart';
 import '../community/community_widgets.dart';
 import '../community/sighting_detail_screen.dart';
 import '../species/species_catalog_screen.dart';
+import '../../widgets/eco_spinner.dart';
 
 class HeatMapScreen extends StatefulWidget {
   final CommunityRepository? repository;
@@ -448,7 +449,7 @@ class _HeatMapScreenState extends State<HeatMapScreen> {
               if (c.loading)
                 const Padding(
                   padding: EdgeInsets.all(16),
-                  child: Center(child: CircularProgressIndicator()),
+                  child: Center(child: EcoSpinner()),
                 ),
               if (c.error != null) ...[
                 Semantics(liveRegion: true, child: Text(c.error!)),

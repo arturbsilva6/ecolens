@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../data/community_repository.dart';
 import '../../models/sighting.dart';
+import '../../widgets/eco_spinner.dart';
 
 const municipalPrecision =
     'Localização aproximada: referência do município, nunca o local exato do avistamento. Não armazenamos GPS.';
@@ -59,7 +60,7 @@ class _CommunityPhotoState extends State<CommunityPhoto> {
           );
         }
         if (!snapshot.hasData) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(child: EcoSpinner());
         }
         return Image.memory(
           snapshot.data!,

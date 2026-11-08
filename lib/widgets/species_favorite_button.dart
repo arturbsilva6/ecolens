@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../data/favorites_repository.dart';
+import 'eco_spinner.dart';
 
 class SpeciesFavoriteButton extends StatefulWidget {
   final String scientificName;
@@ -114,11 +115,7 @@ class _SpeciesFavoriteButtonState extends State<SpeciesFavoriteButton> {
             ? _load
             : _toggle,
         icon: _busy
-            ? const SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(strokeWidth: 2),
-              )
+            ? const EcoSpinner(size: 20)
             : Icon(
                 _loadError
                     ? Icons.refresh
