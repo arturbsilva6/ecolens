@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../data/public_profile_repository.dart';
 import '../../widgets/eco_avatar.dart';
+import '../../widgets/result_dialog.dart';
 
 /// Escolha do nome e do avatar mostrados nos avistamentos.
 class PublicProfileScreen extends StatefulWidget {
@@ -53,10 +54,8 @@ class _PublicProfileScreenState extends State<PublicProfileScreen> {
     }
   }
 
-  void _message(String text) {
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text(text)));
+  void _message(String title, String text) {
+    showResultDialog(context, title: title, message: text);
   }
 
   Future<void> _save() async {
@@ -73,7 +72,10 @@ class _PublicProfileScreenState extends State<PublicProfileScreen> {
       await _repository.save(_name.text, _avatar);
       if (!mounted) return;
       setState(() => _exists = true);
-      _message('Perfil público salvo.');
+      _message(
+        'Perfil público salvo',
+        'Seus avistamentos vão mostrar seu nome e avatar.',
+      );
     } catch (_) {
       if (mounted) {
         setState(() => _error = 'Não foi possível salvar. Tente novamente.');
@@ -96,8 +98,8 @@ class _PublicProfileScreenState extends State<PublicProfileScreen> {
         _name.clear();
       });
       _message(
-        'Perfil público removido. Seus avistamentos mostram '
-        '"membro da comunidade".',
+        'Perfil público removido',
+        'Seus avistamentos voltam a mostrar "membro da comunidade".',
       );
     } catch (_) {
       if (mounted) {

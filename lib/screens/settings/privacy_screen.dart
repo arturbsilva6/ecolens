@@ -5,6 +5,7 @@ import '../../data/identification_history_repository.dart';
 import '../../widgets/auth/account_navigation_scope.dart';
 import 'offline_package_screen.dart';
 import 'privacy_policy_screen.dart';
+import '../../widgets/result_dialog.dart';
 
 class PrivacyScreen extends StatefulWidget {
   final IdentificationHistoryRepository? historyRepository;
@@ -48,17 +49,20 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
     );
     if (confirmed != true || !mounted) return;
     setState(() => _busy = true);
-    var message = done;
+    var ok = true;
     try {
       await action();
     } catch (_) {
-      message = 'Não foi possível apagar agora. Tente novamente.';
+      ok = false;
     }
     if (!mounted) return;
     setState(() => _busy = false);
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text(message)));
+    await showResultDialog(
+      context,
+      title: ok ? 'Pronto' : 'Não foi possível apagar',
+      message: ok ? done : 'Tente novamente.',
+      success: ok,
+    );
   }
 
   @override

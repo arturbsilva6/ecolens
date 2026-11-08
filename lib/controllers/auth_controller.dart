@@ -17,6 +17,10 @@ class AuthController extends ChangeNotifier {
   bool busy = false;
   UserModel? user;
   String? message;
+
+  /// Título do aviso de confirmação. Quando preenchido, a tela mostra
+  /// [message] num diálogo central com OK em vez de texto solto.
+  String? noticeTitle;
   String? pendingEmail;
   bool recoveryRequired = false;
   bool linkProblem = false;
@@ -73,12 +77,21 @@ class AuthController extends ChangeNotifier {
     if (_disposed) return;
     switch (event.type) {
       case AccountEventType.session:
+        final arrived = initialized && !busy && user == null;
         user = event.user;
-        if (user != null) {
+        if (user != null && arrived) {
+          // Volta do login com Google (ou outro retorno pelo navegador).
           linkProblem = false;
           canRetryCallback = false;
           pendingEmail = null;
-          message = null;
+          noticeTitle = 'Login realizado';
+          message = 'Sua conta foi conectada com sucesso.';
+        } else if (user != null) {
+          linkProblem = false;
+          canRetryCallback = false;
+          pendingEmail = null;
+          // Não apaga o aviso de sucesso que ainda espera o OK.
+          if (noticeTitle == null) message = null;
         }
       case AccountEventType.signedOut:
         canRetryCallback = false;
@@ -91,6 +104,7 @@ class AuthController extends ChangeNotifier {
         recoveryRequired = true;
         linkProblem = false;
         canRetryCallback = false;
+        noticeTitle = null;
         message = 'Link validado. Defina sua nova senha.';
       case AccountEventType.callbackError:
         recoveryRequired = false;
@@ -100,7 +114,9 @@ class AuthController extends ChangeNotifier {
             event.message ??
             'Link inválido ou expirado. Solicite um novo link.';
         callbackRevision++;
+        noticeTitle = null;
       case AccountEventType.serviceError:
+        noticeTitle = null;
         message =
             event.message ?? 'Serviço de acesso indisponível. Tente novamente.';
     }
@@ -111,6 +127,7 @@ class AuthController extends ChangeNotifier {
     if (busy || _disposed) return;
     busy = true;
     message = null;
+    noticeTitle = null;
     _notify();
     try {
       await operation();
@@ -132,7 +149,8 @@ class AuthController extends ChangeNotifier {
     pendingEmail = null;
     canRetryCallback = false;
     linkProblem = false;
-    message = 'Sessão iniciada.';
+    noticeTitle = 'Login realizado';
+    message = 'Sua conta foi conectada com sucesso.';
   });
 
   Future<void> signUp(
@@ -154,9 +172,11 @@ class AuthController extends ChangeNotifier {
       pendingEmail = email.trim();
       _resends = 0;
       _cooldown();
+      noticeTitle = 'Confirme seu e-mail';
       message = 'Confira seu e-mail e siga o link de confirmação antes de entrar. Se a conta já existir, use entrar ou recuperar senha.';
     } else {
       pendingEmail = null;
+      noticeTitle = 'Conta criada';
       message = 'Conta criada e sessão iniciada.';
     }
   });
@@ -187,6 +207,7 @@ class AuthController extends ChangeNotifier {
       final recipient = email.trim();
       await repository.resendConfirmation(recipient);
       if (!_disposed) {
+        noticeTitle = 'Link reenviado';
         message =
             'Se houver uma confirmação pendente, enviaremos um novo link para $recipient.';
       }
@@ -197,7 +218,9 @@ class AuthController extends ChangeNotifier {
     final error = emailError(email);
     if (error != null) throw AuthFailure(error);
     await repository.requestPasswordReset(email.trim());
-    if (!_disposed) message = 'Se houver uma conta para este e-mail, você receberá instruções para recuperar a senha.';
+    if (_disposed) return;
+    noticeTitle = 'E-mail enviado';
+    message = 'Se houver uma conta para este e-mail, você receberá instruções para recuperar a senha.';
   });
 
   Future<void> resetPassword(String password, String confirmation) =>
@@ -215,6 +238,7 @@ class AuthController extends ChangeNotifier {
         await repository.updatePassword(password);
         if (_disposed) return;
         recoveryRequired = false;
+        noticeTitle = 'Senha atualizada';
         message = 'Senha atualizada com sucesso.';
       });
 
@@ -247,6 +271,7 @@ class AuthController extends ChangeNotifier {
     final updated = await repository.updateName(name.trim());
     if (!_disposed) {
       user = updated;
+      noticeTitle = 'Pronto';
       message = 'Nome atualizado.';
     }
   });
@@ -257,6 +282,7 @@ class AuthController extends ChangeNotifier {
     user = null;
     pendingEmail = null;
     recoveryRequired = false;
+    noticeTitle = 'Você saiu da conta';
     message = 'Você saiu da conta. Seus favoritos e histórico continuam neste dispositivo.';
     canRetryCallback = false;
     linkProblem = false;
@@ -273,13 +299,16 @@ class AuthController extends ChangeNotifier {
           throw const AuthFailure('As senhas não coincidem.');
         }
         await repository.updatePassword(password);
-        if (!_disposed) message = 'Senha alterada.';
+        if (_disposed) return;
+        noticeTitle = 'Senha alterada';
+        message = 'Senha alterada.';
       });
 
   Future<void> signOutEverywhere() => _run(() async {
     await repository.signOutEverywhere();
     if (_disposed) return;
     _clearAccount();
+    noticeTitle = 'Sessões encerradas';
     message = 'Você saiu da conta em todos os aparelhos.';
   });
 
@@ -290,10 +319,19 @@ class AuthController extends ChangeNotifier {
     await repository.deleteAccount();
     if (_disposed) return;
     _clearAccount();
+    noticeTitle = 'Conta excluída';
     message =
         'Conta excluída. Seus avistamentos e fotos foram apagados do servidor; '
         'favoritos e histórico continuam só neste aparelho.';
   });
+
+  /// Chamado depois que a pessoa toca em OK no aviso.
+  void clearNotice() {
+    if (noticeTitle == null) return;
+    noticeTitle = null;
+    message = null;
+    _notify();
+  }
 
   void _clearAccount() {
     user = null;

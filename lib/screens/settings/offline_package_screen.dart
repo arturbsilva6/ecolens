@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../data/offline_catalog_store.dart';
 import '../../data/supabase_species_repository.dart';
 import '../../models/species_model.dart';
+import '../../widgets/result_dialog.dart';
 
 /// Permite baixar as fichas e fotos do catálogo para usar sem internet.
 class OfflinePackageScreen extends StatefulWidget {
@@ -64,8 +65,13 @@ class _OfflinePackageScreenState extends State<OfflinePackageScreen> {
       _busy = false;
       _progress = null;
     });
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(message)));
+    final ok = message.startsWith('Pacote offline pronto');
+    await showResultDialog(
+      context,
+      title: ok ? 'Download concluído' : 'Download incompleto',
+      message: message,
+      success: ok,
+    );
   }
 
   Future<String> _downloadPackage() async {

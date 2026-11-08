@@ -4,6 +4,7 @@ import '../../controllers/auth_controller.dart';
 import '../../widgets/auth/account_security_section.dart';
 import '../settings/privacy_policy_screen.dart';
 import 'public_profile_screen.dart';
+import '../../widgets/result_dialog.dart';
 
 enum _AccessForm { guest, login, register, requestReset }
 
@@ -30,7 +31,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool _wasRecovering = false,
       _hadAccount = false,
       _readyToReturn = false,
-      _returnScheduled = false;
+      _returnScheduled = false,
+      _noticeOpen = false;
 
   @override
   void initState() {
@@ -41,6 +43,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _changed();
     _auth.addListener(_changed);
     if (widget.controller == null) _auth.initialize();
+  }
+
+  /// Mostra no centro da tela o aviso de sucesso que o controller deixou.
+  void _showNotice() {
+    final title = _auth.noticeTitle, text = _auth.message;
+    if (_noticeOpen || title == null || text == null || _auth.busy) return;
+    _noticeOpen = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted || ModalRoute.of(context)?.isCurrent == false) {
+        _noticeOpen = false;
+        return;
+      }
+      await showResultDialog(context, title: title, message: text);
+      _noticeOpen = false;
+      if (mounted) _auth.clearNotice();
+    });
   }
 
   void _changed() {
@@ -56,8 +74,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
       _readyToReturn = true;
     }
     _hadAccount = _auth.user != null;
+    _showNotice();
     if (widget.returnLabel != null &&
         _readyToReturn &&
+        !_noticeOpen &&
+        _auth.noticeTitle == null &&
         !_returnScheduled &&
         !_auth.busy &&
         !_auth.recoveryRequired &&
@@ -292,7 +313,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
                       ),
-                    if (_auth.message != null)
+                    if (_auth.message != null && _auth.noticeTitle == null)
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         child: Semantics(

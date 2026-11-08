@@ -28,7 +28,19 @@ void main() {
     controller.dispose();
   });
 
+  /// Fecha o aviso de sucesso (diálogo com OK), se estiver aberto.
+  Future<void> dismissNotice(WidgetTester tester) async {
+    final ok = find.descendant(
+      of: find.byType(AlertDialog),
+      matching: find.text('OK'),
+    );
+    if (ok.evaluate().isEmpty) return;
+    await tester.tap(ok);
+    await tester.pumpAndSettle();
+  }
+
   Future<void> tap(WidgetTester tester, String text) async {
+    await dismissNotice(tester);
     final finder = find.text(text).last;
     await tester.scrollUntilVisible(
       finder,
@@ -42,6 +54,7 @@ void main() {
   }
 
   Future<void> enter(WidgetTester tester, String key, String value) async {
+    await dismissNotice(tester);
     final finder = find.byKey(ValueKey('auth-$key'));
     await Scrollable.ensureVisible(tester.element(finder), alignment: 0.3);
     await tester.pumpAndSettle();
@@ -145,6 +158,11 @@ void main() {
     repository.failure = null;
     await enter(tester, 'password', 'Password12');
     await tap(tester, 'Entrar');
+    expect(find.text('Login realizado'), findsOneWidget);
+    expect(find.text('Sua conta foi conectada com sucesso.'), findsOneWidget);
+    await dismissNotice(tester);
+    expect(find.text('Login realizado'), findsNothing);
+    expect(controller.message, isNull);
     expect(find.text(account.email), findsOneWidget);
     expect(find.text('Salvar nome'), findsOneWidget);
     expect(find.textContaining('não são sincronizados'), findsOneWidget);

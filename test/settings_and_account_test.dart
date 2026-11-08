@@ -125,12 +125,16 @@ void main() {
     await tester.pumpAndSettle();
     expect(history.values, isEmpty);
     expect(find.text('Histórico apagado.'), findsOneWidget);
+    await tester.tap(find.text('OK'));
+    await tester.pumpAndSettle();
+    expect(find.text('Histórico apagado.'), findsNothing);
 
     await tapItem('Apagar favoritos');
     await tester.pumpAndSettle();
     await tester.tap(find.text('Apagar'));
     await tester.pumpAndSettle();
     expect(favorites.values, isEmpty);
+    expect(find.text('Favoritos apagados.'), findsOneWidget);
   });
 
   testWidgets('Política de privacidade lista as seções', (tester) async {

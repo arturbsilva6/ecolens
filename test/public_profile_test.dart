@@ -82,14 +82,15 @@ void main() {
     await tester.tap(find.text('Salvar perfil público'));
     await tester.pumpAndSettle();
     expect(repository.current?.avatar, 'flor');
-    // Espera o aviso "Perfil público salvo." sumir de cima do botão.
-    await tester.pump(const Duration(seconds: 5));
+    expect(find.text('Perfil público salvo'), findsOneWidget);
+    await tester.tap(find.text('OK'));
     await tester.pumpAndSettle();
 
     await tester.ensureVisible(find.text('Remover perfil público'));
     await tester.tap(find.text('Remover perfil público'));
     await tester.pumpAndSettle();
     expect(repository.removals, 1);
+    expect(find.text('Perfil público removido'), findsOneWidget);
   });
 
   testWidgets('Avistamento mostra o nome público do autor', (tester) async {
