@@ -82,6 +82,9 @@ void main() {
     await tester.tap(find.text('Salvar perfil público'));
     await tester.pumpAndSettle();
     expect(repository.current?.avatar, 'flor');
+    // Espera o aviso "Perfil público salvo." sumir de cima do botão.
+    await tester.pump(const Duration(seconds: 5));
+    await tester.pumpAndSettle();
 
     await tester.ensureVisible(find.text('Remover perfil público'));
     await tester.tap(find.text('Remover perfil público'));

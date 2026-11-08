@@ -95,8 +95,10 @@ class _PublicProfileScreenState extends State<PublicProfileScreen> {
         _exists = false;
         _name.clear();
       });
-      _message('Perfil público removido. Seus avistamentos mostram '
-          '"membro da comunidade".');
+      _message(
+        'Perfil público removido. Seus avistamentos mostram '
+        '"membro da comunidade".',
+      );
     } catch (_) {
       if (mounted) {
         setState(() => _error = 'Não foi possível remover. Tente novamente.');
@@ -133,7 +135,9 @@ class _PublicProfileScreenState extends State<PublicProfileScreen> {
                     child: ListTile(
                       leading: EcoAvatar(avatar: _avatar),
                       title: Text(
-                        name.isEmpty ? 'Seu nome público' : 'Publicado por $name',
+                        name.isEmpty
+                            ? 'Seu nome público'
+                            : 'Publicado por $name',
                       ),
                       subtitle: const Text('Prévia nos avistamentos'),
                     ),
@@ -187,7 +191,10 @@ class _PublicProfileScreenState extends State<PublicProfileScreen> {
                     const SizedBox(height: 12),
                     Semantics(
                       liveRegion: true,
-                      child: Text(_error!, style: TextStyle(color: colors.error)),
+                      child: Text(
+                        _error!,
+                        style: TextStyle(color: colors.error),
+                      ),
                     ),
                   ],
                   const SizedBox(height: 20),

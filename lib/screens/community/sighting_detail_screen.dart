@@ -58,8 +58,7 @@ class _SightingDetailScreenState extends State<SightingDetailScreen> {
 
   Future<void> _findAuthor() async {
     try {
-      final load =
-          widget.loadAuthor ?? SupabasePublicProfileRepository().fetch;
+      final load = widget.loadAuthor ?? SupabasePublicProfileRepository().fetch;
       final author = await load(widget.sighting.ownerId);
       if (mounted && author != null) setState(() => _author = author);
     } catch (_) {
