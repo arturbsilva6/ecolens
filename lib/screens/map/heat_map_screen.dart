@@ -119,9 +119,94 @@ class _HeatMapScreenState extends State<HeatMapScreen> {
     }
   }
 
+  Future<void> _chooseMunicipality() async {
+    final c = _controller;
+    final m = await chooseMunicipality(context, c.municipalities);
+    if (m == null) return;
+    setState(() {
+      _center = LatLng(m.latitude, m.longitude);
+      _mapViewRevision++;
+    });
+    c.municipalityId = m.id;
+    c.load(reset: true);
+  }
+
+  void _applySpecies() {
+    _controller.species = _species.text;
+    _controller.load(reset: true);
+  }
+
+  void _showAbout() {
+    showModalBottomSheet<void>(
+      context: context,
+      useSafeArea: true,
+      isScrollControlled: true,
+      showDragHandle: true,
+      builder: (context) => ListView(
+        shrinkWrap: true,
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
+        children: [
+          Text(
+            'Sobre o mapa',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          const SizedBox(height: 12),
+          const _AboutItem(
+            icon: Icons.location_off_outlined,
+            text: '$municipalPrecision O app não pede permissão de '
+                'localização: você escolhe o município.',
+          ),
+          const _AboutItem(
+            icon: Icons.groups_outlined,
+            text: 'Os pontos são registros da comunidade. Não indicam '
+                'população, habitat, distribuição nem risco da espécie.',
+          ),
+          const _AboutItem(
+            icon: Icons.menu_book_outlined,
+            text: 'Para habitat e distribuição, use as fichas do catálogo, '
+                'que têm fonte identificada.',
+          ),
+          const _AboutItem(
+            icon: Icons.source_outlined,
+            text: 'Coordenadas dos municípios: kelvins/municipios-brasileiros '
+                '(MIT), revisão 503e2f7 de 06/11/2026. Mapa-base: '
+                'OpenStreetMap (ODbL).',
+          ),
+          const SizedBox(height: 8),
+          OutlinedButton.icon(
+            icon: const Icon(Icons.menu_book_outlined),
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.push(
+                this.context,
+                MaterialPageRoute<void>(
+                  builder: (_) => const SpeciesCatalogScreen(),
+                ),
+              );
+            },
+            label: const Text('Consultar catálogo e fontes'),
+          ),
+          TextButton(
+            onPressed: _source,
+            child: const Text('© OpenStreetMap contributors — ODbL'),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('Mapa de avistamentos')),
+    appBar: AppBar(
+      title: const Text('Mapa de avistamentos'),
+      actions: [
+        IconButton(
+          tooltip: 'Sobre o mapa',
+          icon: const Icon(Icons.info_outline),
+          onPressed: _showAbout,
+        ),
+      ],
+    ),
     body: SafeArea(
       child: ListenableBuilder(
         listenable: _controller,
@@ -134,186 +219,235 @@ class _HeatMapScreenState extends State<HeatMapScreen> {
           final municipalities = c.municipalities
               .where((m) => counts.containsKey(m.id))
               .toList();
-          final colors = Theme.of(context).colorScheme;
+          final theme = Theme.of(context);
+          final colors = theme.colorScheme;
+          final muted = theme.textTheme.bodySmall?.copyWith(
+            color: colors.onSurfaceVariant,
+          );
+          final selected = c.municipality(c.municipalityId ?? '');
           return ListView(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
             children: [
-              const Text(
-                'São Roque/SP como ponto inicial. Explore o estado de São Paulo.',
-              ),
-              const Text(municipalPrecision),
-              OutlinedButton.icon(
-                icon: const Icon(Icons.location_city),
-                label: Text(
-                  c.municipality(c.municipalityId ?? '')?.label ??
-                      'Escolher município/SP',
-                ),
-                onPressed: c.loading
-                    ? null
-                    : () async {
-                        final m = await chooseMunicipality(
-                          context,
-                          c.municipalities,
-                        );
-                        if (m != null) {
-                          setState(() {
-                            _center = LatLng(m.latitude, m.longitude);
-                            _mapViewRevision++;
-                          });
-                          c.municipalityId = m.id;
-                          c.load(reset: true);
-                        }
+              // Filtros
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      style: OutlinedButton.styleFrom(
+                        minimumSize: const Size.fromHeight(48),
+                        alignment: Alignment.centerLeft,
+                      ),
+                      icon: const Icon(Icons.location_city),
+                      label: Text(
+                        selected?.label ?? 'Escolher município/SP',
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      onPressed: c.loading ? null : _chooseMunicipality,
+                    ),
+                  ),
+                  if (c.municipalityId != null)
+                    IconButton(
+                      tooltip: 'Ver todo o estado/SP',
+                      icon: const Icon(Icons.close),
+                      onPressed: () {
+                        c.municipalityId = null;
+                        c.load(reset: true);
                       },
+                    ),
+                ],
               ),
-              const Text(
-                'Use sem permissão de localização. Nesta versão, escolha seu município manualmente; o app não solicita GPS.',
-              ),
-              if (c.municipalityId != null)
-                TextButton(
-                  onPressed: () {
-                    c.municipalityId = null;
-                    c.load(reset: true);
-                  },
-                  child: const Text('Ver todo o estado/SP'),
-                ),
+              const SizedBox(height: 12),
               TextField(
                 controller: _species,
                 maxLength: 120,
-                decoration: const InputDecoration(labelText: 'Filtrar espécie'),
-                onSubmitted: (value) {
-                  c.species = value;
-                  c.load(reset: true);
-                },
+                textInputAction: TextInputAction.search,
+                decoration: InputDecoration(
+                  hintText: 'Filtrar por espécie',
+                  prefixIcon: const Icon(Icons.search),
+                  counterText: '',
+                  suffixIcon: IconButton(
+                    tooltip: 'Aplicar filtro',
+                    icon: const Icon(Icons.arrow_forward),
+                    onPressed: c.loading ? null : _applySpecies,
+                  ),
+                ),
+                onSubmitted: (_) => _applySpecies(),
               ),
-              OutlinedButton(
-                onPressed: c.loading
-                    ? null
-                    : () {
-                        c.species = _species.text;
-                        c.load(reset: true);
-                      },
-                child: const Text('Aplicar filtro'),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Icon(Icons.lock_outline, size: 16, color: muted?.color),
+                  const SizedBox(width: 6),
+                  Expanded(
+                    child: Text(
+                      'Só o município aparece no mapa. Sem GPS.',
+                      style: muted,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+
+              // Mapa
+              ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: SizedBox(
+                  height: 340,
+                  child: FlutterMap(
+                    key: ValueKey(_mapViewRevision),
+                    options: MapOptions(
+                      initialCenter: _center,
+                      initialZoom: 10,
+                      minZoom: 5,
+                      maxZoom: 16,
+                    ),
+                    children: [
+                      if (widget.loadTiles)
+                        TileLayer(
+                          key: ValueKey(_tileAttempt),
+                          urlTemplate:
+                              'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                          userAgentPackageName: 'br.com.ecolens',
+                          errorTileCallback: (_, _, _) {
+                            if (!_tileError && mounted) {
+                              WidgetsBinding.instance.addPostFrameCallback((_) {
+                                if (mounted) {
+                                  setState(() {
+                                    _tileError = true;
+                                  });
+                                }
+                              });
+                            }
+                          },
+                        ),
+                      if (_concentration)
+                        CircleLayer(
+                          circles: municipalities
+                              .map(
+                                (m) => CircleMarker(
+                                  point: LatLng(m.latitude, m.longitude),
+                                  radius: counts[m.id]! >= 10
+                                      ? 44
+                                      : counts[m.id]! >= 2
+                                      ? 30
+                                      : 18,
+                                  color: colors.primary.withValues(alpha: .25),
+                                  borderColor: colors.primary,
+                                  borderStrokeWidth: 2,
+                                ),
+                              )
+                              .toList(),
+                        ),
+                      MarkerLayer(
+                        markers: municipalities
+                            .map(
+                              (m) => Marker(
+                                point: LatLng(m.latitude, m.longitude),
+                                width: 64,
+                                height: 64,
+                                child: Semantics(
+                                  label:
+                                      '${m.label}, ${counts[m.id]} registros carregados',
+                                  button: true,
+                                  child: IconButton(
+                                    tooltip: '${m.label}: ${counts[m.id]}',
+                                    onPressed: () => _openMunicipality(m),
+                                    icon: Badge(
+                                      label: Text('${counts[m.id]}'),
+                                      child: const Icon(Icons.location_on),
+                                    ),
+                                    color: colors.primary,
+                                  ),
+                                ),
+                              ),
+                            )
+                            .toList(),
+                      ),
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: Container(
+                          margin: const EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                            color: colors.surface.withValues(alpha: .85),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: InkWell(
+                            onTap: _source,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 4,
+                              ),
+                              child: Text(
+                                '© OpenStreetMap',
+                                style: theme.textTheme.labelSmall,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
               SwitchListTile(
                 contentPadding: EdgeInsets.zero,
+                secondary: const Icon(Icons.bubble_chart_outlined),
                 title: const Text('Concentração por município'),
                 value: _concentration,
                 onChanged: (value) => setState(() {
                   _concentration = value;
                 }),
               ),
-              const Text(
-                'São registros da comunidade, não estimativa de população, habitat, distribuição ou risco.',
-              ),
               if (_concentration)
-                const Text(
-                  'Legenda — tamanho do círculo: 1 registro; 2–9 registros; 10 ou mais. Contagens somente dos registros carregados com os filtros atuais.',
-                ),
-              SizedBox(
-                height: 320,
-                child: FlutterMap(
-                  key: ValueKey(_mapViewRevision),
-                  options: MapOptions(
-                    initialCenter: _center,
-                    initialZoom: 10,
-                    minZoom: 5,
-                    maxZoom: 16,
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Text(
+                    'Legenda: círculo pequeno = 1 registro; médio = 2 a 9; '
+                    'grande = 10 ou mais. Conta só os registros carregados.',
+                    style: muted,
                   ),
-                  children: [
-                    if (widget.loadTiles)
-                      TileLayer(
-                        key: ValueKey(_tileAttempt),
-                        urlTemplate:
-                            'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                        userAgentPackageName: 'br.com.ecolens',
-                        errorTileCallback: (_, _, _) {
-                          if (!_tileError && mounted) {
-                            WidgetsBinding.instance.addPostFrameCallback((_) {
-                              if (mounted) {
-                                setState(() {
-                                  _tileError = true;
-                                });
-                              }
-                            });
-                          }
-                        },
-                      ),
-                    if (_concentration)
-                      CircleLayer(
-                        circles: municipalities
-                            .map(
-                              (m) => CircleMarker(
-                                point: LatLng(m.latitude, m.longitude),
-                                radius: counts[m.id]! >= 10
-                                    ? 44
-                                    : counts[m.id]! >= 2
-                                    ? 30
-                                    : 18,
-                                color: colors.primary.withValues(alpha: .25),
-                                borderColor: colors.primary,
-                                borderStrokeWidth: 2,
-                              ),
-                            )
-                            .toList(),
-                      ),
-                    MarkerLayer(
-                      markers: municipalities
-                          .map(
-                            (m) => Marker(
-                              point: LatLng(m.latitude, m.longitude),
-                              width: 64,
-                              height: 64,
-                              child: Semantics(
-                                label:
-                                    '${m.label}, ${counts[m.id]} registros carregados',
-                                button: true,
-                                child: IconButton(
-                                  tooltip: '${m.label}: ${counts[m.id]}',
-                                  onPressed: () => _openMunicipality(m),
-                                  icon: Badge(
-                                    label: Text('${counts[m.id]}'),
-                                    child: const Icon(Icons.location_on),
-                                  ),
-                                  color: colors.primary,
-                                ),
-                              ),
-                            ),
-                          )
-                          .toList(),
-                    ),
-                    Align(
-                      alignment: Alignment.bottomRight,
-                      child: ColoredBox(
-                        color: colors.surface,
-                        child: TextButton(
-                          onPressed: _source,
-                          child: const Text(
-                            '© OpenStreetMap contributors',
-                            textAlign: TextAlign.end,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
                 ),
-              ),
-              TextButton(
-                onPressed: _source,
-                child: const Text('© OpenStreetMap contributors — ODbL'),
-              ),
-              if (_tileError)
-                const Text(
-                  'Mapa-base indisponível. Consulte os registros abaixo ou tente reabrir o mapa com conexão.',
+              if (_tileError) ...[
+                Text(
+                  'Mapa-base indisponível. Os registros continuam na lista abaixo.',
+                  style: muted,
                 ),
-              if (_tileError)
-                OutlinedButton(
+                TextButton.icon(
+                  icon: const Icon(Icons.refresh),
                   onPressed: () => setState(() {
                     _tileAttempt++;
                     _tileError = false;
                   }),
-                  child: const Text('Tentar carregar mapa-base'),
+                  label: const Text('Tentar carregar mapa-base'),
                 ),
-              if (c.loading) const Center(child: CircularProgressIndicator()),
+              ],
+
+              // Registros
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Municípios com registros',
+                      style: theme.textTheme.titleMedium,
+                    ),
+                  ),
+                  if (c.items.isNotEmpty)
+                    Chip(
+                      visualDensity: VisualDensity.compact,
+                      label: Text(
+                        '${c.items.length}${c.hasMore ? '+' : ''} registros',
+                      ),
+                    ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              if (c.loading)
+                const Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Center(child: CircularProgressIndicator()),
+                ),
               if (c.error != null) ...[
                 Semantics(liveRegion: true, child: Text(c.error!)),
                 OutlinedButton(
@@ -322,44 +456,69 @@ class _HeatMapScreenState extends State<HeatMapScreen> {
                 ),
               ],
               if (!c.loading && c.error == null && c.items.isEmpty)
-                const Text(
-                  'Nenhum avistamento encontrado. Não há ocorrências para mostrar com estes filtros.',
-                ),
-              Text(
-                '${c.items.length} registros carregados${c.hasMore ? ' — há mais páginas; concentração parcial' : ''}.',
-              ),
-              if (c.hasMore && c.items.isNotEmpty && !c.loading)
-                OutlinedButton(
-                  onPressed: () => c.load(),
-                  child: const Text('Carregar mais avistamentos'),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  child: Column(
+                    children: [
+                      Icon(
+                        Icons.travel_explore,
+                        size: 40,
+                        color: colors.onSurfaceVariant,
+                      ),
+                      const SizedBox(height: 8),
+                      const Text(
+                        'Nenhum avistamento encontrado.',
+                        textAlign: TextAlign.center,
+                      ),
+                      Text(
+                        'Tente outro município ou outra espécie.',
+                        textAlign: TextAlign.center,
+                        style: muted,
+                      ),
+                    ],
+                  ),
                 ),
               for (final m in municipalities)
-                ListTile(
-                  title: Text('${m.label}: ${counts[m.id]}'),
-                  subtitle: const Text(
-                    'Referência municipal — abrir registros',
-                  ),
-                  onTap: () => _openMunicipality(m),
-                ),
-              const Text(
-                'Habitat e distribuição: consulte apenas as informações com fonte identificada nas fichas do catálogo. A quantidade de avistamentos não permite inferir esses dados.',
-              ),
-              OutlinedButton(
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute<void>(
-                    builder: (_) => const SpeciesCatalogScreen(),
+                Card(
+                  margin: const EdgeInsets.only(bottom: 8),
+                  child: ListTile(
+                    leading: const Icon(Icons.location_on_outlined),
+                    title: Text('${m.label}: ${counts[m.id]}'),
+                    subtitle: const Text('Ver registros'),
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: () => _openMunicipality(m),
                   ),
                 ),
-                child: const Text('Consultar catálogo e fontes'),
-              ),
-              const Text(
-                'Referências municipais: kelvins/municipios-brasileiros (MIT), revisão 503e2f7 de 06/11/2026. Fonte e licença disponíveis na documentação. Pontos de apoio ambiental: nenhum ponto com endereço e coordenadas verificados foi incluído nesta versão. O SOS continua disponível pela Home.',
-              ),
+              if (c.hasMore && c.items.isNotEmpty && !c.loading)
+                OutlinedButton.icon(
+                  icon: const Icon(Icons.expand_more),
+                  onPressed: () => c.load(),
+                  label: const Text('Carregar mais avistamentos'),
+                ),
             ],
           );
         },
       ),
+    ),
+  );
+}
+
+class _AboutItem extends StatelessWidget {
+  final IconData icon;
+  final String text;
+
+  const _AboutItem({required this.icon, required this.text});
+
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.only(bottom: 12),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(icon, size: 20),
+        const SizedBox(width: 12),
+        Expanded(child: Text(text)),
+      ],
     ),
   );
 }
