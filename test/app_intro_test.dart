@@ -19,7 +19,13 @@ void main() {
       MaterialApp(
         home: MediaQuery(
           data: MediaQueryData(disableAnimations: reduceMotion),
-          child: Scaffold(body: AppIntro(onFinished: () => finished++)),
+          child: Scaffold(
+            body: AppIntro(
+              onFinished: () => finished++,
+              startDelay: Duration.zero,
+              waitForImages: false,
+            ),
+          ),
         ),
       ),
     );

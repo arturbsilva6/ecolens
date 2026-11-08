@@ -18,10 +18,21 @@ class AppIntro extends StatefulWidget {
     super.key,
     required this.onFinished,
     this.duration = const Duration(milliseconds: 4600),
+    this.startDelay = const Duration(milliseconds: 300),
+    this.waitForImages = true,
   });
 
   final VoidCallback onFinished;
   final Duration duration;
+
+  /// Pausa depois do primeiro quadro, para a Home terminar de montar por
+  /// baixo sem engasgar o começo da animação.
+  final Duration startDelay;
+
+  /// Só começa quando as camadas do logo já estão decodificadas.
+  final bool waitForImages;
+
+  static const layers = ['ring', 'leaf_top', 'leaf_side'];
 
   @override
   State<AppIntro> createState() => _AppIntroState();
@@ -70,6 +81,27 @@ class _AppIntroState extends State<AppIntro>
       _controller.value = _shown;
       Future<void>.delayed(const Duration(milliseconds: 900), _skip);
     } else {
+      _start();
+    }
+  }
+
+  /// Sem esta espera, no primeiro carregamento (principalmente em modo
+  /// debug) a animação corria enquanto o app ainda não desenhava nada e
+  /// terminava sem ser vista.
+  Future<void> _start() async {
+    if (widget.waitForImages) {
+      try {
+        await Future.wait([
+          for (final name in AppIntro.layers)
+            precacheImage(AssetImage('assets/branding/intro/$name.png'), context),
+        ]).timeout(const Duration(seconds: 3));
+      } catch (_) {
+        // Se a imagem demorar, a animação segue mesmo assim.
+      }
+    }
+    await WidgetsBinding.instance.endOfFrame;
+    await Future<void>.delayed(widget.startDelay);
+    if (mounted && !_finished && _controller.value == 0) {
       _controller.forward();
     }
   }
