@@ -178,9 +178,17 @@ Deno.serve(async (request: Request) => {
                   "retorne identified=false, nomes vazios e explique " +
                   "por quê. Não invente certeza, percentuais, fontes, " +
                   "periculosidade, tratamento ou primeiros socorros. " +
-                  "Não infira localização. Se sugerir espécie, " +
-                  "explique brevemente traços visuais observados. " +
-                  "Campos: identified(boolean), commonName(string), " +
+                  "Não infira localização. A foto pode mostrar um animal " +
+                  "(inclusive insetos e aracnídeos), uma planta ou um " +
+                  "fungo. Para plantas, observe formato e margem das " +
+                  "folhas, como se distribuem no caule, flores, frutos, " +
+                  "espinhos e presença de látex; para animais, cores, " +
+                  "padrões, escamas ou pelos e formato do corpo. Se " +
+                  "sugerir espécie, explique brevemente os traços " +
+                  "visuais observados e use o nome popular mais comum " +
+                  "no Brasil. Campos: identified(boolean), " +
+                  "kind(\"animal\" | \"planta\" | \"fungo\" | " +
+                  "\"indefinido\"), commonName(string), " +
                   "scientificName(string), explanation(string).",
               },
               { inlineData: { mimeType, data: encoded } },
@@ -217,8 +225,13 @@ Deno.serve(async (request: Request) => {
     const identified = v.identified === true &&
       (commonName !== null || scientificName !== null);
 
+    const kind = ["animal", "planta", "fungo"].includes(String(v.kind))
+      ? String(v.kind)
+      : "indefinido";
+
     return json({
       identified,
+      kind,
       commonName: identified ? commonName : null,
       scientificName: identified ? scientificName : null,
       explanation: safeText(v.explanation, 500) ??

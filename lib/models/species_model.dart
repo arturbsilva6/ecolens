@@ -71,6 +71,9 @@ class SpeciesModel {
   /// Invasora pela classificação antiga ou pela marcação atual.
   bool get isInvasiveSpecies => isInvasive || status == SpeciesStatus.invasive;
 
+  /// Plantas usam o grupo "planta"; os demais grupos são animais.
+  bool get isPlant => speciesGroup == 'planta';
+
   /// Representação usada pelo pacote offline salvo no aparelho.
   Map<String, dynamic> toJson() => {
     'common_name': commonName,

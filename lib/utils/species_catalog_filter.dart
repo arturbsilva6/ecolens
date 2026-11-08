@@ -21,6 +21,17 @@ extension SpeciesCatalogFilterLabel on SpeciesCatalogFilter {
   };
 }
 
+/// Separa o catálogo entre fauna e flora.
+enum SpeciesKindFilter { all, animals, plants }
+
+extension SpeciesKindFilterLabel on SpeciesKindFilter {
+  String get label => switch (this) {
+    SpeciesKindFilter.all => 'Todos',
+    SpeciesKindFilter.animals => 'Animais',
+    SpeciesKindFilter.plants => 'Plantas',
+  };
+}
+
 /// Retorna somente os registros que atendem ao texto e à classificação.
 ///
 /// O repositório Supabase já consulta somente linhas com is_published = true,
@@ -29,6 +40,7 @@ List<SpeciesModel> filterSpeciesCatalog(
   List<SpeciesModel> species, {
   String query = '',
   SpeciesCatalogFilter filter = SpeciesCatalogFilter.all,
+  SpeciesKindFilter kind = SpeciesKindFilter.all,
 }) {
   final normalizedQuery = normalizeSpeciesSearch(query);
 
@@ -46,6 +58,12 @@ List<SpeciesModel> filterSpeciesCatalog(
         };
 
         if (!matchesStatus) return false;
+        final matchesKind = switch (kind) {
+          SpeciesKindFilter.all => true,
+          SpeciesKindFilter.animals => !item.isPlant,
+          SpeciesKindFilter.plants => item.isPlant,
+        };
+        if (!matchesKind) return false;
         if (normalizedQuery.isEmpty) return true;
 
         return normalizeSpeciesSearch(item.commonName)

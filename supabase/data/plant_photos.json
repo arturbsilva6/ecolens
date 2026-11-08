@@ -1,0 +1,100 @@
+{
+  "novas": [
+    {
+      "slug": "thevetia-peruviana",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Yellow_oleander_%28Cascabela_thevetia%29_flower.jpg/500px-Yellow_oleander_%28Cascabela_thevetia%29_flower.jpg",
+      "image_credit": "David E Mead",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Yellow_oleander_(Cascabela_thevetia)_flower.jpg",
+      "image_license_url": "https://creativecommons.org/publicdomain/zero/1.0",
+      "image_license_label": "CC0"
+    },
+    {
+      "slug": "jatropha-gossypiifolia",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Jatropha_gossypiifolia_I.jpg/500px-Jatropha_gossypiifolia_I.jpg",
+      "image_credit": "Rjcastillo",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Jatropha_gossypiifolia_I.jpg",
+      "image_license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "image_license_label": "CC BY-SA 3.0"
+    },
+    {
+      "slug": "brunfelsia-uniflora",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Brunfelsia_uniflora_1zz.jpg/500px-Brunfelsia_uniflora_1zz.jpg",
+      "image_credit": "David J. Stang",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Brunfelsia_uniflora_1zz.jpg",
+      "image_license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "image_license_label": "CC BY-SA 4.0"
+    },
+    {
+      "slug": "lantana-camara",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/LantanaFlowerLeaves.jpg/500px-LantanaFlowerLeaves.jpg",
+      "image_credit": "Alvesgaspar",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:LantanaFlowerLeaves.jpg",
+      "image_license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "image_license_label": "CC BY-SA 3.0"
+    },
+    {
+      "slug": "hippobroma-longiflora",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Hippobroma_longiflora_Belize.jpg/500px-Hippobroma_longiflora_Belize.jpg",
+      "image_credit": "Denis Barthel",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Hippobroma_longiflora_Belize.jpg",
+      "image_license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "image_license_label": "CC BY-SA 4.0"
+    },
+    {
+      "slug": "allamanda-cathartica",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Allamanda_cathartica_01.JPG/500px-Allamanda_cathartica_01.JPG",
+      "image_credit": "Prenn",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Allamanda_cathartica_01.JPG",
+      "image_license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "image_license_label": "CC BY-SA 3.0"
+    },
+    {
+      "slug": "monstera-deliciosa",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Monstera_deliciosa_DSC02605.jpg/500px-Monstera_deliciosa_DSC02605.jpg",
+      "image_credit": "Smatu",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Monstera_deliciosa_DSC02605.jpg",
+      "image_license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "image_license_label": "CC BY-SA 4.0"
+    },
+    {
+      "slug": "catharanthus-roseus",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Catharanthus_roseus24_08_2012_%282%29.JPG/500px-Catharanthus_roseus24_08_2012_%282%29.JPG",
+      "image_credit": "Joydeep",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Catharanthus_roseus24_08_2012_(2).JPG",
+      "image_license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "image_license_label": "CC BY-SA 3.0"
+    },
+    {
+      "slug": "urera-baccifera",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Urera_baccifera_-_Parque_Estadual_da_Serra_do_Mar_-_iNaturalist_113340210_%285%29.jpeg/500px-Urera_baccifera_-_Parque_Estadual_da_Serra_do_Mar_-_iNaturalist_113340210_%285%29.jpeg",
+      "image_credit": "Gilmar R. Ferreira",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Urera_baccifera_-_Parque_Estadual_da_Serra_do_Mar_-_iNaturalist_113340210_(5).jpeg",
+      "image_license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "image_license_label": "CC BY-SA 4.0"
+    },
+    {
+      "slug": "eugenia-uniflora",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Pitanga_%28Eugenia_uniflora%29.JPG/500px-Pitanga_%28Eugenia_uniflora%29.JPG",
+      "image_credit": "Michael Hermann",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Pitanga_(Eugenia_uniflora).JPG",
+      "image_license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "image_license_label": "CC BY-SA 3.0"
+    },
+    {
+      "slug": "cecropia-pachystachya",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Cecropia_pachystachya_leaves.jpg/500px-Cecropia_pachystachya_leaves.jpg",
+      "image_credit": "João Medeiros",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Cecropia_pachystachya_leaves.jpg",
+      "image_license_url": "https://creativecommons.org/licenses/by/2.0/",
+      "image_license_label": "CC BY 2.0"
+    },
+    {
+      "slug": "pleroma-granulosum",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Quaresmeirasbicolores.jpg/500px-Quaresmeirasbicolores.jpg",
+      "image_credit": "Mauroguanandi",
+      "image_source_url": "https://commons.wikimedia.org/wiki/File:Quaresmeirasbicolores.jpg",
+      "image_license_url": "https://commons.wikimedia.org/wiki/File:Quaresmeirasbicolores.jpg",
+      "image_license_label": "Domínio público"
+    }
+  ]
+}

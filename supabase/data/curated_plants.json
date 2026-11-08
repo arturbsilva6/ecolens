@@ -1,0 +1,375 @@
+[
+  {
+    "slug": "thevetia-peruviana",
+    "common_name": "Chapéu-de-napoleão",
+    "scientific_name": "Thevetia peruviana",
+    "status": "danger",
+    "is_invasive": false,
+    "species_group": "planta",
+    "other_names": [
+      "Jorro-jorro",
+      "Aguaí"
+    ],
+    "main_colors": [
+      "amarelo",
+      "verde",
+      "alaranjado"
+    ],
+    "visual_pattern": "Arbusto de folhas finas e compridas, brilhantes, com flores amarelas em forma de funil e frutos verdes triangulares que lembram um chapéu.",
+    "lookalikes": [
+      "Espirradeira (Nerium oleander): também muito tóxica, tem folhas mais largas e flores rosa, brancas ou vermelhas em cachos.",
+      "Alamanda (Allamanda cathartica): trepadeira de flores amarelas maiores e folhas largas; também tóxica, mas menos perigosa."
+    ],
+    "description": "Arbusto ornamental de origem americana, plantado em jardins, cercas vivas e praças. É uma das plantas mais tóxicas cultivadas no Brasil.",
+    "characteristics": "Arbusto ou arvoreta de 2 a 6 m, com folhas estreitas de 10 a 15 cm e látex leitoso. Flores amarelas ou alaranjadas, em forma de funil. O fruto é carnoso, verde e depois escuro, com caroço duro. O nome científico atual é Cascabela thevetia.",
+    "habitat": "Jardins, calçadas, praças, cercas vivas e quintais.",
+    "risk_description": "Todas as partes, principalmente as sementes, contêm glicosídeos que agem sobre o coração. A ingestão causa vômitos, dor abdominal, diarreia e alterações graves do ritmo cardíaco, que podem levar à morte. O látex irrita a pele e os olhos.",
+    "safety_advice": "Não deixe crianças brincarem com os frutos ou sementes e não use partes da planta em chás. Se alguém mastigar ou engolir parte da planta, retire os restos da boca e enxágue com água, sem engolir. Não provoque vômito nem dê leite, óleo ou outros \"antídotos\" caseiros. Guarde um pedaço da planta para identificação e ligue para o Disque-Intoxicação 0800 722 6001. Em caso de vômitos, tontura ou palpitações após ingestão, acione o SAMU 192.",
+    "rescue_advice": "Não necessário.",
+    "source_name": "Sinitox/Fiocruz — Plantas tóxicas",
+    "source_url": "https://sinitox.icict.fiocruz.br/plantas-toxicas",
+    "review_notes": "Lista do Sinitox. Perigosa: casos graves e fatais por ingestão de sementes descritos na literatura toxicológica."
+  },
+  {
+    "slug": "jatropha-gossypiifolia",
+    "common_name": "Pinhão-roxo",
+    "scientific_name": "Jatropha gossypiifolia",
+    "status": "danger",
+    "is_invasive": false,
+    "species_group": "planta",
+    "other_names": [
+      "Pião-roxo",
+      "Batata-de-teiú"
+    ],
+    "main_colors": [
+      "roxo",
+      "vinho",
+      "verde",
+      "vermelho"
+    ],
+    "visual_pattern": "Arbusto com folhas recortadas em 3 a 5 lóbulos, arroxeadas quando novas, pequenas flores vermelho-escuras e frutos em cápsula de três partes.",
+    "lookalikes": [
+      "Mamona (Ricinus communis): também perigosa, tem folhas maiores em formato de mão e frutos espinhosos.",
+      "Pinhão-manso (Jatropha curcas): folhas verdes sem tom roxo; as sementes também são tóxicas."
+    ],
+    "description": "Arbusto muito plantado em quintais por crença popular de proteção. As sementes e o látex são tóxicos e atraem crianças pelos frutos.",
+    "characteristics": "Arbusto de 1 a 2 m, com folhas lobadas de margem com pelos glandulares, de cor verde a roxa. Flores pequenas vermelho-escuras em cachos. O fruto é uma cápsula verde com três sementes. Libera látex ao ser cortado.",
+    "habitat": "Quintais, terrenos baldios, beiras de estrada e hortas.",
+    "risk_description": "As sementes contêm substâncias muito irritantes para o estômago e o intestino. A ingestão provoca vômitos, diarreia intensa, dor abdominal e desidratação, mais grave em crianças. O látex irrita a pele e os olhos.",
+    "safety_advice": "Se alguém mastigar ou engolir parte da planta, retire os restos da boca e enxágue com água, sem engolir. Não provoque vômito nem dê leite, óleo ou outros \"antídotos\" caseiros. Guarde um pedaço da planta para identificação e ligue para o Disque-Intoxicação 0800 722 6001. Se o látex atingir os olhos, lave com água corrente por pelo menos 15 minutos, sem esfregar, e procure atendimento. Em caso de vômitos repetidos ou sinais de desidratação, acione o SAMU 192.",
+    "rescue_advice": "Não necessário.",
+    "source_name": "Sinitox/Fiocruz — Plantas tóxicas",
+    "source_url": "https://sinitox.icict.fiocruz.br/plantas-toxicas",
+    "review_notes": "Lista do Sinitox. Perigosa pela gravidade da intoxicação por sementes em crianças."
+  },
+  {
+    "slug": "brunfelsia-uniflora",
+    "common_name": "Manacá-de-cheiro",
+    "scientific_name": "Brunfelsia uniflora",
+    "status": "caution",
+    "is_invasive": false,
+    "species_group": "planta",
+    "other_names": [
+      "Manacá",
+      "Jeratacaca"
+    ],
+    "main_colors": [
+      "roxo",
+      "lilás",
+      "branco",
+      "verde"
+    ],
+    "visual_pattern": "Arbusto de flores perfumadas que abrem roxas e vão clareando até ficar brancas, com flores das três cores ao mesmo tempo.",
+    "lookalikes": [
+      "Manacá-da-serra (Pleroma mutabile): árvore nativa com flores que mudam do branco para o roxo; não tem toxicidade conhecida.",
+      "Quaresmeira (Pleroma granulosum): árvore de flores roxas com folhas ásperas de nervuras marcadas; não tem toxicidade conhecida."
+    ],
+    "description": "Arbusto nativo da Mata Atlântica e muito usado em jardins pelo perfume das flores. Frutos e folhas são tóxicos, principalmente para cães.",
+    "characteristics": "Arbusto de 1 a 3 m, com folhas simples e lisas. Flores com cinco pétalas arredondadas, roxas no primeiro dia, depois lilás e brancas. Os frutos são pequenas bagas verdes e arredondadas.",
+    "habitat": "Jardins, quintais, praças e bordas de mata.",
+    "risk_description": "Folhas, flores e principalmente os frutos podem causar vômitos, salivação e alterações neurológicas, como tremores. Os casos mais frequentes são em cães que mastigam os frutos.",
+    "safety_advice": "Não deixe crianças nem animais de estimação mastigarem frutos ou folhas. Se alguém mastigar ou engolir parte da planta, retire os restos da boca e enxágue com água, sem engolir. Não provoque vômito nem dê leite, óleo ou outros \"antídotos\" caseiros. Guarde um pedaço da planta para identificação e ligue para o Disque-Intoxicação 0800 722 6001. Se um cão ou gato mastigar a planta, procure um veterinário.",
+    "rescue_advice": "Não necessário.",
+    "source_name": "Sinitox/Fiocruz — Plantas tóxicas",
+    "source_url": "https://sinitox.icict.fiocruz.br/plantas-toxicas",
+    "review_notes": "Lista do Sinitox. Cautela: intoxicação descrita sobretudo em animais domésticos."
+  },
+  {
+    "slug": "lantana-camara",
+    "common_name": "Cambará",
+    "scientific_name": "Lantana camara",
+    "status": "caution",
+    "is_invasive": false,
+    "species_group": "planta",
+    "other_names": [
+      "Camará",
+      "Lantana",
+      "Chumbinho"
+    ],
+    "main_colors": [
+      "amarelo",
+      "laranja",
+      "vermelho",
+      "rosa",
+      "verde"
+    ],
+    "visual_pattern": "Arbusto com cachos redondos de flores pequenas que mudam de cor (amarelo, laranja, vermelho ou rosa) e frutinhos verdes que ficam pretos.",
+    "lookalikes": [
+      "Lantana-lilás (Lantana montevidensis): rasteira e de flores lilás; também deve ser evitada.",
+      "Verbena (Verbena spp.): flores parecidas em cacho, mas sem cheiro forte nas folhas e sem frutos pretos."
+    ],
+    "description": "Arbusto muito comum em jardins, cercas e terrenos, atrativo para borboletas. Os frutos verdes são tóxicos e chamam a atenção de crianças.",
+    "characteristics": "Arbusto de 1 a 2 m, com ramos ásperos às vezes com pequenos espinhos e folhas ásperas de cheiro forte quando amassadas. As flores ficam em cachos arredondados. Os frutos são bolinhas verdes que ficam pretas e brilhantes quando maduras.",
+    "habitat": "Jardins, cercas vivas, pastos, terrenos baldios e beiras de estrada.",
+    "risk_description": "A ingestão de frutos verdes causa vômitos, diarreia, sonolência e fraqueza, principalmente em crianças. Em bois, cavalos e outros animais de criação, as folhas podem lesar o fígado. O contato com as folhas pode irritar a pele de pessoas sensíveis.",
+    "safety_advice": "Ensine as crianças a não comer os frutinhos. Se alguém mastigar ou engolir parte da planta, retire os restos da boca e enxágue com água, sem engolir. Não provoque vômito nem dê leite, óleo ou outros \"antídotos\" caseiros. Guarde um pedaço da planta para identificação e ligue para o Disque-Intoxicação 0800 722 6001.",
+    "rescue_advice": "Não necessário.",
+    "source_name": "Sinitox/Fiocruz — Plantas tóxicas",
+    "source_url": "https://sinitox.icict.fiocruz.br/plantas-toxicas",
+    "review_notes": "Lista do Sinitox (como \"latana\"). Cautela: quadros em geral leves em pessoas."
+  },
+  {
+    "slug": "hippobroma-longiflora",
+    "common_name": "Cega-olho",
+    "scientific_name": "Hippobroma longiflora",
+    "status": "caution",
+    "is_invasive": false,
+    "species_group": "planta",
+    "other_names": [
+      "Jasmim-estrela"
+    ],
+    "main_colors": [
+      "branco",
+      "verde"
+    ],
+    "visual_pattern": "Planta baixa em roseta, de folhas recortadas com dentes, e flores brancas em forma de estrela na ponta de um tubo fino e comprido.",
+    "lookalikes": [
+      "Jasmim (Jasminum spp.): flores brancas perfumadas, mas em trepadeiras ou arbustos e sem látex.",
+      "Dente-de-leão (Taraxacum officinale): também em roseta e com látex, porém de flores amarelas."
+    ],
+    "description": "Erva comum em gramados, canteiros e calçadas. O nome popular vem do látex, que causa lesões graves nos olhos.",
+    "characteristics": "Erva de 20 a 50 cm, com folhas alongadas e margem irregular com dentes. A flor branca tem tubo de até 10 cm e cinco pontas em estrela. Toda a planta solta látex branco quando quebrada.",
+    "habitat": "Gramados, jardins, beiras de calçada, terrenos baldios e áreas úmidas.",
+    "risk_description": "O látex nos olhos causa dor, vermelhidão e inflamação da córnea, que pode prejudicar a visão. A ingestão provoca salivação, vômitos e, em quantidade maior, alterações no coração e na respiração.",
+    "safety_advice": "Use luvas ao arrancar a planta e não leve as mãos aos olhos. Se o látex atingir os olhos, lave com água corrente por pelo menos 15 minutos, sem esfregar, e procure atendimento. Se alguém mastigar ou engolir parte da planta, retire os restos da boca e enxágue com água, sem engolir. Não provoque vômito nem dê leite, óleo ou outros \"antídotos\" caseiros. Guarde um pedaço da planta para identificação e ligue para o Disque-Intoxicação 0800 722 6001.",
+    "rescue_advice": "Não necessário.",
+    "source_name": "Sinitox/Fiocruz — Plantas tóxicas",
+    "source_url": "https://sinitox.icict.fiocruz.br/plantas-toxicas",
+    "review_notes": "Lista do Sinitox (como Isotoma longiflora). Cautela, com destaque para o risco aos olhos."
+  },
+  {
+    "slug": "allamanda-cathartica",
+    "common_name": "Alamanda",
+    "scientific_name": "Allamanda cathartica",
+    "status": "caution",
+    "is_invasive": false,
+    "species_group": "planta",
+    "other_names": [
+      "Dedal-de-dama",
+      "Alamanda-amarela"
+    ],
+    "main_colors": [
+      "amarelo",
+      "verde"
+    ],
+    "visual_pattern": "Trepadeira de folhas brilhantes e grandes flores amarelas em forma de trombeta, com fruto verde arredondado e cheio de espinhos moles.",
+    "lookalikes": [
+      "Chapéu-de-napoleão (Thevetia peruviana): flores amarelas menores e folhas finas; muito mais perigoso.",
+      "Ipê-amarelo (Handroanthus spp.): árvore, não trepadeira, com flores amarelas em cachos e folhas compostas."
+    ],
+    "description": "Trepadeira ornamental muito usada em muros, grades e pergolados. O látex e as sementes são tóxicos.",
+    "characteristics": "Trepadeira ou arbusto escandente com folhas em grupos de 3 ou 4 em cada nó. Flores amarelas de 5 a 10 cm. Solta látex leitoso quando cortada. Fruto em cápsula espinhosa.",
+    "habitat": "Muros, cercas, pergolados e jardins de casas e praças.",
+    "risk_description": "A ingestão de folhas, flores ou sementes causa cólicas, vômitos e diarreia, porque a planta tem efeito purgativo. O látex pode irritar a pele e os olhos.",
+    "safety_advice": "Use luvas na poda. Se alguém mastigar ou engolir parte da planta, retire os restos da boca e enxágue com água, sem engolir. Não provoque vômito nem dê leite, óleo ou outros \"antídotos\" caseiros. Guarde um pedaço da planta para identificação e ligue para o Disque-Intoxicação 0800 722 6001. Se o látex atingir os olhos, lave com água corrente por pelo menos 15 minutos, sem esfregar, e procure atendimento.",
+    "rescue_advice": "Não necessário.",
+    "source_name": "Sinitox/Fiocruz — Plantas tóxicas",
+    "source_url": "https://sinitox.icict.fiocruz.br/plantas-toxicas",
+    "review_notes": "Lista do Sinitox. Cautela: quadros gastrintestinais."
+  },
+  {
+    "slug": "monstera-deliciosa",
+    "common_name": "Costela-de-adão",
+    "scientific_name": "Monstera deliciosa",
+    "status": "caution",
+    "is_invasive": false,
+    "species_group": "planta",
+    "other_names": [
+      "Monstera"
+    ],
+    "main_colors": [
+      "verde-escuro",
+      "verde"
+    ],
+    "visual_pattern": "Folhas grandes, verde-escuras e brilhantes, com recortes e furos que lembram costelas.",
+    "lookalikes": [
+      "Guaimbê (Thaumatophyllum bipinnatifidum): folhas muito recortadas, mas sem furos; também tem cristais irritantes.",
+      "Comigo-ninguém-pode (Dieffenbachia spp.): folhas inteiras com manchas claras; o efeito é parecido."
+    ],
+    "description": "Planta ornamental muito comum dentro de casa e em jardins sombreados. Como a comigo-ninguém-pode, tem cristais que irritam a boca.",
+    "characteristics": "Planta de caule grosso, com raízes aéreas e folhas de até 80 cm. Folhas, caules e frutos verdes têm cristais de oxalato de cálcio.",
+    "habitat": "Vasos dentro de casa, varandas, jardins sombreados e muros.",
+    "risk_description": "Mastigar folhas, caules ou frutos verdes causa ardor imediato, inchaço dos lábios, da língua e da garganta, salivação e dificuldade para engolir.",
+    "safety_advice": "Mantenha os vasos longe de crianças pequenas e animais. Se alguém mastigar ou engolir parte da planta, retire os restos da boca e enxágue com água, sem engolir. Não provoque vômito nem dê leite, óleo ou outros \"antídotos\" caseiros. Guarde um pedaço da planta para identificação e ligue para o Disque-Intoxicação 0800 722 6001. Se houver inchaço na garganta ou falta de ar, acione o SAMU 192.",
+    "rescue_advice": "Não necessário.",
+    "source_name": "Sinitox/Fiocruz — Plantas tóxicas",
+    "source_url": "https://sinitox.icict.fiocruz.br/plantas-toxicas",
+    "review_notes": "Lista do Sinitox. Cautela, mesmo mecanismo do antúrio e da comigo-ninguém-pode."
+  },
+  {
+    "slug": "catharanthus-roseus",
+    "common_name": "Vinca",
+    "scientific_name": "Catharanthus roseus",
+    "status": "caution",
+    "is_invasive": false,
+    "species_group": "planta",
+    "other_names": [
+      "Boa-noite",
+      "Vinca-de-madagascar"
+    ],
+    "main_colors": [
+      "rosa",
+      "branco",
+      "lilás",
+      "verde"
+    ],
+    "visual_pattern": "Planta baixa de folhas brilhantes e flores de cinco pétalas abertas, rosa ou brancas, muitas vezes com o centro mais escuro.",
+    "lookalikes": [
+      "Beijo-pintado (Impatiens walleriana): flores parecidas, mas com espora atrás e caule suculento.",
+      "Vinca-pervinca (Vinca major): rasteira, de flores azul-arroxeadas."
+    ],
+    "description": "Planta ornamental muito comum em canteiros e calçadas, que também nasce sozinha em terrenos. Contém alcaloides tóxicos.",
+    "characteristics": "Erva ou subarbusto de 30 a 80 cm, com folhas opostas, lisas e brilhantes. Flores de 3 a 5 cm, rosa, brancas ou lilás.",
+    "habitat": "Canteiros, jardins, calçadas, terrenos baldios e áreas arenosas.",
+    "risk_description": "A ingestão de folhas ou flores pode causar vômitos, diarreia e tontura; em grande quantidade, alterações neurológicas e da pressão arterial. Não deve ser usada em chás caseiros.",
+    "safety_advice": "Não use a planta em chás ou remédios caseiros. Se alguém mastigar ou engolir parte da planta, retire os restos da boca e enxágue com água, sem engolir. Não provoque vômito nem dê leite, óleo ou outros \"antídotos\" caseiros. Guarde um pedaço da planta para identificação e ligue para o Disque-Intoxicação 0800 722 6001.",
+    "rescue_advice": "Não necessário.",
+    "source_name": "Sinitox/Fiocruz — Plantas tóxicas",
+    "source_url": "https://sinitox.icict.fiocruz.br/plantas-toxicas",
+    "review_notes": "Lista do Sinitox. Cautela."
+  },
+  {
+    "slug": "urera-baccifera",
+    "common_name": "Urtiga-brava",
+    "scientific_name": "Urera baccifera",
+    "status": "caution",
+    "is_invasive": false,
+    "species_group": "planta",
+    "other_names": [
+      "Urtigão"
+    ],
+    "main_colors": [
+      "verde",
+      "rosa",
+      "branco",
+      "vermelho"
+    ],
+    "visual_pattern": "Arbusto de folhas grandes com nervuras marcadas e pelos que queimam ao toque, e cachos de frutinhos rosados ou brancos translúcidos.",
+    "lookalikes": [
+      "Urtiga-comum (Urtica spp.): erva baixa que também queima ao toque.",
+      "Embaúba (Cecropia pachystachya): árvore de folhas grandes em formato de mão, sem pelos urticantes."
+    ],
+    "description": "Arbusto nativo comum em bordas de mata, trilhas e capoeiras. Os pelos urticantes causam dor intensa ao toque.",
+    "characteristics": "Arbusto de 2 a 5 m, com caule e folhas cobertos de pelos e pequenos acúleos. Folhas largas, de margem serrilhada. Flores pequenas em cachos ramificados e frutos carnosos rosados ou esbranquiçados.",
+    "habitat": "Bordas de mata, trilhas, capoeiras e sombra de matas da região.",
+    "risk_description": "O contato com os pelos causa dor em queimação, vermelhidão, inchaço e coceira que podem durar horas. Não é venenosa, mas a dor é forte.",
+    "safety_advice": "Use calça e manga comprida em trilhas. Após contato, não coce: lave a pele com água e sabão e use compressas frias. Procure atendimento se houver bolhas extensas, inchaço no rosto ou falta de ar.",
+    "rescue_advice": "Não necessário.",
+    "source_name": "Flora e Funga do Brasil — Jardim Botânico do Rio de Janeiro",
+    "source_url": "https://floradobrasil.jbrj.gov.br/consulta/",
+    "review_notes": "Espécie nativa (Flora e Funga do Brasil). Cautela por dor de contato."
+  },
+  {
+    "slug": "eugenia-uniflora",
+    "common_name": "Pitangueira",
+    "scientific_name": "Eugenia uniflora",
+    "status": "harmless",
+    "is_invasive": false,
+    "species_group": "planta",
+    "other_names": [
+      "Pitanga"
+    ],
+    "main_colors": [
+      "vermelho",
+      "laranja",
+      "verde",
+      "branco"
+    ],
+    "visual_pattern": "Arbusto ou arvoreta de folhas pequenas e brilhantes, com frutinhos em gomos, verdes, depois laranja e vermelhos.",
+    "lookalikes": [
+      "Cereja-do-rio-grande (Eugenia involucrata): fruto alongado e liso; também comestível.",
+      "Pimenta (Capsicum spp.): frutos vermelhos lisos e sem gomos, de sabor ardido."
+    ],
+    "description": "Árvore nativa da Mata Atlântica, comum em quintais e calçadas. Os frutos maduros são comestíveis.",
+    "characteristics": "Arbusto ou árvore de 2 a 8 m. Folhas de 3 a 6 cm, que ficam avermelhadas quando novas e soltam cheiro quando amassadas. Flores brancas pequenas. Fruto com 7 a 8 gomos.",
+    "habitat": "Quintais, calçadas, praças, sítios e bordas de mata.",
+    "risk_description": "Não há registro de toxicidade relevante. Os frutos maduros são comestíveis.",
+    "safety_advice": "Pode ser tocada sem risco. Só coma frutos que você reconhece com certeza e lave antes de comer.",
+    "rescue_advice": "Não necessário.",
+    "source_name": "Flora e Funga do Brasil — Jardim Botânico do Rio de Janeiro",
+    "source_url": "https://floradobrasil.jbrj.gov.br/consulta/",
+    "review_notes": "Espécie nativa (Flora e Funga do Brasil); inofensiva."
+  },
+  {
+    "slug": "cecropia-pachystachya",
+    "common_name": "Embaúba",
+    "scientific_name": "Cecropia pachystachya",
+    "status": "harmless",
+    "is_invasive": false,
+    "species_group": "planta",
+    "other_names": [
+      "Imbaúba",
+      "Árvore-da-preguiça"
+    ],
+    "main_colors": [
+      "verde",
+      "branco",
+      "prateado"
+    ],
+    "visual_pattern": "Árvore de tronco claro e oco, com poucas folhas grandes em formato de mão, verdes por cima e prateadas por baixo.",
+    "lookalikes": [
+      "Mamona (Ricinus communis): folhas também em formato de mão, mas é arbusto de frutos espinhosos e sementes muito tóxicas.",
+      "Mandioca (Manihot esculenta): folhas recortadas menores, em arbusto de horta."
+    ],
+    "description": "Árvore nativa que cresce rápido em clareiras e beiras de estrada. É alimento do bicho-preguiça e de muitas aves.",
+    "characteristics": "Árvore de 4 a 10 m, com tronco claro marcado por anéis e galhos em candelabro. Folhas de até 50 cm divididas em 7 a 10 lobos. O tronco oco costuma abrigar formigas.",
+    "habitat": "Beiras de estrada, clareiras, matas em regeneração e margens de rios.",
+    "risk_description": "A planta não é tóxica. As formigas que vivem no tronco podem morder quem mexe na árvore.",
+    "safety_advice": "Evite sacudir ou cortar o tronco sem luvas por causa das formigas. Não suba na árvore: os galhos são frágeis.",
+    "rescue_advice": "Não necessário.",
+    "source_name": "Flora e Funga do Brasil — Jardim Botânico do Rio de Janeiro",
+    "source_url": "https://floradobrasil.jbrj.gov.br/consulta/",
+    "review_notes": "Espécie nativa (Flora e Funga do Brasil); inofensiva, alerta para formigas."
+  },
+  {
+    "slug": "pleroma-granulosum",
+    "common_name": "Quaresmeira",
+    "scientific_name": "Pleroma granulosum",
+    "status": "harmless",
+    "is_invasive": false,
+    "species_group": "planta",
+    "other_names": [
+      "Quaresma",
+      "Flor-de-quaresma"
+    ],
+    "main_colors": [
+      "roxo",
+      "rosa",
+      "verde"
+    ],
+    "visual_pattern": "Árvore de copa arredondada coberta de flores roxas ou rosadas, com folhas ásperas de nervuras bem marcadas no sentido do comprimento.",
+    "lookalikes": [
+      "Manacá-da-serra (Pleroma mutabile): flores brancas, rosas e roxas ao mesmo tempo; também inofensiva.",
+      "Manacá-de-cheiro (Brunfelsia uniflora): arbusto de flores perfumadas roxas e brancas; os frutos são tóxicos."
+    ],
+    "description": "Árvore nativa da Mata Atlântica, comum em ruas e praças. Floresce principalmente na época da Quaresma.",
+    "characteristics": "Árvore de 8 a 12 m. Folhas ásperas de 10 a 15 cm, com 5 nervuras principais. Flores de cinco pétalas, roxas ou rosas, de 4 a 6 cm. O nome científico antigo é Tibouchina granulosa.",
+    "habitat": "Ruas, praças, jardins, beiras de estrada e bordas de mata.",
+    "risk_description": "Não há registro de toxicidade relevante.",
+    "safety_advice": "Pode ser tocada sem risco. Como qualquer planta, não coma partes que você não conhece.",
+    "rescue_advice": "Não necessário.",
+    "source_name": "Flora e Funga do Brasil — Jardim Botânico do Rio de Janeiro",
+    "source_url": "https://floradobrasil.jbrj.gov.br/consulta/",
+    "review_notes": "Espécie nativa (Flora e Funga do Brasil); inofensiva."
+  }
+]

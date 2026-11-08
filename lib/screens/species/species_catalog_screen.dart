@@ -11,11 +11,13 @@ import '../../models/species_status_style.dart';
 class SpeciesCatalogScreen extends StatefulWidget {
   final String initialQuery;
   final SpeciesCatalogFilter initialFilter;
+  final SpeciesKindFilter initialKind;
 
   const SpeciesCatalogScreen({
     super.key,
     this.initialQuery = '',
     this.initialFilter = SpeciesCatalogFilter.all,
+    this.initialKind = SpeciesKindFilter.all,
   });
 
   @override
@@ -26,12 +28,14 @@ class _SpeciesCatalogScreenState extends State<SpeciesCatalogScreen> {
   late final TextEditingController _searchController;
   late Future<List<SpeciesModel>> _speciesFuture;
   late SpeciesCatalogFilter _selectedFilter;
+  late SpeciesKindFilter _kind;
 
   @override
   void initState() {
     super.initState();
     _searchController = TextEditingController(text: widget.initialQuery);
     _selectedFilter = widget.initialFilter;
+    _kind = widget.initialKind;
     _speciesFuture = _fetchSpecies();
   }
 
@@ -91,6 +95,29 @@ class _SpeciesCatalogScreenState extends State<SpeciesCatalogScreen> {
                     borderRadius: BorderRadius.circular(16),
                   ),
                 ),
+              ),
+            ),
+            SizedBox(
+              height: 48,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                itemCount: SpeciesKindFilter.values.length,
+                separatorBuilder: (context, index) => const SizedBox(width: 8),
+                itemBuilder: (context, index) {
+                  final kind = SpeciesKindFilter.values[index];
+                  return ChoiceChip(
+                    avatar: Icon(switch (kind) {
+                      SpeciesKindFilter.all => Icons.apps,
+                      SpeciesKindFilter.animals => Icons.pets,
+                      SpeciesKindFilter.plants => Icons.local_florist,
+                    }, size: 18),
+                    label: Text(kind.label),
+                    selected: _kind == kind,
+                    showCheckmark: false,
+                    onSelected: (_) => setState(() => _kind = kind),
+                  );
+                },
               ),
             ),
             SizedBox(
@@ -162,6 +189,7 @@ class _SpeciesCatalogScreenState extends State<SpeciesCatalogScreen> {
                     species,
                     query: _searchController.text,
                     filter: _selectedFilter,
+                    kind: _kind,
                   );
 
                   if (matchingSpecies.isEmpty) {

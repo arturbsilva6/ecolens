@@ -13,12 +13,13 @@ Só entram fotos com licença livre (CC0, CC BY, CC BY-SA ou domínio
 público) e com autoria registrada.
 """
 import json
+import sys
 import re
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
-ENTRADA = RAIZ / 'supabase' / 'data' / 'species_photos.json'
-SAIDA = RAIZ / 'supabase' / 'migrations' / '20261107060546_species_photo_credits.sql'
+ENTRADA = Path(sys.argv[1]) if len(sys.argv) > 1 else RAIZ / 'supabase' / 'data' / 'species_photos.json'
+SAIDA = Path(sys.argv[2]) if len(sys.argv) > 2 else RAIZ / 'supabase' / 'migrations' / '20261107060546_species_photo_credits.sql'
 
 LICENCAS = re.compile(r'^(CC0|CC BY(-SA)? \d\.\d|Domínio público)$')
 CAMPOS = ['image_credit', 'image_source_url', 'image_license_url',
@@ -41,7 +42,7 @@ def main():
     linhas = [
         '-- EcoLens: fotos licenciadas das espécies e seus créditos.',
         '-- GERADO por tool/build_species_photos_migration.py a partir de',
-        '-- supabase/data/species_photos.json. Não edite à mão.',
+        f'-- supabase/data/{ENTRADA.name}. Não edite à mão.',
         '',
         'alter table public.species',
         '  add column if not exists image_credit text,',
@@ -51,7 +52,7 @@ def main():
         '',
         '-- Créditos das fotos que já estavam publicadas.',
     ]
-    for foto in dados['existentes']:
+    for foto in dados.get('existentes', []):
         validar(foto)
         sets = ', '.join(f'{c} = {texto(foto[c])}' for c in CAMPOS)
         linhas.append(
@@ -70,8 +71,8 @@ def main():
         )
     linhas.append('')
     SAIDA.write_text('\n'.join(linhas), encoding='utf-8')
-    total = len(dados['existentes']) + len(dados['novas'])
-    print(f'{total} fotos -> {SAIDA.relative_to(RAIZ)}')
+    total = len(dados.get('existentes', [])) + len(dados['novas'])
+    print(f'{total} fotos -> {SAIDA}')
 
 
 if __name__ == '__main__':
