@@ -70,6 +70,7 @@ flutter:
   assets:
     - assets/images/
     - assets/branding/
+    - assets/branding/intro/
     - assets/data/
 
   

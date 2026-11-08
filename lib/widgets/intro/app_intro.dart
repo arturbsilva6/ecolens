@@ -223,10 +223,7 @@ class _SweepClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     if (progress >= 1) return Path()..addRect(Offset.zero & size);
-    final center = Offset(
-      size.width * _center.dx,
-      size.height * _center.dy,
-    );
+    final center = Offset(size.width * _center.dx, size.height * _center.dy);
     if (progress <= 0) return Path();
     return Path()
       ..moveTo(center.dx, center.dy)

@@ -20,9 +20,7 @@ void main() {
     return () => finished;
   }
 
-  testWidgets('Desenha o logo, mostra lema e versão e termina', (
-    tester,
-  ) async {
+  testWidgets('Desenha o logo, mostra lema e versão e termina', (tester) async {
     final finished = await show(tester);
     await tester.pump(const Duration(milliseconds: 100));
     expect(finished(), 0);
