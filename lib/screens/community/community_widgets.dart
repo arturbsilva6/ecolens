@@ -11,10 +11,14 @@ const municipalPrecision =
 class CommunityPhoto extends StatefulWidget {
   final CommunityRepository repository;
   final String path;
+  final double height;
+  final BoxFit fit;
   const CommunityPhoto({
     super.key,
     required this.repository,
     required this.path,
+    this.height = 200,
+    this.fit = BoxFit.contain,
   });
   @override
   State<CommunityPhoto> createState() => _CommunityPhotoState();
@@ -38,7 +42,8 @@ class _CommunityPhotoState extends State<CommunityPhoto> {
 
   @override
   Widget build(BuildContext context) => SizedBox(
-    height: 200,
+    height: widget.height,
+    width: double.infinity,
     child: FutureBuilder<Uint8List>(
       future: _future,
       builder: (context, snapshot) {
@@ -58,7 +63,7 @@ class _CommunityPhotoState extends State<CommunityPhoto> {
         }
         return Image.memory(
           snapshot.data!,
-          fit: BoxFit.contain,
+          fit: widget.fit,
           semanticLabel:
               'Foto publicada pela comunidade; identificação não verificada',
           errorBuilder: (_, _, _) =>
