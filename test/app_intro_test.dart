@@ -3,6 +3,12 @@ import 'package:ecolens/widgets/intro/app_intro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+double opacityOf(WidgetTester tester, String word) => tester
+    .widget<Opacity>(
+      find.ancestor(of: find.text(word), matching: find.byType(Opacity)).first,
+    )
+    .opacity;
+
 void main() {
   Future<int Function()> show(
     WidgetTester tester, {
@@ -25,8 +31,15 @@ void main() {
     await tester.pump(const Duration(milliseconds: 100));
     expect(finished(), 0);
 
+    // Primeiro entra "Identificar"; "proteger" ainda está escondido.
     await tester.pump(const Duration(milliseconds: 2900));
-    expect(find.text(AppInfo.tagline), findsOneWidget);
+    expect(opacityOf(tester, 'Identificar'), greaterThan(0));
+    expect(opacityOf(tester, 'proteger'), 0);
+
+    await tester.pump(const Duration(milliseconds: 1300));
+    for (final word in AppInfo.tagline.split(' ')) {
+      expect(opacityOf(tester, word), 1);
+    }
     expect(find.text('Versão ${AppInfo.version}'), findsOneWidget);
     expect(finished(), 0);
 
@@ -47,7 +60,7 @@ void main() {
   ) async {
     final finished = await show(tester, reduceMotion: true);
     await tester.pump();
-    expect(find.text(AppInfo.tagline), findsOneWidget);
+    expect(opacityOf(tester, 'proteger'), 1);
     await tester.pump(const Duration(seconds: 1));
     await tester.pumpAndSettle();
     expect(finished(), 1);

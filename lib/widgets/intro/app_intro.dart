@@ -17,7 +17,7 @@ class AppIntro extends StatefulWidget {
   const AppIntro({
     super.key,
     required this.onFinished,
-    this.duration = const Duration(milliseconds: 3400),
+    this.duration = const Duration(milliseconds: 4600),
   });
 
   final VoidCallback onFinished;
@@ -35,7 +35,7 @@ class _AppIntroState extends State<AppIntro>
   )..addStatusListener(_onStatus);
 
   /// Momento em que tudo já está na tela e só falta sumir.
-  static const _shown = 0.9;
+  static const _shown = 0.94;
 
   bool _started = false, _finished = false;
 
@@ -45,13 +45,19 @@ class _AppIntroState extends State<AppIntro>
         curve: Interval(begin, end, curve: curve),
       );
 
-  late final _logoIn = _step(0, .08, Curves.easeOut);
-  late final _draw = _step(.02, .46, Curves.easeInOutCubic);
-  late final _spin = _step(0, .5, Curves.easeOutCubic);
-  late final _leafTop = _step(.30, .50, Curves.easeOutBack);
-  late final _leafSide = _step(.37, .57, Curves.easeOutBack);
-  late final _tagline = _step(.50, .68, Curves.easeOutCubic);
-  late final _version = _step(.66, .78, Curves.easeOut);
+  late final _logoIn = _step(0, .06, Curves.easeOut);
+  late final _draw = _step(.02, .52, Curves.easeInOutCubic);
+  late final _spin = _step(0, .56, Curves.easeOutCubic);
+  late final _leafTop = _step(.36, .54, Curves.easeOutBack);
+  late final _leafSide = _step(.42, .60, Curves.easeOutBack);
+
+  /// O lema entra palavra por palavra: "Identificar", "e", "proteger".
+  late final _words = [
+    _step(.58, .70, Curves.easeOutCubic),
+    _step(.65, .74, Curves.easeOutCubic),
+    _step(.71, .83, Curves.easeOutCubic),
+  ];
+  late final _version = _step(.84, .91, Curves.easeOut);
   late final _fadeOut = _step(_shown + .01, 1, Curves.easeIn);
 
   @override
@@ -118,19 +124,11 @@ class _AppIntroState extends State<AppIntro>
                         children: [
                           _logo(logo),
                           const SizedBox(height: 28),
-                          FractionalTranslation(
-                            translation: Offset(-1.6 * (1 - _tagline.value), 0),
-                            child: Opacity(
-                              opacity: _tagline.value.clamp(0.0, 1.0),
-                              child: Text(
-                                AppInfo.tagline,
-                                textAlign: TextAlign.center,
-                                style: theme.textTheme.titleLarge?.copyWith(
-                                  color: colors.primary,
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: .4,
-                                ),
-                              ),
+                          _tagline(
+                            theme.textTheme.titleLarge?.copyWith(
+                              color: colors.primary,
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: .4,
                             ),
                           ),
                         ],
@@ -160,6 +158,28 @@ class _AppIntroState extends State<AppIntro>
       ),
     );
   }
+
+  /// Cada palavra desliza da esquerda e aparece, com um pequeno atraso
+  /// em relação à anterior.
+  Widget _tagline(TextStyle? style) {
+    final words = AppInfo.tagline.split(' ');
+    return Wrap(
+      alignment: WrapAlignment.center,
+      spacing: 7,
+      children: [
+        for (var i = 0; i < words.length; i++)
+          _word(words[i], _words[math.min(i, _words.length - 1)].value, style),
+      ],
+    );
+  }
+
+  Widget _word(String text, double t, TextStyle? style) => Opacity(
+    opacity: t.clamp(0.0, 1.0),
+    child: Transform.translate(
+      offset: Offset(-36 * (1 - t), 0),
+      child: Text(text, style: style),
+    ),
+  );
 
   Widget _logo(double size) {
     Widget layer(String name) => Image.asset(
