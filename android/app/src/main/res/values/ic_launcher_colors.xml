@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Mesmo verde-escuro da abertura; com fundo transparente o launcher
-         desenha uma placa preta ou um anel claro. -->
-    <color name="ic_launcher_background">#101C17</color>
+    <!-- Fundo branco, como os ícones do Google; logo centrado no anel. -->
+    <color name="ic_launcher_background">#FFFFFF</color>
     <!-- Mesmo fundo da primeira tela do Flutter (AppColors.background). -->
     <color name="splash_background">#F5F8F3</color>
 </resources>
