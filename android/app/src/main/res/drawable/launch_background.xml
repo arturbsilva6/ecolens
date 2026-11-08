@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Abertura antes do Android 12: fundo do app com o logo no centro. -->
+<!-- Abertura nativa só com a cor de fundo; a animação do logo vem em seguida. -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@color/splash_background" />
-    <item>
-        <bitmap
-            android:gravity="center"
-            android:src="@drawable/splash_icon" />
-    </item>
 </layer-list>

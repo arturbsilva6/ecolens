@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../../core/app_info.dart';
 import 'privacy_policy_screen.dart';
 
 class AboutScreen extends StatelessWidget {
-  /// Manter igual ao `version` do pubspec.yaml.
-  static const version = '1.0.0';
+  static const version = AppInfo.version;
 
   const AboutScreen({super.key});
 

@@ -15,6 +15,7 @@ import 'models/species_model.dart';
 import 'core/theme/app_theme.dart';
 import 'screens/home/home_screen.dart';
 import 'services/supabase_service.dart';
+import 'widgets/intro/app_intro.dart';
 
 class EcoLensApp extends StatefulWidget {
   final SupabaseService? supabaseService;
@@ -23,6 +24,9 @@ class EcoLensApp extends StatefulWidget {
   final ShareIdentificationDraftStore? shareDraftStore;
   final CommunityRepository? communityRepository;
 
+  /// Mostra a abertura animada sobre a Home (desligada nos testes).
+  final bool showIntro;
+
   const EcoLensApp({
     super.key,
     this.supabaseService,
@@ -30,6 +34,7 @@ class EcoLensApp extends StatefulWidget {
     this.authController,
     this.shareDraftStore,
     this.communityRepository,
+    this.showIntro = false,
   });
 
   @override
@@ -39,6 +44,7 @@ class EcoLensApp extends StatefulWidget {
 class _EcoLensAppState extends State<EcoLensApp> {
   late final ThemeController _themeController;
   late final AuthController _authController;
+  late bool _showIntro = widget.showIntro;
   final _navigatorKey = GlobalKey<NavigatorState>();
   int _callbackRevision = 0;
   Future<void>? _profileNavigation;
@@ -176,9 +182,24 @@ class _EcoLensAppState extends State<EcoLensApp> {
           navigatorKey: _navigatorKey,
           builder: (context, child) {
             final scale = _themeController.textScale;
-            final content = AccountNavigationScope(
-              openAccount: _openProfile,
-              child: child!,
+            // A Home já carrega por baixo enquanto a abertura toca.
+            final content = Stack(
+              fit: StackFit.expand,
+              children: [
+                ExcludeSemantics(
+                  excluding: _showIntro,
+                  child: AccountNavigationScope(
+                    openAccount: _openProfile,
+                    child: child!,
+                  ),
+                ),
+                if (_showIntro)
+                  Positioned.fill(
+                    child: AppIntro(
+                      onFinished: () => setState(() => _showIntro = false),
+                    ),
+                  ),
+              ],
             );
             if (scale == null) return content;
             // Multiplica o ajuste do Android pela escolha feita no app.
