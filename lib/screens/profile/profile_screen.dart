@@ -346,6 +346,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       const SizedBox(height: 16),
                       _nameField(),
                       _submitButton('Salvar nome'),
+                      const SizedBox(height: 12),
                       OutlinedButton(
                         onPressed: _auth.busy ? null : _auth.signOut,
                         child: const Text('Sair da conta'),

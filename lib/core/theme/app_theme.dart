@@ -43,7 +43,7 @@ abstract final class AppTheme {
       useMaterial3: true,
       brightness: brightness,
       colorScheme: colors,
-      fontFamily: 'Montserrat',
+      // Fonte do sistema (Roboto no Android), a mesma de YouTube e WhatsApp.
       scaffoldBackgroundColor: isDark
           ? AppColors.darkBackground
           : AppColors.background,

@@ -6,7 +6,7 @@ recentes de câmera, galeria, busca, favoritos, histórico, SOS e perfil.
 Sem alterar controllers, Supabase, serviços, endpoints ou fluxos de autenticação.
 
 ## Implementado
-- Design System Material 3 com Montserrat, cores oficiais e temas claro/escuro.
+- Design System Material 3 (fonte inicial Montserrat, trocada em 08/11/2026 pela fonte do sistema, Roboto, por legibilidade), cores oficiais e temas claro/escuro.
 - Marca simplificada aprovada do loader incorporada como símbolo no cabeçalho.
 - Hero de natureza com gradiente de alto contraste e ações de câmera/galeria.
 - Layout adaptável: botões empilhados em telas estreitas ou com texto ampliado.
