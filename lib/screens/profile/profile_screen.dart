@@ -568,8 +568,8 @@ class _OrDivider extends StatelessWidget {
   }
 }
 
-/// Ícone oficial "Sign in with Google" (tema claro, quadrado, sem texto),
-/// usado sem alterações conforme as diretrizes de marca do Google.
+/// "G" do pacote oficial do Sign in with Google, só sem o quadrado branco
+/// de fundo (cores e proporções originais).
 class _GoogleMark extends StatelessWidget {
   static const asset = 'assets/branding/google_g.png';
 
@@ -578,8 +578,8 @@ class _GoogleMark extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Image.asset(
     asset,
-    width: 24,
-    height: 24,
+    width: 22,
+    height: 22,
     filterQuality: FilterQuality.medium,
     excludeFromSemantics: true,
     errorBuilder: (context, _, _) => ExcludeSemantics(
