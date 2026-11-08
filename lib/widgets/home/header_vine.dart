@@ -150,9 +150,7 @@ class _VinePainter extends CustomPainter {
           ..quadraticBezierTo(length * .5, -length * .45, length, 0)
           ..quadraticBezierTo(length * .5, length * .45, 0, 0),
         Paint()
-          ..color = _leafColors[i % _leafColors.length].withValues(
-            alpha: fade,
-          ),
+          ..color = _leafColors[i % _leafColors.length].withValues(alpha: fade),
       );
       canvas.restore();
     }

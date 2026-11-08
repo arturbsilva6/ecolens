@@ -189,26 +189,26 @@ class _EcoLensAppState extends State<EcoLensApp> {
             final content = IntroStatus(
               done: _introDone,
               child: Stack(
-              fit: StackFit.expand,
-              children: [
-                ExcludeSemantics(
-                  excluding: _showIntro,
-                  child: AccountNavigationScope(
-                    openAccount: _openProfile,
-                    child: child!,
-                  ),
-                ),
-                if (_showIntro)
-                  Positioned.fill(
-                    child: AppIntro(
-                      onFinished: () {
-                        setState(() => _showIntro = false);
-                        _introDone.value = true;
-                      },
+                fit: StackFit.expand,
+                children: [
+                  ExcludeSemantics(
+                    excluding: _showIntro,
+                    child: AccountNavigationScope(
+                      openAccount: _openProfile,
+                      child: child!,
                     ),
                   ),
-              ],
-            ),
+                  if (_showIntro)
+                    Positioned.fill(
+                      child: AppIntro(
+                        onFinished: () {
+                          setState(() => _showIntro = false);
+                          _introDone.value = true;
+                        },
+                      ),
+                    ),
+                ],
+              ),
             );
             if (scale == null) return content;
             // Multiplica o ajuste do Android pela escolha feita no app.
