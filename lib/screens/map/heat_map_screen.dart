@@ -146,29 +146,30 @@ class _HeatMapScreenState extends State<HeatMapScreen> {
         shrinkWrap: true,
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
         children: [
-          Text(
-            'Sobre o mapa',
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
+          Text('Sobre o mapa', style: Theme.of(context).textTheme.titleLarge),
           const SizedBox(height: 12),
           const _AboutItem(
             icon: Icons.location_off_outlined,
-            text: '$municipalPrecision O app não pede permissão de '
+            text:
+                '$municipalPrecision O app não pede permissão de '
                 'localização: você escolhe o município.',
           ),
           const _AboutItem(
             icon: Icons.groups_outlined,
-            text: 'Os pontos são registros da comunidade. Não indicam '
+            text:
+                'Os pontos são registros da comunidade. Não indicam '
                 'população, habitat, distribuição nem risco da espécie.',
           ),
           const _AboutItem(
             icon: Icons.menu_book_outlined,
-            text: 'Para habitat e distribuição, use as fichas do catálogo, '
+            text:
+                'Para habitat e distribuição, use as fichas do catálogo, '
                 'que têm fonte identificada.',
           ),
           const _AboutItem(
             icon: Icons.source_outlined,
-            text: 'Coordenadas dos municípios: kelvins/municipios-brasileiros '
+            text:
+                'Coordenadas dos municípios: kelvins/municipios-brasileiros '
                 '(MIT), revisão 503e2f7 de 06/11/2026. Mapa-base: '
                 'OpenStreetMap (ODbL).',
           ),
@@ -425,13 +426,14 @@ class _HeatMapScreenState extends State<HeatMapScreen> {
 
               // Registros
               const SizedBox(height: 8),
-              Row(
+              Wrap(
+                spacing: 8,
+                runSpacing: 4,
+                crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
-                  Expanded(
-                    child: Text(
-                      'Municípios com registros',
-                      style: theme.textTheme.titleMedium,
-                    ),
+                  Text(
+                    'Municípios com registros',
+                    style: theme.textTheme.titleMedium,
                   ),
                   if (c.items.isNotEmpty)
                     Chip(
