@@ -18,14 +18,13 @@ class AboutScreen extends StatelessWidget {
         children: [
           Row(
             children: [
-              CircleAvatar(
-                radius: 28,
-                backgroundColor: theme.colorScheme.primaryContainer,
-                child: Icon(
-                  Icons.eco,
-                  size: 32,
-                  color: theme.colorScheme.onPrimaryContainer,
-                ),
+              Image.asset(
+                'assets/branding/ecolens_logo_loader.png',
+                width: 56,
+                height: 56,
+                semanticLabel: 'Logo do EcoLens',
+                errorBuilder: (_, _, _) =>
+                    Icon(Icons.eco, size: 40, color: theme.colorScheme.primary),
               ),
               const SizedBox(width: 16),
               Expanded(
