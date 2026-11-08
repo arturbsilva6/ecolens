@@ -231,7 +231,8 @@ class _IdentificationHistoryDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
-    final hasScientificName = entry.identified &&
+    final hasScientificName =
+        entry.identified &&
         entry.scientificName != null &&
         entry.scientificName!.trim().isNotEmpty;
 
