@@ -62,11 +62,11 @@ class _AppIntroState extends State<AppIntro>
   late final _leafTop = _step(.36, .54, Curves.easeOutBack);
   late final _leafSide = _step(.42, .60, Curves.easeOutBack);
 
-  /// O lema entra palavra por palavra: "Identificar", "e", "proteger".
+  /// O lema vem do fundo em duas partes: "Identificar" e, um pouco
+  /// depois, "e proteger".
   late final _words = [
-    _step(.58, .70, Curves.easeOutCubic),
-    _step(.65, .74, Curves.easeOutCubic),
-    _step(.71, .83, Curves.easeOutCubic),
+    _step(.58, .70, Curves.easeOutBack),
+    _step(.70, .82, Curves.easeOutBack),
   ];
   late final _version = _step(.84, .91, Curves.easeOut);
   late final _fadeOut = _step(_shown + .01, 1, Curves.easeIn);
@@ -161,10 +161,10 @@ class _AppIntroState extends State<AppIntro>
                           const SizedBox(height: 28),
                           _tagline(
                             theme.textTheme.titleLarge?.copyWith(
-                              color: colors.primary,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w700,
                               letterSpacing: .4,
                             ),
+                            dark: theme.brightness == Brightness.dark,
                           ),
                         ],
                       ),
@@ -194,24 +194,26 @@ class _AppIntroState extends State<AppIntro>
     );
   }
 
-  /// Cada palavra desliza da esquerda e aparece, com um pequeno atraso
-  /// em relação à anterior.
-  Widget _tagline(TextStyle? style) {
-    final words = AppInfo.tagline.split(' ');
+  /// "Identificar" no ciano do logo e "e proteger" no verde, cada parte
+  /// vindo do fundo (zoom in). No tema claro os tons são um pouco mais
+  /// escuros para o texto continuar legível sobre o fundo claro.
+  Widget _tagline(TextStyle? style, {required bool dark}) {
+    final cyan = dark ? const Color(0xFF2CB5A0) : const Color(0xFF1E9584);
+    final green = dark ? const Color(0xFF7ED957) : const Color(0xFF3E9E2C);
     return Wrap(
       alignment: WrapAlignment.center,
       spacing: 7,
       children: [
-        for (var i = 0; i < words.length; i++)
-          _word(words[i], _words[math.min(i, _words.length - 1)].value, style),
+        _zoomIn(AppInfo.taglineFirst, _words[0].value, style?.copyWith(color: cyan)),
+        _zoomIn(AppInfo.taglineSecond, _words[1].value, style?.copyWith(color: green)),
       ],
     );
   }
 
-  Widget _word(String text, double t, TextStyle? style) => Opacity(
+  Widget _zoomIn(String text, double t, TextStyle? style) => Opacity(
     opacity: t.clamp(0.0, 1.0),
-    child: Transform.translate(
-      offset: Offset(-36 * (1 - t), 0),
+    child: Transform.scale(
+      scale: .35 + .65 * t,
       child: Text(text, style: style),
     ),
   );

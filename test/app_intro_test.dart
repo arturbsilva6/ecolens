@@ -37,15 +37,14 @@ void main() {
     await tester.pump(const Duration(milliseconds: 100));
     expect(finished(), 0);
 
-    // Primeiro entra "Identificar"; "proteger" ainda está escondido.
+    // Primeiro vem "Identificar"; "e proteger" ainda está escondido.
     await tester.pump(const Duration(milliseconds: 2900));
-    expect(opacityOf(tester, 'Identificar'), greaterThan(0));
-    expect(opacityOf(tester, 'proteger'), 0);
+    expect(opacityOf(tester, AppInfo.taglineFirst), greaterThan(0));
+    expect(opacityOf(tester, AppInfo.taglineSecond), 0);
 
     await tester.pump(const Duration(milliseconds: 1300));
-    for (final word in AppInfo.tagline.split(' ')) {
-      expect(opacityOf(tester, word), 1);
-    }
+    expect(opacityOf(tester, AppInfo.taglineFirst), 1);
+    expect(opacityOf(tester, AppInfo.taglineSecond), 1);
     expect(find.text('Versão ${AppInfo.version}'), findsOneWidget);
     expect(finished(), 0);
 
@@ -66,7 +65,7 @@ void main() {
   ) async {
     final finished = await show(tester, reduceMotion: true);
     await tester.pump();
-    expect(opacityOf(tester, 'proteger'), 1);
+    expect(opacityOf(tester, AppInfo.taglineSecond), 1);
     await tester.pump(const Duration(seconds: 1));
     await tester.pumpAndSettle();
     expect(finished(), 1);
