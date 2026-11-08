@@ -38,17 +38,17 @@ void main() {
     expect(finished(), 0);
 
     // Primeiro vem "Identificar"; "e proteger" ainda está escondido.
-    await tester.pump(const Duration(milliseconds: 2900));
+    await tester.pump(const Duration(milliseconds: 3200));
     expect(opacityOf(tester, AppInfo.taglineFirst), greaterThan(0));
     expect(opacityOf(tester, AppInfo.taglineSecond), 0);
 
-    await tester.pump(const Duration(milliseconds: 1300));
+    await tester.pump(const Duration(milliseconds: 1900));
     expect(opacityOf(tester, AppInfo.taglineFirst), 1);
     expect(opacityOf(tester, AppInfo.taglineSecond), 1);
     expect(find.text('Versão ${AppInfo.version}'), findsOneWidget);
     expect(finished(), 0);
 
-    await tester.pump(const Duration(milliseconds: 600));
+    await tester.pump(const Duration(milliseconds: 800));
     expect(finished(), 1);
   });
 

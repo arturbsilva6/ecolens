@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+import 'dart:ui' show ImageFilter;
 
 import 'package:flutter/material.dart';
 
@@ -17,7 +18,7 @@ class AppIntro extends StatefulWidget {
   const AppIntro({
     super.key,
     required this.onFinished,
-    this.duration = const Duration(milliseconds: 4600),
+    this.duration = const Duration(milliseconds: 5600),
     this.startDelay = const Duration(milliseconds: 300),
     this.waitForImages = true,
   });
@@ -46,7 +47,7 @@ class _AppIntroState extends State<AppIntro>
   )..addStatusListener(_onStatus);
 
   /// Momento em que tudo já está na tela e só falta sumir.
-  static const _shown = 0.94;
+  static const _shown = 0.95;
 
   bool _started = false, _finished = false;
 
@@ -57,18 +58,18 @@ class _AppIntroState extends State<AppIntro>
       );
 
   late final _logoIn = _step(0, .06, Curves.easeOut);
-  late final _draw = _step(.02, .52, Curves.easeInOutCubic);
-  late final _spin = _step(0, .56, Curves.easeOutCubic);
-  late final _leafTop = _step(.36, .54, Curves.easeOutBack);
-  late final _leafSide = _step(.42, .60, Curves.easeOutBack);
+  late final _draw = _step(.02, .43, Curves.easeInOutCubic);
+  late final _spin = _step(0, .46, Curves.easeOutCubic);
+  late final _leafTop = _step(.30, .44, Curves.easeOutBack);
+  late final _leafSide = _step(.35, .49, Curves.easeOutBack);
 
   /// O lema vem do fundo em duas partes: "Identificar" e, um pouco
   /// depois, "e proteger".
   late final _words = [
-    _step(.58, .70, Curves.easeOutBack),
-    _step(.70, .82, Curves.easeOutBack),
+    _step(.50, .68, Curves.easeOutQuart),
+    _step(.66, .84, Curves.easeOutQuart),
   ];
-  late final _version = _step(.84, .91, Curves.easeOut);
+  late final _version = _step(.86, .92, Curves.easeOut);
   late final _fadeOut = _step(_shown + .01, 1, Curves.easeIn);
 
   @override
@@ -218,13 +219,22 @@ class _AppIntroState extends State<AppIntro>
     );
   }
 
-  Widget _zoomIn(String text, double t, TextStyle? style) => Opacity(
-    opacity: t.clamp(0.0, 1.0),
-    child: Transform.scale(
-      scale: .35 + .65 * t,
-      child: Text(text, style: style),
-    ),
-  );
+  /// Vem do fundo devagar: começa menor, desfocado e transparente, e
+  /// desacelera até assentar, sem passar do tamanho final.
+  Widget _zoomIn(String text, double t, TextStyle? style) {
+    final blur = 6 * (1 - t);
+    return Opacity(
+      opacity: t.clamp(0.0, 1.0),
+      child: Transform.scale(
+        scale: .7 + .3 * t,
+        child: ImageFiltered(
+          enabled: blur > .05,
+          imageFilter: ImageFilter.blur(sigmaX: blur, sigmaY: blur),
+          child: Text(text, style: style),
+        ),
+      ),
+    );
+  }
 
   Widget _logo(double size) {
     Widget layer(String name) => Image.asset(
