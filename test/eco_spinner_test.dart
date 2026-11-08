@@ -13,25 +13,23 @@ void main() {
         ),
       );
 
-  double turn(WidgetTester tester) {
-    final transform = tester.widget<Transform>(
-      find
-          .descendant(
-            of: find.byType(EcoSpinner),
-            matching: find.byType(Transform),
+  double start(WidgetTester tester) => (tester
+          .widget<ClipPath>(
+            find.descendant(
+              of: find.byType(EcoSpinner),
+              matching: find.byType(ClipPath),
+            ),
           )
-          .first,
-    );
-    return transform.transform.getRotation().entry(1, 0);
-  }
+          .clipper! as EcoArcClipper)
+      .from;
 
   testWidgets('Sem valor, o símbolo gira enquanto carrega', (tester) async {
     await show(tester, const EcoSpinner());
     expect(find.bySemanticsLabel('Carregando'), findsOneWidget);
     await tester.pump(const Duration(milliseconds: 200));
-    final first = turn(tester);
+    final first = start(tester);
     await tester.pump(const Duration(milliseconds: 400));
-    expect(turn(tester), isNot(first));
+    expect(start(tester), greaterThan(first));
   });
 
   testWidgets('Com valor, informa o progresso e fica parado', (tester) async {

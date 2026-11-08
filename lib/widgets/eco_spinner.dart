@@ -81,7 +81,7 @@ class _EcoSpinnerState extends State<EcoSpinner>
                   color: color,
                   head: value ?? 1,
                   tail: 0,
-                  turn: 0,
+                  offset: 0,
                 )
               : AnimatedBuilder(
                   animation: _controller,
@@ -93,9 +93,10 @@ class _EcoSpinnerState extends State<EcoSpinner>
                       color: color,
                       head: curve.transform((t / .62).clamp(0.0, 1.0)),
                       tail: curve.transform(((t - .45) / .55).clamp(0.0, 1.0)),
-                      // O anel some por completo no fim de cada volta, então
-                      // o giro pode recomeçar sem salto visível.
-                      turn: -math.pi * t,
+                      // O traço avança pelo anel enquanto o símbolo fica de
+                      // pé (folhas sempre no alto à direita). O anel some no
+                      // fim de cada volta, então recomeça sem salto visível.
+                      offset: t / 2,
                     );
                   },
                 ),
@@ -106,17 +107,18 @@ class _EcoSpinnerState extends State<EcoSpinner>
 }
 
 /// Símbolo monocromático com o anel visível entre [tail] e [head]
-/// (frações da volta, no sentido anti-horário a partir das 8 horas).
+/// (frações da volta, no sentido anti-horário a partir das 8 horas),
+/// deslocado por [offset].
 class _EcoMark extends StatelessWidget {
   const _EcoMark({
     required this.size,
     required this.color,
     required this.head,
     required this.tail,
-    required this.turn,
+    required this.offset,
   });
 
-  final double size, head, tail, turn;
+  final double size, head, tail, offset;
   final Color color;
 
   /// Posição das folhas ao longo da volta do traço.
@@ -137,8 +139,10 @@ class _EcoMark extends StatelessWidget {
       gaplessPlayback: true,
     );
 
-    final shown = (head - _leafAt) / .15;
-    final hidden = (tail - _leafAt) / .15;
+    // As folhas ficam paradas no lugar delas e brotam quando o traço passa.
+    final at = (_leafAt - offset) % 1;
+    final shown = (head - at) / .15;
+    final hidden = (tail - at) / .15;
     final grow = (shown.clamp(0.0, 1.0) * (1 - hidden.clamp(0.0, 1.0)));
 
     Widget leaf(String name, Alignment base, double delay) {
@@ -152,15 +156,15 @@ class _EcoMark extends StatelessWidget {
       );
     }
 
-    return Transform.rotate(
-      angle: turn,
-      child: Stack(
-        children: [
-          ClipPath(clipper: EcoArcClipper(tail, head), child: layer('ring')),
-          leaf('leaf_top', const Alignment(.34, -.44), 0),
-          leaf('leaf_side', const Alignment(.43, -.32), .3),
-        ],
-      ),
+    return Stack(
+      children: [
+        ClipPath(
+          clipper: EcoArcClipper(tail + offset, head + offset),
+          child: layer('ring'),
+        ),
+        leaf('leaf_top', const Alignment(.34, -.44), 0),
+        leaf('leaf_side', const Alignment(.43, -.32), .3),
+      ],
     );
   }
 }
