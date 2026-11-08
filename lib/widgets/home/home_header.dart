@@ -6,11 +6,12 @@ import '../../core/theme/app_colors.dart';
 class HomeHeader extends StatelessWidget {
   const HomeHeader({
     super.key,
-    required this.onNotificationsTap,
+    this.onNotificationsTap,
     required this.onSettingsTap,
   });
 
-  final VoidCallback onNotificationsTap;
+  /// Sem notificações nesta versão: o sino só aparece se houver ação.
+  final VoidCallback? onNotificationsTap;
   final VoidCallback onSettingsTap;
 
   @override
@@ -73,11 +74,12 @@ class HomeHeader extends StatelessWidget {
               ],
             ),
           ),
-          IconButton(
-            tooltip: 'Notificações',
-            onPressed: onNotificationsTap,
-            icon: const Icon(Icons.notifications_none_rounded),
-          ),
+          if (onNotificationsTap != null)
+            IconButton(
+              tooltip: 'Notificações',
+              onPressed: onNotificationsTap,
+              icon: const Icon(Icons.notifications_none_rounded),
+            ),
           PopupMenuButton<String>(
             tooltip: 'Mais opções',
             icon: const Icon(Icons.more_vert_rounded),

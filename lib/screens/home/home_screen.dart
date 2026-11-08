@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../widgets/home/sos_banner.dart';
+import '../../widgets/home/region_alert_carousel.dart';
 import '../../widgets/home/home_header.dart';
 import '../../widgets/home/identification_banner.dart';
 import '../../widgets/home/species_search_bar.dart';
@@ -111,9 +111,6 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           children: [
             HomeHeader(
-              onNotificationsTap: () {
-                _mostrarMensagem(context, 'Notificações em desenvolvimento');
-              },
               onSettingsTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute<void>(
@@ -172,9 +169,6 @@ class HomeScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
 
-                  SosBanner(onSosTap: () => _abrirSos(context)),
-                  const SizedBox(height: 24),
-
                   QuickAccessSection(
                     onFavoritesTap: () {
                       Navigator.of(context).push(
@@ -201,9 +195,28 @@ class HomeScreen extends StatelessWidget {
                         ),
                       );
                     },
-                    onForumTap: () {
+                  ),
+                  const SizedBox(height: 24),
+
+                  RegionAlertCarousel(
+                    fetchPublishedSpecies: fetchPublishedSpecies,
+                    onSpeciesTap: (species) {
                       Navigator.of(context).push(
-                        MaterialPageRoute<void>(builder: communityBuilder),
+                        MaterialPageRoute<void>(
+                          builder: (context) => SpeciesDetailScreen(
+                            species: species,
+                            isDemonstration: false,
+                          ),
+                        ),
+                      );
+                    },
+                    onViewAllTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (context) => const SpeciesCatalogScreen(
+                            initialFilter: SpeciesCatalogFilter.danger,
+                          ),
+                        ),
                       );
                     },
                   ),

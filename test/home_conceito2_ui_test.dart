@@ -16,16 +16,12 @@ void main() {
   });
 
   testWidgets('Cabeçalho mostra a marca e mantém as ações', (tester) async {
-    var notifications = 0;
     var settings = 0;
     await tester.pumpWidget(
       MaterialApp(
         theme: AppTheme.light,
         home: Scaffold(
-          body: HomeHeader(
-            onNotificationsTap: () => notifications++,
-            onSettingsTap: () => settings++,
-          ),
+          body: HomeHeader(onSettingsTap: () => settings++),
         ),
       ),
     );
@@ -35,11 +31,11 @@ void main() {
       (image.image as AssetImage).assetName,
       'assets/branding/ecolens_logo_loader.png',
     );
-    await tester.tap(find.byTooltip('Notificações'));
+    // Sem notificações nesta versão, o sino não aparece.
+    expect(find.byTooltip('Notificações'), findsNothing);
     await tester.tap(find.byTooltip('Mais opções'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Configurações'));
-    expect(notifications, 1);
     expect(settings, 1);
     expect(tester.takeException(), isNull);
   });
@@ -145,7 +141,7 @@ void main() {
       MaterialApp(
         theme: AppTheme.dark,
         home: Scaffold(
-          body: HomeHeader(onNotificationsTap: () {}, onSettingsTap: () {}),
+          body: HomeHeader(onSettingsTap: () {}),
         ),
       ),
     );
