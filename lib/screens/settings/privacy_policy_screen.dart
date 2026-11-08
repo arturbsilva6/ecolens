@@ -18,6 +18,8 @@ class PrivacyPolicyScreen extends StatelessWidget {
       'Dados que coletamos',
       '• Conta: e-mail, nome de exibição e senha (guardada de forma '
           'criptografada pelo serviço de autenticação).\n'
+          '• Perfil público (opcional): nome e avatar escolhidos por você, '
+          'visíveis para outros usuários nos seus avistamentos.\n'
           '• Avistamentos: município, data, nome da espécie, observações e a '
           'foto que você decidir publicar, sempre sem localização exata e sem '
           'metadados.\n'
