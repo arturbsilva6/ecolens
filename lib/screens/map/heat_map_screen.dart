@@ -295,7 +295,13 @@ class _HeatMapScreenState extends State<HeatMapScreen> {
                 borderRadius: BorderRadius.circular(16),
                 child: SizedBox(
                   height: 340,
-                  child: FlutterMap(
+                  // Rótulo para o leitor de tela; os municípios com
+                  // registros continuam acessíveis como botões no mapa.
+                  child: Semantics(
+                    label:
+                        'Mapa dos avistamentos por município. Arraste para '
+                        'mover e toque em um município para ver os registros.',
+                    child: FlutterMap(
                     key: ValueKey(_mapViewRevision),
                     options: MapOptions(
                       initialCenter: _center,
@@ -397,6 +403,7 @@ class _HeatMapScreenState extends State<HeatMapScreen> {
                         ),
                       ),
                     ],
+                  ),
                   ),
                 ),
               ),
