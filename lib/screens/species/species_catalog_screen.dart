@@ -19,7 +19,11 @@ class SpeciesCatalogScreen extends StatefulWidget {
     this.initialQuery = '',
     this.initialFilter = SpeciesCatalogFilter.all,
     this.initialKind = SpeciesKindFilter.all,
+    this.fetchPublishedSpecies,
   });
+
+  /// Fonte das espécies; nos testes, evita depender do Supabase.
+  final Future<List<SpeciesModel>> Function()? fetchPublishedSpecies;
 
   @override
   State<SpeciesCatalogScreen> createState() => _SpeciesCatalogScreenState();
@@ -47,7 +51,8 @@ class _SpeciesCatalogScreenState extends State<SpeciesCatalogScreen> {
   }
 
   Future<List<SpeciesModel>> _fetchSpecies() async {
-    return SupabaseSpeciesRepository().fetchPublishedSpecies();
+    return (widget.fetchPublishedSpecies ??
+        SupabaseSpeciesRepository().fetchPublishedSpecies)();
   }
 
   void _refresh() {
