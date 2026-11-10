@@ -127,7 +127,7 @@ Deno.serve(async (request: Request) => {
   const anonymous = user.is_anonymous === true;
 
   // A quota é persistida no PostgreSQL e consumida ANTES da chamada Gemini.
-  // Limites por dia: ver a migração 20261110020000_ai_quota_anonymous.sql.
+  // Limites por dia: ver a migração 20261110025232_ai_quota_anonymous.sql.
   // A RPC só pode ser executada com chave administrativa do servidor.
   let privilegedKey: string | undefined;
   try {
