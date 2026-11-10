@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../widgets/home/sos_banner.dart';
+import '../../widgets/home/region_alert_carousel.dart';
 import '../../widgets/home/home_header.dart';
 import '../../widgets/home/identification_banner.dart';
 import '../../widgets/home/species_search_bar.dart';
@@ -20,8 +20,10 @@ import '../species/favorites_screen.dart';
 import '../species/species_detail_screen.dart';
 import '../sos/sos_screen.dart';
 import '../../utils/species_catalog_filter.dart';
+import '../../widgets/intro/intro_status.dart';
+import '../../widgets/onboarding/onboarding_tour.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   final ThemeController themeController;
   final Future<List<SpeciesModel>> Function()? fetchPublishedSpecies;
   final VoidCallback? onProfileTap;
@@ -31,6 +33,9 @@ class HomeScreen extends StatelessWidget {
   final WidgetBuilder mapBuilder;
   final WidgetBuilder communityBuilder;
 
+  /// Mostra o tour de primeiro contato (só no app real; desligado nos testes).
+  final bool showTour;
+
   const HomeScreen({
     super.key,
     required this.themeController,
@@ -38,11 +43,101 @@ class HomeScreen extends StatelessWidget {
     this.onProfileTap,
     this.mapBuilder = _defaultMap,
     this.communityBuilder = _defaultCommunity,
+    this.showTour = false,
   });
 
   static Widget _defaultMap(BuildContext context) => const HeatMapScreen();
   static Widget _defaultCommunity(BuildContext context) =>
       const CommunityScreen();
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final _identifyKey = GlobalKey();
+  final _shortcutsKey = GlobalKey();
+  final _sosKey = GlobalKey();
+  final _navKey = GlobalKey();
+  bool _tourScheduled = false;
+
+  ThemeController get themeController => widget.themeController;
+  Future<List<SpeciesModel>> Function()? get fetchPublishedSpecies =>
+      widget.fetchPublishedSpecies;
+  VoidCallback? get onProfileTap => widget.onProfileTap;
+  WidgetBuilder get mapBuilder => widget.mapBuilder;
+  WidgetBuilder get communityBuilder => widget.communityBuilder;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Só depois da abertura animada, e só na primeira vez.
+    if (!widget.showTour || _tourScheduled || !IntroStatus.doneOf(context)) {
+      return;
+    }
+    _tourScheduled = true;
+    _maybeStartTour();
+  }
+
+  Future<void> _maybeStartTour() async {
+    if (await OnboardingTour.seen()) return;
+    // Deixa o galho do cabeçalho aparecer antes de escurecer a tela.
+    await Future<void>.delayed(const Duration(milliseconds: 1800));
+    if (!mounted || ModalRoute.of(context)?.isCurrent != true) return;
+    await _startTour();
+  }
+
+  Future<void> _startTour() {
+    // Cinco destinos de mesma largura na barra inferior.
+    Rect slots(Rect bar, int first, int count) => Rect.fromLTWH(
+      bar.left + bar.width * first / 5,
+      bar.top,
+      bar.width * count / 5,
+      bar.height,
+    );
+    return OnboardingTour.show(context, [
+      TourStep(
+        target: _identifyKey,
+        title: 'Identifique pela foto',
+        text:
+            'Tire uma foto ou escolha uma da galeria. A IA sugere a espécie '
+            'e mostra se ela está no catálogo. A sugestão não é uma '
+            'confirmação.',
+      ),
+      TourStep(
+        target: _shortcutsKey,
+        title: 'Atalhos',
+        text:
+            'Seus favoritos, o histórico de identificações, as espécies '
+            'perigosas da região e os primeiros socorros.',
+      ),
+      TourStep(
+        target: _sosKey,
+        title: 'SOS',
+        text:
+            'Em uma emergência, toque aqui para ligar para o SAMU, o Corpo de '
+            'Bombeiros ou o resgate de fauna e ver o que fazer em caso de '
+            'picada.',
+      ),
+      TourStep(
+        target: _navKey,
+        area: (bar) => slots(bar, 2, 2),
+        title: 'Mapa e Comunidade',
+        text:
+            'Veja onde as espécies foram avistadas e registre os seus '
+            'avistamentos, sempre pelo município, sem localização exata.',
+      ),
+      TourStep(
+        target: _navKey,
+        area: (bar) => slots(bar, 4, 1),
+        title: 'Perfil',
+        text:
+            'Entre para publicar na Comunidade. O catálogo, a identificação '
+            'e o SOS funcionam sem conta. Para ver este tour de novo, use '
+            'Configurações.',
+      ),
+    ]);
+  }
 
   void _mostrarMensagem(BuildContext context, String mensagem) {
     ScaffoldMessenger.of(context)
@@ -70,6 +165,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
+        key: _sosKey,
         heroTag: 'ecolens-sos-home',
         tooltip: 'Abrir SOS ambiental',
         onPressed: () => _abrirSos(context),
@@ -80,6 +176,7 @@ class HomeScreen extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       bottomNavigationBar: EcoLensBottomNavBar(
+        key: _navKey,
         selectedIndex: 0,
         onDestinationSelected: (index) {
           if (index == 0) return;
@@ -111,16 +208,17 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           children: [
             HomeHeader(
-              onNotificationsTap: () {
-                _mostrarMensagem(context, 'Notificações em desenvolvimento');
-              },
-              onSettingsTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute<void>(
+              onSettingsTap: () async {
+                final result = await Navigator.of(context).push<String>(
+                  MaterialPageRoute<String>(
                     builder: (context) =>
                         SettingsScreen(themeController: themeController),
                   ),
                 );
+                // "Ver o tour de novo" em Configurações volta para cá.
+                if (result == SettingsScreen.replayTour && mounted) {
+                  await _startTour();
+                }
               },
             ),
 
@@ -129,6 +227,7 @@ class HomeScreen extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(16, 8, 16, 100),
                 children: [
                   IdentificationBanner(
+                    key: _identifyKey,
                     onCameraTap: () {
                       _abrirIdentificacao(
                         context,
@@ -172,10 +271,8 @@ class HomeScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
 
-                  SosBanner(onSosTap: () => _abrirSos(context)),
-                  const SizedBox(height: 24),
-
                   QuickAccessSection(
+                    key: _shortcutsKey,
                     onFavoritesTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute<void>(
@@ -201,9 +298,28 @@ class HomeScreen extends StatelessWidget {
                         ),
                       );
                     },
-                    onForumTap: () {
+                  ),
+                  const SizedBox(height: 24),
+
+                  RegionAlertCarousel(
+                    fetchPublishedSpecies: fetchPublishedSpecies,
+                    onSpeciesTap: (species) {
                       Navigator.of(context).push(
-                        MaterialPageRoute<void>(builder: communityBuilder),
+                        MaterialPageRoute<void>(
+                          builder: (context) => SpeciesDetailScreen(
+                            species: species,
+                            isDemonstration: false,
+                          ),
+                        ),
+                      );
+                    },
+                    onViewAllTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (context) => const SpeciesCatalogScreen(
+                            initialFilter: SpeciesCatalogFilter.danger,
+                          ),
+                        ),
                       );
                     },
                   ),

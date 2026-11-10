@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../data/identification_history_repository.dart';
 import '../../models/identification_history_entry.dart';
 import '../species/species_catalog_screen.dart';
+import '../../widgets/eco_spinner.dart';
 
 String formatIdentificationDate(DateTime date) {
   final local = date.toLocal();
@@ -117,7 +118,7 @@ class _IdentificationHistoryScreenState
                 future: _entries,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState != ConnectionState.done) {
-                    return const Center(child: CircularProgressIndicator());
+                    return const Center(child: EcoSpinner());
                   }
                   if (snapshot.hasError) {
                     return Center(
@@ -230,7 +231,8 @@ class _IdentificationHistoryDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
-    final hasScientificName = entry.identified &&
+    final hasScientificName =
+        entry.identified &&
         entry.scientificName != null &&
         entry.scientificName!.trim().isNotEmpty;
 
@@ -260,11 +262,12 @@ class _IdentificationHistoryDetailScreen extends StatelessWidget {
             const SizedBox(height: 16),
             Card(
               color: colors.tertiaryContainer,
-              child: const Padding(
-                padding: EdgeInsets.all(16),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
                 child: Text(
                   'Sugestão experimental da IA. Este registro não '
                   'confirma a identificação da espécie.',
+                  style: TextStyle(color: colors.onTertiaryContainer),
                 ),
               ),
             ),

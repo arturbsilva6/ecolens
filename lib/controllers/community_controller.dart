@@ -2,10 +2,15 @@ import 'package:flutter/foundation.dart';
 
 import '../data/community_repository.dart';
 import '../models/sighting.dart';
+import '../data/blocked_authors_repository.dart';
 
 class CommunityController extends ChangeNotifier {
   final CommunityRepository repository;
-  CommunityController(this.repository);
+
+  /// Autores bloqueados neste aparelho; os registros deles não aparecem.
+  final BlockedAuthorsRepository? blockedAuthors;
+  CommunityController(this.repository, {this.blockedAuthors});
+  Set<String> _blocked = const {};
   List<Sighting> items = [];
   List<Municipality> municipalities = [];
   String? accountId, municipalityId, error;
@@ -39,6 +44,11 @@ class CommunityController extends ChangeNotifier {
         municipalities = await repository.municipalities();
       }
       accountId = await repository.accountId();
+      try {
+        _blocked = await blockedAuthors?.load() ?? const {};
+      } catch (_) {
+        _blocked = const {};
+      }
       final next = await repository.page(
         offset: items.length,
         municipalityId: municipalityId,
@@ -47,7 +57,12 @@ class CommunityController extends ChangeNotifier {
       );
       if (_disposed || revision != _revision) return;
       final ids = items.map((e) => e.id).toSet();
-      items = [...items, ...next.where((e) => ids.add(e.id))];
+      items = [
+        ...items,
+        ...next.where(
+          (e) => (mine || !_blocked.contains(e.ownerId)) && ids.add(e.id),
+        ),
+      ];
       hasMore = next.length == 20;
     } catch (e) {
       if (!_disposed && revision == _revision) {

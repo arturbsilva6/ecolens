@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../data/community_repository.dart';
 import '../../models/sighting.dart';
+import '../../widgets/eco_spinner.dart';
 
 const municipalPrecision =
     'Localização aproximada: referência do município, nunca o local exato do avistamento. Não armazenamos GPS.';
@@ -11,10 +12,14 @@ const municipalPrecision =
 class CommunityPhoto extends StatefulWidget {
   final CommunityRepository repository;
   final String path;
+  final double height;
+  final BoxFit fit;
   const CommunityPhoto({
     super.key,
     required this.repository,
     required this.path,
+    this.height = 200,
+    this.fit = BoxFit.contain,
   });
   @override
   State<CommunityPhoto> createState() => _CommunityPhotoState();
@@ -38,7 +43,8 @@ class _CommunityPhotoState extends State<CommunityPhoto> {
 
   @override
   Widget build(BuildContext context) => SizedBox(
-    height: 200,
+    height: widget.height,
+    width: double.infinity,
     child: FutureBuilder<Uint8List>(
       future: _future,
       builder: (context, snapshot) {
@@ -54,11 +60,11 @@ class _CommunityPhotoState extends State<CommunityPhoto> {
           );
         }
         if (!snapshot.hasData) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(child: EcoSpinner());
         }
         return Image.memory(
           snapshot.data!,
-          fit: BoxFit.contain,
+          fit: widget.fit,
           semanticLabel:
               'Foto publicada pela comunidade; identificação não verificada',
           errorBuilder: (_, _, _) =>

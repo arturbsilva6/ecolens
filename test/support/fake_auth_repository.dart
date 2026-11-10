@@ -83,6 +83,33 @@ class FakeAuthRepository implements AuthRepository {
 
   @override
   Future<void> signOut() => _call();
+  int signOutEverywhereCalls = 0;
+  int deleteAccountCalls = 0;
+  @override
+  Future<void> signOutEverywhere() {
+    signOutEverywhereCalls++;
+    return _call();
+  }
+
+  String? lastDeletePassword;
+  String correctPassword = 'senha-atual';
+  int verifyCalls = 0;
+
+  @override
+  Future<void> verifyPassword(String password) async {
+    verifyCalls++;
+    if (password != correctPassword) {
+      throw const AuthFailure('Senha atual incorreta.');
+    }
+  }
+
+  @override
+  Future<void> deleteAccount({String? password}) {
+    deleteAccountCalls++;
+    lastDeletePassword = password;
+    return _call();
+  }
+
   @override
   Future<void> dispose() async {
     disposed = true;

@@ -102,6 +102,17 @@ Future<void> reveal(
   fail('Missing widget: $finder');
 }
 
+/// Fecha o aviso central de sucesso (ex.: "Login realizado"), se aberto.
+Future<void> dismissNotice(WidgetTester tester) async {
+  final ok = find.descendant(
+    of: find.byType(AlertDialog),
+    matching: find.text('OK'),
+  );
+  if (ok.evaluate().isEmpty) return;
+  await tester.tap(ok);
+  await tester.pumpAndSettle();
+}
+
 Future<void> tap(
   WidgetTester tester,
   String label, {
@@ -631,6 +642,8 @@ void main() {
           );
           await tester.pumpAndSettle();
         }
+        expect(find.text('Login realizado'), findsOneWidget);
+        await dismissNotice(tester);
         expect(find.byType(ProfileScreen), findsNothing);
         expect(find.byType(SightingFormScreen), findsOneWidget);
         expect(repository.creations, 0);
@@ -700,6 +713,7 @@ void main() {
             const AccountEvent(AccountEventType.session, user: account),
           );
           await tester.pumpAndSettle();
+          await dismissNotice(tester);
         } else {
           if (mode == 'failure') {
             authRepository.events.add(

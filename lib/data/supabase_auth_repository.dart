@@ -8,6 +8,7 @@ import '../models/user_model.dart';
 import '../services/auth_links.dart';
 import '../services/supabase_service.dart';
 import 'auth_repository.dart';
+import '../core/app_config.dart';
 
 enum _CallbackStatus {
   inProgress,
@@ -40,8 +41,9 @@ class SupabaseAuthRepository implements AuthRepository {
     Future<SupabaseClient> Function()? clientProvider,
     AuthLinks? links,
     String Function()? redirect,
-    this.googleEnabled = const bool.fromEnvironment('AUTH_GOOGLE_ENABLED'),
-  }) : _clientProvider =
+    bool? googleEnabled,
+  }) : googleEnabled = googleEnabled ?? AppConfig.googleEnabled,
+       _clientProvider =
            clientProvider ??
            (service ?? SupabaseService.instance).requireClient,
        _links = links ?? PlatformAuthLinks(),
@@ -61,6 +63,10 @@ class SupabaseAuthRepository implements AuthRepository {
           displayName: user.userMetadata?['display_name'] is String
               ? user.userMetadata!['display_name'] as String
               : '',
+          hasPassword: switch (user.appMetadata['providers']) {
+            final List<dynamic> providers => providers.contains('email'),
+            _ => user.appMetadata['provider'] != 'google',
+          },
         );
 
   void _emit(AccountEvent event) {
@@ -338,6 +344,75 @@ class SupabaseAuthRepository implements AuthRepository {
       rethrow;
     }
   });
+
+  @override
+  Future<void> signOutEverywhere() => _call((auth) async {
+    await auth.signOut(scope: SignOutScope.global);
+  });
+
+  @override
+  Future<void> verifyPassword(String password) async {
+    final client = await _clientProvider();
+    final email = client.auth.currentUser?.email;
+    if (email == null || email.isEmpty) {
+      throw const AuthFailure('Entre na sua conta para continuar.');
+    }
+    try {
+      await client.auth.signInWithPassword(email: email, password: password);
+    } on AuthException catch (error) {
+      if (error.statusCode == '400') {
+        throw const AuthFailure('Senha atual incorreta.');
+      }
+      throw AuthFailure(authErrorMessage(error));
+    } catch (error) {
+      throw AuthFailure(authErrorMessage(error));
+    }
+  }
+
+  @override
+  Future<void> deleteAccount({String? password}) async {
+    try {
+      await connect();
+      final client = _client!;
+      if (client.auth.currentSession == null ||
+          client.auth.currentUser?.isAnonymous == true) {
+        throw const AuthFailure('Entre na sua conta para excluí-la.');
+      }
+      // A função confere a sessão, apaga fotos e avistamentos e, por último,
+      // a conta. A confirmação evita exclusão por chamada acidental.
+      await client.functions.invoke(
+        'delete-account',
+        body: {'confirm': 'EXCLUIR', 'password': ?password},
+      );
+    } on AuthFailure {
+      rethrow;
+    } on FunctionException catch (error) {
+      final details = error.details;
+      final code = details is Map ? details['code'] : null;
+      switch (code) {
+        case 'wrong_password':
+          throw const AuthFailure('Senha incorreta. A conta não foi excluída.');
+        case 'password_required':
+          throw const AuthFailure('Informe sua senha para excluir a conta.');
+        case 'reauthentication_required':
+          throw const AuthFailure(
+            'Por segurança, saia e entre de novo com o Google e, em seguida, '
+            'exclua a conta. Nada foi apagado.',
+          );
+      }
+      throw const AuthFailure(
+        'Não foi possível excluir a conta agora. Verifique a conexão e tente novamente.',
+      );
+    } catch (error) {
+      throw AuthFailure(authErrorMessage(error));
+    }
+    // A sessão já não vale no servidor; remove a cópia local.
+    try {
+      await _client!.auth.signOut(scope: SignOutScope.local);
+    } catch (_) {
+      // A conta foi excluída; falhas ao limpar a sessão local não a recriam.
+    }
+  }
 
   @override
   Future<void> dispose() async {

@@ -257,10 +257,11 @@ class IdentificationResultScreen extends StatelessWidget {
                           Expanded(
                             child: Text(
                               'Não use este resultado para decidir se um '
-                              'animal é seguro, avaliar toxicidade ou '
-                              'orientar primeiros socorros. Não se aproxime '
-                              'nem manipule animais desconhecidos. '
-                              'Consulte especialistas.',
+                              'animal ou uma planta é seguro, avaliar '
+                              'toxicidade ou orientar primeiros socorros. '
+                              'Não se aproxime de animais desconhecidos e '
+                              'não toque, cheire nem prove plantas que não '
+                              'conhece. Consulte especialistas.',
                               style: TextStyle(color: colors.onErrorContainer),
                             ),
                           ),

@@ -31,10 +31,10 @@ jobs:
 
     steps:
       - name: Checkout do repositório
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
 
       - name: Instalar Flutter
-        uses: subosito/flutter-action@v2
+        uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
         with:
           channel: stable
           flutter-version: '3.47.7'
@@ -53,6 +53,32 @@ jobs:
         if: ${{ !cancelled() }}
         run: flutter test
 
+  android-build:
+    name: Android — compilar APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+
+      - name: Instalar Flutter
+        uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
+        with:
+          channel: stable
+          flutter-version: '3.47.7'
+          cache: true
+
+      - name: Usar Java 17
+        run: echo "JAVA_HOME=${JAVA_HOME_17_X64}" >> "$GITHUB_ENV"
+
+      # Pega erros de Gradle, Kotlin e Manifest que os testes do Flutter não
+      # veem. Sem key.properties, o APK sai com a chave de debug (só para CI).
+      - name: Compilar APK de release
+        run: |
+          flutter pub get
+          flutter build apk --release
+
   dart-format:
     name: Dart — formatação dos arquivos do PR
     runs-on: ubuntu-latest
@@ -60,13 +86,13 @@ jobs:
 
     steps:
       - name: Checkout do repositório
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
 
       - name: Instalar Dart
-        uses: dart-lang/setup-dart@v1
+        uses: dart-lang/setup-dart@6afc89df92d6eb3834022f73cd65adc8cdfcb92d # v1.8.1
         with:
           sdk: '3.13.5'
 

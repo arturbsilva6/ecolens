@@ -11,11 +11,12 @@ nome científico, quando o slug antigo for diferente) e insere as novas.
 Nunca altera image_url, porque as fotos têm licença verificada à parte.
 """
 import json
+import sys
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
-ENTRADA = RAIZ / 'supabase' / 'data' / 'curated_species.json'
-SAIDA = RAIZ / 'supabase' / 'migrations' / '20261107054000_curated_species_catalog.sql'
+ENTRADA = Path(sys.argv[1]) if len(sys.argv) > 1 else RAIZ / 'supabase' / 'data' / 'curated_species.json'
+SAIDA = Path(sys.argv[2]) if len(sys.argv) > 2 else RAIZ / 'supabase' / 'migrations' / '20261107054000_curated_species_catalog.sql'
 
 COLUNAS = [
     'slug', 'common_name', 'scientific_name', 'status', 'is_invasive',
@@ -44,7 +45,7 @@ def main():
     )
     sql = f"""-- EcoLens: catálogo curado de fauna e flora da região de São Roque.
 -- GERADO por tool/build_species_migration.py a partir de
--- supabase/data/curated_species.json. Não edite à mão: edite o JSON
+-- supabase/data/{ENTRADA.name}. Não edite à mão: edite o JSON
 -- e gere de novo.
 -- Requer a migração 20261107053746_species_risk_categories.sql.
 --
@@ -71,7 +72,7 @@ on conflict (slug) do update set
   is_published = true;
 """
     SAIDA.write_text(sql, encoding='utf-8')
-    print(f'{len(fichas)} fichas -> {SAIDA.relative_to(RAIZ)} ({len(sql)} bytes)')
+    print(f'{len(fichas)} fichas -> {SAIDA} ({len(sql)} bytes)')
 
 
 if __name__ == '__main__':

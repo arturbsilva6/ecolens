@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ecolens/widgets/eco_spinner.dart';
 import 'package:ecolens/data/favorites_repository.dart';
 import 'package:ecolens/data/identification_history_repository.dart';
 import 'package:ecolens/controllers/theme_controller.dart';
@@ -15,7 +16,6 @@ import 'package:ecolens/screens/species/species_detail_screen.dart';
 import 'package:ecolens/widgets/home/quick_access_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ecolens/screens/community/community_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shared_preferences_platform_interface/in_memory_shared_preferences_async.dart';
 import 'package:shared_preferences_platform_interface/shared_preferences_async_platform_interface.dart';
@@ -361,9 +361,7 @@ void main() {
     },
   );
 
-  testWidgets('Home abre Favoritos e mantém os quatro destinos anteriores', (
-    tester,
-  ) async {
+  testWidgets('Home abre os quatro atalhos compactos', (tester) async {
     final themeController = ThemeController();
     addTearDown(themeController.dispose);
     await tester.pumpWidget(
@@ -386,12 +384,7 @@ void main() {
       await Scrollable.ensureVisible(tester.element(card), alignment: 0.2);
       await tester.pumpAndSettle();
       await tester.tap(card);
-      if (title == 'Fórum Local') {
-        await tester.pump();
-        await tester.pump(const Duration(milliseconds: 300));
-      } else {
-        await tester.pumpAndSettle();
-      }
+      await tester.pumpAndSettle();
     }
 
     await tapShortcut('Favoritos');
@@ -399,7 +392,7 @@ void main() {
     expect(find.textContaining('Nenhum favorito ainda'), findsOneWidget);
     await tester.pageBack();
     await tester.pumpAndSettle();
-    await tapShortcut('Animais Peçonhentos');
+    await tapShortcut('Perigosas');
     expect(find.byType(SpeciesCatalogScreen), findsOneWidget);
     expect(
       tester
@@ -409,17 +402,13 @@ void main() {
     );
     await tester.pageBack();
     await tester.pumpAndSettle();
-    await tapShortcut('Primeiros Socorros');
+    await tapShortcut('Primeiros socorros');
     expect(find.byType(SosScreen), findsOneWidget);
     expect(find.text('SAMU · 192'), findsOneWidget);
     await tester.pageBack();
     await tester.pumpAndSettle();
-    await tapShortcut('Meus Registros');
+    await tapShortcut('Histórico');
     expect(find.byType(IdentificationHistoryScreen), findsOneWidget);
-    await tester.pageBack();
-    await tester.pumpAndSettle();
-    await tapShortcut('Fórum Local');
-    expect(find.byType(CommunityScreen), findsOneWidget);
     await tester.pageBack();
     await tester.pumpAndSettle();
     expect(find.byType(HomeScreen), findsOneWidget);
@@ -586,14 +575,14 @@ void main() {
       ),
     );
     await tester.pump();
-    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    expect(find.byType(EcoSpinner), findsOneWidget);
     await tester.pumpWidget(const SizedBox());
     pending.complete([species]);
     await tester.pump();
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('Acesso rápido preserva os quatro atalhos e adiciona favoritos', (
+  testWidgets('Acesso rápido tem quatro atalhos, incluindo favoritos', (
     tester,
   ) async {
     var tapped = false;
@@ -605,7 +594,6 @@ void main() {
               onVenomousTap: () {},
               onFirstAidTap: () {},
               onHistoryTap: () {},
-              onForumTap: () {},
               onFavoritesTap: () {
                 tapped = true;
               },
@@ -614,7 +602,7 @@ void main() {
         ),
       ),
     );
-    expect(find.byType(QuickAccessCard), findsNWidgets(5));
+    expect(find.byType(QuickAccessCard), findsNWidgets(4));
     await tester.scrollUntilVisible(find.text('Favoritos'), 100);
     await tester.tap(find.text('Favoritos'));
     expect(tapped, isTrue);

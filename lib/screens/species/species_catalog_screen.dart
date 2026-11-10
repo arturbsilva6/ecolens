@@ -6,17 +6,24 @@ import '../../utils/species_catalog_filter.dart';
 import '../species/species_detail_screen.dart';
 import '../../widgets/species_photo.dart';
 import '../../models/species_status_style.dart';
+import '../../widgets/eco_spinner.dart';
 
 /// Catálogo público: apenas espécies publicadas no Supabase.
 class SpeciesCatalogScreen extends StatefulWidget {
   final String initialQuery;
   final SpeciesCatalogFilter initialFilter;
+  final SpeciesKindFilter initialKind;
 
   const SpeciesCatalogScreen({
     super.key,
     this.initialQuery = '',
     this.initialFilter = SpeciesCatalogFilter.all,
+    this.initialKind = SpeciesKindFilter.all,
+    this.fetchPublishedSpecies,
   });
+
+  /// Fonte das espécies; nos testes, evita depender do Supabase.
+  final Future<List<SpeciesModel>> Function()? fetchPublishedSpecies;
 
   @override
   State<SpeciesCatalogScreen> createState() => _SpeciesCatalogScreenState();
@@ -26,12 +33,14 @@ class _SpeciesCatalogScreenState extends State<SpeciesCatalogScreen> {
   late final TextEditingController _searchController;
   late Future<List<SpeciesModel>> _speciesFuture;
   late SpeciesCatalogFilter _selectedFilter;
+  late SpeciesKindFilter _kind;
 
   @override
   void initState() {
     super.initState();
     _searchController = TextEditingController(text: widget.initialQuery);
     _selectedFilter = widget.initialFilter;
+    _kind = widget.initialKind;
     _speciesFuture = _fetchSpecies();
   }
 
@@ -42,7 +51,8 @@ class _SpeciesCatalogScreenState extends State<SpeciesCatalogScreen> {
   }
 
   Future<List<SpeciesModel>> _fetchSpecies() async {
-    return SupabaseSpeciesRepository().fetchPublishedSpecies();
+    return (widget.fetchPublishedSpecies ??
+        SupabaseSpeciesRepository().fetchPublishedSpecies)();
   }
 
   void _refresh() {
@@ -94,6 +104,29 @@ class _SpeciesCatalogScreenState extends State<SpeciesCatalogScreen> {
               ),
             ),
             SizedBox(
+              height: 48,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                itemCount: SpeciesKindFilter.values.length,
+                separatorBuilder: (context, index) => const SizedBox(width: 8),
+                itemBuilder: (context, index) {
+                  final kind = SpeciesKindFilter.values[index];
+                  return ChoiceChip(
+                    avatar: Icon(switch (kind) {
+                      SpeciesKindFilter.all => Icons.apps,
+                      SpeciesKindFilter.animals => Icons.pets,
+                      SpeciesKindFilter.plants => Icons.local_florist,
+                    }, size: 18),
+                    label: Text(kind.label),
+                    selected: _kind == kind,
+                    showCheckmark: false,
+                    onSelected: (_) => setState(() => _kind = kind),
+                  );
+                },
+              ),
+            ),
+            SizedBox(
               height: 52,
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
@@ -127,7 +160,7 @@ class _SpeciesCatalogScreenState extends State<SpeciesCatalogScreen> {
                 future: _speciesFuture,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState != ConnectionState.done) {
-                    return const Center(child: CircularProgressIndicator());
+                    return const Center(child: EcoSpinner());
                   }
 
                   if (snapshot.hasError) {
@@ -162,6 +195,7 @@ class _SpeciesCatalogScreenState extends State<SpeciesCatalogScreen> {
                     species,
                     query: _searchController.text,
                     filter: _selectedFilter,
+                    kind: _kind,
                   );
 
                   if (matchingSpecies.isEmpty) {

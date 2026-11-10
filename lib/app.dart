@@ -15,6 +15,8 @@ import 'models/species_model.dart';
 import 'core/theme/app_theme.dart';
 import 'screens/home/home_screen.dart';
 import 'services/supabase_service.dart';
+import 'widgets/intro/app_intro.dart';
+import 'widgets/intro/intro_status.dart';
 
 class EcoLensApp extends StatefulWidget {
   final SupabaseService? supabaseService;
@@ -23,6 +25,9 @@ class EcoLensApp extends StatefulWidget {
   final ShareIdentificationDraftStore? shareDraftStore;
   final CommunityRepository? communityRepository;
 
+  /// Mostra a abertura animada sobre a Home (desligada nos testes).
+  final bool showIntro;
+
   const EcoLensApp({
     super.key,
     this.supabaseService,
@@ -30,6 +35,7 @@ class EcoLensApp extends StatefulWidget {
     this.authController,
     this.shareDraftStore,
     this.communityRepository,
+    this.showIntro = false,
   });
 
   @override
@@ -39,6 +45,8 @@ class EcoLensApp extends StatefulWidget {
 class _EcoLensAppState extends State<EcoLensApp> {
   late final ThemeController _themeController;
   late final AuthController _authController;
+  late bool _showIntro = widget.showIntro;
+  late final _introDone = ValueNotifier<bool>(!widget.showIntro);
   final _navigatorKey = GlobalKey<NavigatorState>();
   int _callbackRevision = 0;
   Future<void>? _profileNavigation;
@@ -80,6 +88,7 @@ class _EcoLensAppState extends State<EcoLensApp> {
     _authController.removeListener(_onAuthChanged);
     if (widget.authController == null) _authController.dispose();
     _themeController.dispose();
+    _introDone.dispose();
     super.dispose();
   }
 
@@ -174,8 +183,45 @@ class _EcoLensAppState extends State<EcoLensApp> {
       builder: (context, child) {
         return MaterialApp(
           navigatorKey: _navigatorKey,
-          builder: (context, child) =>
-              AccountNavigationScope(openAccount: _openProfile, child: child!),
+          builder: (context, child) {
+            final scale = _themeController.textScale;
+            // A Home já carrega por baixo enquanto a abertura toca.
+            final content = IntroStatus(
+              done: _introDone,
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  ExcludeSemantics(
+                    excluding: _showIntro,
+                    child: AccountNavigationScope(
+                      openAccount: _openProfile,
+                      child: child!,
+                    ),
+                  ),
+                  if (_showIntro)
+                    Positioned.fill(
+                      child: AppIntro(
+                        onFinished: () {
+                          setState(() => _showIntro = false);
+                          _introDone.value = true;
+                        },
+                      ),
+                    ),
+                ],
+              ),
+            );
+            if (scale == null) return content;
+            // Multiplica o ajuste do Android pela escolha feita no app.
+            final media = MediaQuery.of(context);
+            return MediaQuery(
+              data: media.copyWith(
+                textScaler: TextScaler.linear(
+                  media.textScaler.scale(1) * scale,
+                ),
+              ),
+              child: content,
+            );
+          },
           // O callback é processado por AuthRepository, não como rota nomeada.
           initialRoute: '/',
           title: 'EcoLens',
@@ -192,6 +238,7 @@ class _EcoLensAppState extends State<EcoLensApp> {
             themeController: _themeController,
             fetchPublishedSpecies: widget.fetchPublishedSpecies,
             onProfileTap: _openProfile,
+            showTour: widget.showIntro,
           ),
         );
       },

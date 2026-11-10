@@ -10,5 +10,5 @@ void main() {
   // Prepara o catálogo salvo no aparelho sem atrasar a primeira tela.
   unawaited(OfflineCatalogStore.instance.init());
   // A Home e o SOS não dependem da inicialização dos serviços online.
-  runApp(const EcoLensApp());
+  runApp(const EcoLensApp(showIntro: true));
 }

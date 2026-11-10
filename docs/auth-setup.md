@@ -39,13 +39,13 @@ O usuário validou o login Google no emulador Android. Conferir os passos abaixo
 3. Em **Authorized redirect URIs**, cadastrar o callback HTTPS mostrado pelo provedor Google no Dashboard do Supabase (termina em `/auth/v1/callback`). Essa URI do Google é diferente do retorno final `br.com.ecolens://auth/callback` para o aplicativo.
 4. Se o console pedir origens web autorizadas, cadastrar as origens reais utilizadas, sem caminho. Os redirects precisam corresponder exatamente à configuração do provedor. Usar os escopos básicos de identidade, sem adicionar permissões de Drive/Gmail.
 5. Habilitar o provedor Google no Supabase e preencher Client ID e Client Secret **somente no Dashboard/servidor**. Nunca colocar Client Secret Google nem chave secret/service_role no Flutter, em dart-defines, em exemplos ou no repositório.
-6. Depois de confirmar configuração e URLs, compilar com `--dart-define=AUTH_GOOGLE_ENABLED=true`. Por padrão a flag é falsa, e a UI informa que Google ainda não está habilitado; abrir o navegador não é considerado login bem-sucedido.
+6. Depois de confirmar configuração e URLs, o login com Google já vem ligado em `lib/core/app_config.dart` (para desligar, `--dart-define=AUTH_GOOGLE_ENABLED=false`). Antes ele vinha desligado, e a UI informa que Google ainda não está habilitado; abrir o navegador não é considerado login bem-sucedido.
 
 ## Parâmetros públicos e retorno web
 
 O app continua usando os parâmetros públicos existentes `SUPABASE_URL` e `SUPABASE_PUBLISHABLE_KEY`. Não são exigidas novas credenciais no código. Use apenas a chave publicável do cliente; não substitua por credenciais administrativas.
 
-- `AUTH_GOOGLE_ENABLED`: booleano público, padrão `false`; é apenas um indicador de configuração, não uma autorização.
+- `AUTH_GOOGLE_ENABLED`: booleano público, padrão `true` (ver `lib/core/app_config.dart`); é apenas um indicador de configuração, não uma autorização.
 - `AUTH_WEB_REDIRECT_URL`: URL pública e absoluta de retorno à aplicação web, sem query/fragment. Se omitida, usa origem e caminho atuais, removendo query/fragment. Precisa estar na allowlist Supabase. Usar a URL que serve o app, normalmente a raiz, evitando rota web inexistente. Hospedagem deve entregar o Flutter nessa URL.
 - Para Android, o retorno é a constante `br.com.ecolens://auth/callback`. Não há Client Secret no aplicativo. O manifest não configura callbacks de iOS/desktop; esses retornos estão fora desta entrega e a UI informa a limitação ao iniciar fluxos com redirect nessas plataformas.
 

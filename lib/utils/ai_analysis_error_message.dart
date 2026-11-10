@@ -8,6 +8,13 @@ String aiAnalysisErrorMessage(Object error) {
   if (error is FunctionException) {
     switch (error.status) {
       case 429:
+        final details = error.details;
+        final serverText = details is Map ? details['error'] : null;
+        // Visitantes têm cota menor; entrar na conta libera mais análises.
+        if (serverText is String && serverText.contains('visitantes')) {
+          return 'Limite diário de análises para visitantes atingido. '
+              'Entre na sua conta para analisar mais fotos.';
+        }
         return 'Limite diário de análises atingido. '
             'Tente novamente no próximo dia.';
       case 504:

@@ -6,6 +6,7 @@ import '../../data/favorites_repository.dart';
 import '../../widgets/species_favorite_button.dart';
 import '../../widgets/species_photo.dart';
 import '../../models/species_status_style.dart';
+import '../../widgets/eco_spinner.dart';
 
 class SpeciesDetailScreen extends StatelessWidget {
   final SpeciesModel species;
@@ -157,7 +158,8 @@ class SpeciesDetailScreen extends StatelessWidget {
         loadingBuilder: (context, child, progress) {
           if (progress == null) return child;
           return Center(
-            child: CircularProgressIndicator(
+            child: EcoSpinner(
+              semanticsLabel: 'Carregando foto',
               value: progress.expectedTotalBytes == null
                   ? null
                   : progress.cumulativeBytesLoaded /
@@ -255,16 +257,20 @@ class SpeciesDetailScreen extends StatelessWidget {
             if (isDemonstration)
               Card(
                 color: colors.tertiaryContainer,
-                child: const Padding(
-                  padding: EdgeInsets.all(16),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
                   child: Row(
                     children: [
-                      Icon(Icons.science_outlined),
-                      SizedBox(width: 12),
+                      Icon(
+                        Icons.science_outlined,
+                        color: colors.onTertiaryContainer,
+                      ),
+                      const SizedBox(width: 12),
                       Expanded(
                         child: Text(
                           'DEMONSTRAÇÃO: este resultado é ilustrativo. '
                           'Nenhuma fotografia foi analisada por IA.',
+                          style: TextStyle(color: colors.onTertiaryContainer),
                         ),
                       ),
                     ],

@@ -4,6 +4,8 @@ import '../../data/supabase_species_repository.dart';
 import '../../models/species_model.dart';
 import '../species_photo.dart';
 import '../../models/species_status_style.dart';
+import '../eco_spinner.dart';
+import '../../core/app_config.dart';
 
 class RecentSpeciesSection extends StatefulWidget {
   final Future<List<SpeciesModel>> Function()? fetchPublishedSpecies;
@@ -51,10 +53,13 @@ class _RecentSpeciesSectionState extends State<RecentSpeciesSection> {
           alignment: WrapAlignment.spaceBetween,
           crossAxisAlignment: WrapCrossAlignment.center,
           children: [
-            Text(
-              'Explore as espécies',
-              style: Theme.of(context).textTheme.titleLarge
-                  ?.copyWith(fontWeight: FontWeight.bold),
+            Semantics(
+              header: true,
+              child: Text(
+                'Explore as espécies',
+                style: Theme.of(context).textTheme.titleLarge
+                    ?.copyWith(fontWeight: FontWeight.bold),
+              ),
             ),
             TextButton(
               onPressed: widget.onViewAllTap,
@@ -69,7 +74,7 @@ class _RecentSpeciesSectionState extends State<RecentSpeciesSection> {
           builder: (context, snapshot) {
             if (snapshot.connectionState != ConnectionState.done) {
               return const Center(
-                child: CircularProgressIndicator(
+                child: EcoSpinner(
                   semanticsLabel: 'Carregando espécies do catálogo',
                 ),
               );
@@ -77,10 +82,8 @@ class _RecentSpeciesSectionState extends State<RecentSpeciesSection> {
             if (snapshot.hasError) {
               // As chaves publicáveis devem ser fornecidas no início do app.
               // Não registrar exceções nem exibir URLs ou valores de chaves.
-              const supabaseUrl = String.fromEnvironment('SUPABASE_URL');
-              const publishableKey = String.fromEnvironment(
-                'SUPABASE_PUBLISHABLE_KEY',
-              );
+              final supabaseUrl = AppConfig.supabaseUrl;
+              final publishableKey = AppConfig.supabasePublishableKey;
               final missingConfig =
                   widget.fetchPublishedSpecies == null &&
                   (supabaseUrl.isEmpty || publishableKey.isEmpty);
@@ -191,6 +194,8 @@ class _SpeciesCard extends StatelessWidget {
                     : Image.asset(
                         species.imagePath!,
                         fit: BoxFit.cover,
+                        semanticLabel:
+                            'Fotografia ilustrativa de ${species.commonName}',
                         errorBuilder: (context, error, stackTrace) {
                           return _placeholder(context);
                         },

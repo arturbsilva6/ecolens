@@ -11,7 +11,10 @@ import '../../models/species_model.dart';
 import '../../utils/ai_species_matcher.dart';
 import '../../services/ai_service.dart';
 import '../../utils/ai_analysis_error_message.dart';
+import '../../widgets/camera_notice.dart';
 import 'identification_result_screen.dart';
+import '../../widgets/eco_spinner.dart';
+import '../../core/app_config.dart';
 
 enum IdentificationSource { camera, gallery }
 
@@ -26,11 +29,7 @@ class IdentificationScreen extends StatefulWidget {
 }
 
 class _IdentificationScreenState extends State<IdentificationScreen> {
-  // Mantido desligado até configurar Auth, segredo Gemini e limites de uso.
-  static const bool _aiEnabled = bool.fromEnvironment(
-    'ECOLENS_AI_ENABLED',
-    defaultValue: false,
-  );
+  static bool get _aiEnabled => AppConfig.aiEnabled;
 
   late final SpeciesController _controller;
   late final bool _ownsController;
@@ -125,11 +124,16 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
       if (!mounted) return;
 
       if (widget.initialSource == IdentificationSource.camera) {
-        _controller.takePhoto();
+        _openCamera();
       } else if (widget.initialSource == IdentificationSource.gallery) {
         _controller.pickFromGallery();
       }
     });
+  }
+
+  Future<void> _openCamera() async {
+    if (!await const CameraNotice().confirm(context) || !mounted) return;
+    await _controller.takePhoto();
   }
 
   @override
@@ -203,7 +207,12 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
                 _IdentificationPreview(imageBytes: imageBytes),
                 const SizedBox(height: 18),
                 if (isLoading) ...[
-                  const LinearProgressIndicator(),
+                  const Center(
+                    child: EcoSpinner(
+                      size: 48,
+                      semanticsLabel: 'Analisando a foto',
+                    ),
+                  ),
                   const SizedBox(height: 16),
                 ],
                 if (_controller.errorMessage != null) ...[
@@ -214,7 +223,7 @@ class _IdentificationScreenState extends State<IdentificationScreen> {
                   const SizedBox(height: 16),
                 ],
                 FilledButton.icon(
-                  onPressed: isLoading ? null : _controller.takePhoto,
+                  onPressed: isLoading ? null : _openCamera,
                   icon: const Icon(Icons.camera_alt_outlined),
                   label: const Text('Abrir câmera'),
                   style: FilledButton.styleFrom(

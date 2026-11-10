@@ -92,10 +92,14 @@ void main() {
     expect(find.text('2 fichas salvas'), findsOneWidget);
     expect(find.text('1 de 1 fotos no aparelho'), findsOneWidget);
     expect(find.text('Espaço usado: 2 KB'), findsOneWidget);
+    expect(find.text('Download concluído'), findsOneWidget);
     expect(
       find.text('Pacote offline pronto: 2 fichas salvas.'),
       findsOneWidget,
     );
+    await tester.tap(find.text('OK'));
+    await act(tester);
+    expect(find.text('Download concluído'), findsNothing);
     expect(find.text('Remover fotos baixadas'), findsOneWidget);
     expect(find.text('Atualizar pacote offline'), findsOneWidget);
   });

@@ -28,6 +28,12 @@ class Sighting {
   final DateTime observedOn;
   final IdentificationOrigin origin;
   final String status;
+
+  /// Quando o autor alterou o registro depois de publicado.
+  final DateTime? editedAt;
+
+  /// Quando o registro foi ocultado por denúncias (só o autor ainda o vê).
+  final DateTime? hiddenAt;
   const Sighting({
     required this.id,
     required this.ownerId,
@@ -38,7 +44,11 @@ class Sighting {
     this.notes = '',
     this.origin = IdentificationOrigin.unknown,
     this.status = 'published',
+    this.editedAt,
+    this.hiddenAt,
   });
+  bool get edited => editedAt != null;
+  bool get hidden => hiddenAt != null;
   String get speciesLabel => species ?? 'Espécie não identificada';
   String get identificationLabel => switch (origin) {
     IdentificationOrigin.unknown => 'Espécie não identificada',
@@ -58,7 +68,29 @@ class Sighting {
       row['identification_origin'] as String,
     ),
     status: row['status'] as String,
+    editedAt: DateTime.tryParse(row['edited_at'] as String? ?? ''),
+    hiddenAt: DateTime.tryParse(row['hidden_at'] as String? ?? ''),
   );
+}
+
+/// Motivos de denúncia aceitos pelo servidor.
+enum ReportReason {
+  offensive('Conteúdo ofensivo ou abusivo'),
+  spam('Spam ou propaganda'),
+  wrongInfo('Informação falsa ou perigosa'),
+  inappropriatePhoto('Foto imprópria'),
+  other('Outro motivo');
+
+  const ReportReason(this.label);
+  final String label;
+
+  String get code => switch (this) {
+    offensive => 'offensive',
+    spam => 'spam',
+    wrongInfo => 'wrong_info',
+    inappropriatePhoto => 'inappropriate_photo',
+    other => 'other',
+  };
 }
 
 class SightingDraft {
