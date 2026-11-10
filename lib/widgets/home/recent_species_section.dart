@@ -52,11 +52,14 @@ class _RecentSpeciesSectionState extends State<RecentSpeciesSection> {
           alignment: WrapAlignment.spaceBetween,
           crossAxisAlignment: WrapCrossAlignment.center,
           children: [
-            Semantics(header: true, child: Text(
-              'Explore as espécies',
-              style: Theme.of(context).textTheme.titleLarge
-                  ?.copyWith(fontWeight: FontWeight.bold),
-            )),
+            Semantics(
+              header: true,
+              child: Text(
+                'Explore as espécies',
+                style: Theme.of(context).textTheme.titleLarge
+                    ?.copyWith(fontWeight: FontWeight.bold),
+              ),
+            ),
             TextButton(
               onPressed: widget.onViewAllTap,
               child: const Text('Ver todas'),

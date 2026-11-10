@@ -22,10 +22,7 @@ class SosScreen extends StatelessWidget {
 
   Future<void> _openUri(BuildContext context, Uri uri) async {
     try {
-      final opened = await launchUrl(
-        uri,
-        mode: LaunchMode.externalApplication,
-      );
+      final opened = await launchUrl(uri, mode: LaunchMode.externalApplication);
       if (!opened && context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -66,9 +63,8 @@ class SosScreen extends StatelessWidget {
                 Expanded(
                   child: Text(
                     title,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: Theme.of(context).textTheme.titleMedium
+                        ?.copyWith(fontWeight: FontWeight.bold),
                   ),
                 ),
               ],
@@ -79,10 +75,8 @@ class SosScreen extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: FilledButton.icon(
-                onPressed: () => _openUri(
-                  context,
-                  Uri(scheme: 'tel', path: number),
-                ),
+                onPressed: () =>
+                    _openUri(context, Uri(scheme: 'tel', path: number)),
                 icon: const Icon(Icons.phone_outlined),
                 label: Text(
                   'Abrir discador · '
@@ -116,9 +110,8 @@ class SosScreen extends StatelessWidget {
                 Expanded(
                   child: Text(
                     title,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: Theme.of(context).textTheme.titleMedium
+                        ?.copyWith(fontWeight: FontWeight.bold),
                   ),
                 ),
               ],
@@ -130,11 +123,7 @@ class SosScreen extends StatelessWidget {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(
-                      Icons.circle,
-                      size: 6,
-                      color: colors.onSurfaceVariant,
-                    ),
+                    Icon(Icons.circle, size: 6, color: colors.onSurfaceVariant),
                     const SizedBox(width: 12),
                     Expanded(child: Text(step)),
                   ],
@@ -200,17 +189,20 @@ class SosScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            Semantics(header: true, child: Text(
-              'Emergência com pessoas',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
+            Semantics(
+              header: true,
+              child: Text(
+                'Emergência com pessoas',
+                style: Theme.of(context).textTheme.titleLarge
+                    ?.copyWith(fontWeight: FontWeight.bold),
               ),
-            )),
+            ),
             const SizedBox(height: 8),
             _callCard(
               context,
               title: 'SAMU · 192',
-              subtitle: 'Urgência médica, envenenamento e acidentes '
+              subtitle:
+                  'Urgência médica, envenenamento e acidentes '
                   'com vítimas. Atendimento gratuito, 24 horas.',
               number: samuNumber,
               icon: Icons.medical_services_outlined,
@@ -218,19 +210,22 @@ class SosScreen extends StatelessWidget {
             _callCard(
               context,
               title: 'Corpo de Bombeiros · 193',
-              subtitle: 'Situações de emergência que exigem '
+              subtitle:
+                  'Situações de emergência que exigem '
                   'atendimento e socorro imediato. '
                   'A central orienta sobre o encaminhamento.',
               number: firefightersNumber,
               icon: Icons.local_fire_department_outlined,
             ),
             const SizedBox(height: 16),
-            Semantics(header: true, child: Text(
-              'Animal silvestre em risco',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
+            Semantics(
+              header: true,
+              child: Text(
+                'Animal silvestre em risco',
+                style: Theme.of(context).textTheme.titleLarge
+                    ?.copyWith(fontWeight: FontWeight.bold),
               ),
-            )),
+            ),
             const SizedBox(height: 8),
             _guidanceCard(
               context,
@@ -246,12 +241,14 @@ class SosScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 16),
-            Semantics(header: true, child: Text(
-              'Resgate de fauna · São Roque e região',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
+            Semantics(
+              header: true,
+              child: Text(
+                'Resgate de fauna · São Roque e região',
+                style: Theme.of(context).textTheme.titleLarge
+                    ?.copyWith(fontWeight: FontWeight.bold),
               ),
-            )),
+            ),
             const SizedBox(height: 8),
             const Text(
               'Contatos regionais para orientação e encaminhamento. '
@@ -262,7 +259,8 @@ class SosScreen extends StatelessWidget {
             _callCard(
               context,
               title: 'Guarda Civil Municipal · São Roque',
-              subtitle: 'Canal municipal informado pela Prefeitura '
+              subtitle:
+                  'Canal municipal informado pela Prefeitura '
                   'como disponível 24 horas. Relate a ocorrência e '
                   'peça orientação sobre resgate especializado.',
               number: saoRoqueGcmNumber,
@@ -271,7 +269,8 @@ class SosScreen extends StatelessWidget {
             _callCard(
               context,
               title: 'Divisão de Meio Ambiente · São Roque',
-              subtitle: 'Orientação municipal sobre fauna. '
+              subtitle:
+                  'Orientação municipal sobre fauna. '
                   'Atendimento de segunda a sexta, das 9h às 15h. '
                   'Não substitui socorro de emergência.',
               number: saoRoqueEnvironmentNumber,
@@ -280,7 +279,8 @@ class SosScreen extends StatelessWidget {
             _callCard(
               context,
               title: 'CETRAS-SP · triagem de animais',
-              subtitle: 'Centro estadual de triagem e reabilitação. '
+              subtitle:
+                  'Centro estadual de triagem e reabilitação. '
                   'Entre em contato antes de qualquer deslocamento '
                   'para confirmar as condições de recebimento. '
                   'Não é central de resgate 24 horas.',
@@ -288,17 +288,20 @@ class SosScreen extends StatelessWidget {
               icon: Icons.pets_outlined,
             ),
             const SizedBox(height: 16),
-            Semantics(header: true, child: Text(
-              'Denúncias e orientação ambiental',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
+            Semantics(
+              header: true,
+              child: Text(
+                'Denúncias e orientação ambiental',
+                style: Theme.of(context).textTheme.titleLarge
+                    ?.copyWith(fontWeight: FontWeight.bold),
               ),
-            )),
+            ),
             const SizedBox(height: 8),
             _callCard(
               context,
               title: 'Ibama · Linha Verde',
-              subtitle: 'Denúncias e atendimento ambiental. '
+              subtitle:
+                  'Denúncias e atendimento ambiental. '
                   'Telefone 0800 061 8080, de segunda a sexta, '
                   'das 7h às 19h. Não é serviço de resgate de emergência.',
               number: ibamaNumber,
@@ -324,14 +327,14 @@ class SosScreen extends StatelessWidget {
             const SizedBox(height: 12),
             Text(
               'Fontes oficiais',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(context).textTheme.titleMedium
+                  ?.copyWith(fontWeight: FontWeight.bold),
             ),
             _sourceLink(
               context,
               label: 'Ministério da Saúde · animais peçonhentos',
-              url: 'https://www.gov.br/saude/pt-br/assuntos/'
+              url:
+                  'https://www.gov.br/saude/pt-br/assuntos/'
                   'saude-de-a-a-z/a/animais-peconhentos',
             ),
             _sourceLink(
@@ -342,7 +345,8 @@ class SosScreen extends StatelessWidget {
             _sourceLink(
               context,
               label: 'Ibama · canais de atendimento',
-              url: 'https://www.gov.br/ibama/pt-br/'
+              url:
+                  'https://www.gov.br/ibama/pt-br/'
                   'canais_atendimento/fale-conosco',
             ),
             _sourceLink(
@@ -353,19 +357,22 @@ class SosScreen extends StatelessWidget {
             _sourceLink(
               context,
               label: 'São Roque · Divisão de Meio Ambiente',
-              url: 'https://www.saoroque.sp.gov.br/portal/'
+              url:
+                  'https://www.saoroque.sp.gov.br/portal/'
                   'secretarias/21/divisao-de-meio-ambiente',
             ),
             _sourceLink(
               context,
               label: 'CETRAS-SP · serviço estadual',
-              url: 'https://servicos.sp.gov.br/fcarta/'
+              url:
+                  'https://servicos.sp.gov.br/fcarta/'
                   '6E290343-FB48-4A8B-93B0-155E4C79637F',
             ),
             _sourceLink(
               context,
               label: 'Polícia Militar Ambiental · orientações',
-              url: 'https://policiamilitar.sp.gov.br/'
+              url:
+                  'https://policiamilitar.sp.gov.br/'
                   'unidades/ambiental/faq.html',
             ),
             const SizedBox(height: 14),

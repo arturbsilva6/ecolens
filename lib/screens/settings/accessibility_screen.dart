@@ -25,10 +25,13 @@ class AccessibilityScreen extends StatelessWidget {
           return ListView(
             padding: const EdgeInsets.all(16),
             children: [
-              Semantics(header: true, child: Text(
-                'Tamanho do texto',
-                style: Theme.of(context).textTheme.titleLarge,
-              )),
+              Semantics(
+                header: true,
+                child: Text(
+                  'Tamanho do texto',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              ),
               const SizedBox(height: 8),
               const Text(
                 'Amplia o texto do EcoLens além do tamanho definido nas '
@@ -66,10 +69,13 @@ class AccessibilityScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 24),
-              Semantics(header: true, child: Text(
-                'Leitor de tela',
-                style: Theme.of(context).textTheme.titleLarge,
-              )),
+              Semantics(
+                header: true,
+                child: Text(
+                  'Leitor de tela',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              ),
               const SizedBox(height: 8),
               const Text(
                 'O EcoLens pode ser usado com o TalkBack (Configurações do '

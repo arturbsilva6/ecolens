@@ -120,12 +120,15 @@ class _RegionAlertCarouselState extends State<RegionAlertCarousel> {
               alignment: WrapAlignment.spaceBetween,
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
-                Semantics(header: true, child: Text(
-                  'Cuidado na região',
-                  style: theme.textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
+                Semantics(
+                  header: true,
+                  child: Text(
+                    'Cuidado na região',
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                )),
+                ),
                 TextButton(
                   onPressed: widget.onViewAllTap,
                   child: const Text('Ver todas'),
