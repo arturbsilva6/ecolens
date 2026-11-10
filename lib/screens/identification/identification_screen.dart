@@ -14,6 +14,7 @@ import '../../utils/ai_analysis_error_message.dart';
 import '../../widgets/camera_notice.dart';
 import 'identification_result_screen.dart';
 import '../../widgets/eco_spinner.dart';
+import '../../core/app_config.dart';
 
 enum IdentificationSource { camera, gallery }
 
@@ -28,11 +29,7 @@ class IdentificationScreen extends StatefulWidget {
 }
 
 class _IdentificationScreenState extends State<IdentificationScreen> {
-  // Mantido desligado até configurar Auth, segredo Gemini e limites de uso.
-  static const bool _aiEnabled = bool.fromEnvironment(
-    'ECOLENS_AI_ENABLED',
-    defaultValue: false,
-  );
+  static bool get _aiEnabled => AppConfig.aiEnabled;
 
   late final SpeciesController _controller;
   late final bool _ownsController;

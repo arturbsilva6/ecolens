@@ -5,6 +5,7 @@ import '../../models/species_model.dart';
 import '../species_photo.dart';
 import '../../models/species_status_style.dart';
 import '../eco_spinner.dart';
+import '../../core/app_config.dart';
 
 class RecentSpeciesSection extends StatefulWidget {
   final Future<List<SpeciesModel>> Function()? fetchPublishedSpecies;
@@ -81,10 +82,8 @@ class _RecentSpeciesSectionState extends State<RecentSpeciesSection> {
             if (snapshot.hasError) {
               // As chaves publicáveis devem ser fornecidas no início do app.
               // Não registrar exceções nem exibir URLs ou valores de chaves.
-              const supabaseUrl = String.fromEnvironment('SUPABASE_URL');
-              const publishableKey = String.fromEnvironment(
-                'SUPABASE_PUBLISHABLE_KEY',
-              );
+              final supabaseUrl = AppConfig.supabaseUrl;
+              final publishableKey = AppConfig.supabasePublishableKey;
               final missingConfig =
                   widget.fetchPublishedSpecies == null &&
                   (supabaseUrl.isEmpty || publishableKey.isEmpty);

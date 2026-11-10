@@ -40,16 +40,15 @@ não aparece como alteração.
 
 ```powershell
 flutter clean
-flutter build apk --release `
-  --dart-define=SUPABASE_URL=https://SEU-PROJETO.supabase.co `
-  --dart-define=SUPABASE_PUBLISHABLE_KEY=sb_publishable_... `
-  --dart-define=AUTH_GOOGLE_ENABLED=true `
-  --dart-define=ECOLENS_AI_ENABLED=true
-# ou, para a Play Store: flutter build appbundle --release (mesmas flags)
+flutter build apk --release
+# ou, para a Play Store: flutter build appbundle --release
 ```
 
-Use as mesmas definições (`--dart-define`) do build de debug. Só entram
-chaves publicáveis; nunca a chave `service_role` nem segredos do Google.
+A URL do Supabase, a chave publicável e os interruptores do login com
+Google e da IA já vêm ligados em `lib/core/app_config.dart`. Para apontar
+para outro projeto, use `--dart-define` (por exemplo,
+`--dart-define=SUPABASE_URL=...`). Só entram chaves publicáveis; nunca a
+chave `service_role` nem segredos do Google.
 
 Para conferir a assinatura do APK:
 

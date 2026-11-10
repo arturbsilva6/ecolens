@@ -8,6 +8,7 @@ import '../models/user_model.dart';
 import '../services/auth_links.dart';
 import '../services/supabase_service.dart';
 import 'auth_repository.dart';
+import '../core/app_config.dart';
 
 enum _CallbackStatus {
   inProgress,
@@ -40,8 +41,9 @@ class SupabaseAuthRepository implements AuthRepository {
     Future<SupabaseClient> Function()? clientProvider,
     AuthLinks? links,
     String Function()? redirect,
-    this.googleEnabled = const bool.fromEnvironment('AUTH_GOOGLE_ENABLED'),
-  }) : _clientProvider =
+    bool? googleEnabled,
+  }) : googleEnabled = googleEnabled ?? AppConfig.googleEnabled,
+       _clientProvider =
            clientProvider ??
            (service ?? SupabaseService.instance).requireClient,
        _links = links ?? PlatformAuthLinks(),

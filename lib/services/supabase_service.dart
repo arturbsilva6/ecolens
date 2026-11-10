@@ -1,17 +1,17 @@
 import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import '../core/app_config.dart';
 
 /// Inicializa somente o SDK; não consulta o catálogo nem exige login.
 class SupabaseService {
   SupabaseService({
-    String url = const String.fromEnvironment('SUPABASE_URL'),
-    String publishableKey = const String.fromEnvironment(
-      'SUPABASE_PUBLISHABLE_KEY',
-    ),
+    String? url,
+    String? publishableKey,
     Future<SupabaseClient> Function(String url, String publishableKey)?
     initializer,
-  }) : _url = url.trim(),
-       _publishableKey = publishableKey.trim(),
+  }) : _url = (url ?? AppConfig.supabaseUrl).trim(),
+       _publishableKey = (publishableKey ?? AppConfig.supabasePublishableKey)
+           .trim(),
        _initializer = initializer ?? _initializeSdk;
 
   static final SupabaseService instance = SupabaseService();
