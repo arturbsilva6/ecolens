@@ -14,6 +14,8 @@ import '../../widgets/eco_avatar.dart';
 import 'community_widgets.dart';
 import 'sighting_form_screen.dart';
 import '../../widgets/eco_spinner.dart';
+import '../../data/blocked_authors_repository.dart';
+import '../../widgets/result_dialog.dart';
 
 class SightingDetailScreen extends StatefulWidget {
   final CommunityRepository repository;
@@ -27,6 +29,9 @@ class SightingDetailScreen extends StatefulWidget {
 
   /// Perfil público do autor (nome e avatar escolhidos por ele).
   final Future<PublicProfile?> Function(String userId)? loadAuthor;
+
+  /// Onde fica a lista de autores bloqueados neste aparelho.
+  final BlockedAuthorsRepository? blockedAuthors;
   const SightingDetailScreen({
     super.key,
     required this.repository,
@@ -36,6 +41,7 @@ class SightingDetailScreen extends StatefulWidget {
     this.loadSpecies,
     this.favoritesRepository,
     this.loadAuthor,
+    this.blockedAuthors,
   });
   @override
   State<SightingDetailScreen> createState() => _SightingDetailScreenState();
@@ -113,6 +119,96 @@ class _SightingDetailScreenState extends State<SightingDetailScreen> {
     }
   }
 
+  Future<void> _report() async {
+    if (widget.accountId == null) {
+      await showResultDialog(
+        context,
+        title: 'Entre para denunciar',
+        message:
+            'Denúncias exigem uma conta, para evitar abusos. Você ainda pode '
+            'bloquear o autor neste aparelho.',
+        success: false,
+      );
+      return;
+    }
+    final result = await showDialog<(ReportReason, String)>(
+      context: context,
+      builder: (_) => const _ReportDialog(),
+    );
+    if (result == null || !mounted) return;
+    setState(() => _busy = true);
+    try {
+      await widget.repository.report(widget.sighting, result.$1, result.$2);
+      if (!mounted) return;
+      await showResultDialog(
+        context,
+        title: 'Denúncia enviada',
+        message:
+            'Obrigado por avisar. Registros denunciados por várias pessoas '
+            'são ocultados automaticamente da Comunidade.',
+      );
+    } catch (e) {
+      if (!mounted) return;
+      await showResultDialog(
+        context,
+        title: 'Denúncia não enviada',
+        message: e is CommunityFailure
+            ? e.message
+            : 'Não foi possível enviar agora. Tente novamente.',
+        success: false,
+      );
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
+  }
+
+  Future<void> _block() async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        scrollable: true,
+        title: const Text('Bloquear este autor?'),
+        content: const Text(
+          'Os registros dele deixam de aparecer para você na Comunidade. '
+          'Vale só neste aparelho e o autor não é avisado. Dá para desfazer '
+          'em Configurações > Privacidade e dados.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancelar'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Bloquear'),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true || !mounted) return;
+    try {
+      await (widget.blockedAuthors ?? BlockedAuthorsRepository()).block(
+        widget.sighting.ownerId,
+      );
+    } catch (_) {
+      if (!mounted) return;
+      await showResultDialog(
+        context,
+        title: 'Não foi possível bloquear',
+        message: 'Tente novamente.',
+        success: false,
+      );
+      return;
+    }
+    if (!mounted) return;
+    await showResultDialog(
+      context,
+      title: 'Autor bloqueado',
+      message: 'Os registros dele não vão mais aparecer para você.',
+    );
+    if (mounted) Navigator.pop(context, true);
+  }
+
   Future<void> _delete() async {
     final confirmed = await showDialog<bool>(
       context: context,
@@ -187,12 +283,56 @@ class _SightingDetailScreenState extends State<SightingDetailScreen> {
               color: _favorite ? colors.error : null,
               onPressed: _toggleFavorite,
             ),
+          if (!mine)
+            PopupMenuButton<String>(
+              tooltip: 'Mais opções',
+              enabled: !_busy,
+              onSelected: (value) =>
+                  value == 'report' ? _report() : _block(),
+              itemBuilder: (_) => const [
+                PopupMenuItem(
+                  value: 'report',
+                  child: ListTile(
+                    leading: Icon(Icons.flag_outlined),
+                    title: Text('Denunciar registro'),
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 'block',
+                  child: ListTile(
+                    leading: Icon(Icons.block),
+                    title: Text('Bloquear autor'),
+                  ),
+                ),
+              ],
+            ),
         ],
       ),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
           children: [
+            if (s.hidden && mine) ...[
+              Card(
+                margin: EdgeInsets.zero,
+                color: colors.errorContainer,
+                child: ListTile(
+                  leading: Icon(
+                    Icons.visibility_off_outlined,
+                    color: colors.onErrorContainer,
+                  ),
+                  title: Text(
+                    'Oculto após denúncias',
+                    style: TextStyle(color: colors.onErrorContainer),
+                  ),
+                  subtitle: Text(
+                    'Só você vê este registro. Você pode editá-lo ou excluí-lo.',
+                    style: TextStyle(color: colors.onErrorContainer),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
+            ],
             if (s.status == 'published')
               ClipRRect(
                 borderRadius: BorderRadius.circular(16),
@@ -238,6 +378,13 @@ class _SightingDetailScreenState extends State<SightingDetailScreen> {
                 ),
               ),
             ),
+            if (s.edited) ...[
+              const SizedBox(height: 6),
+              Text(
+                'Editado depois de publicado',
+                style: muted?.copyWith(fontStyle: FontStyle.italic),
+              ),
+            ],
             const SizedBox(height: 16),
             Card(
               margin: EdgeInsets.zero,
@@ -433,4 +580,71 @@ class _SightingDetailScreenState extends State<SightingDetailScreen> {
       ),
     );
   }
+}
+
+/// Escolha do motivo da denúncia, com detalhes opcionais.
+class _ReportDialog extends StatefulWidget {
+  const _ReportDialog();
+
+  @override
+  State<_ReportDialog> createState() => _ReportDialogState();
+}
+
+class _ReportDialogState extends State<_ReportDialog> {
+  ReportReason? _reason;
+  final _details = TextEditingController();
+
+  @override
+  void dispose() {
+    _details.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => AlertDialog(
+    scrollable: true,
+    title: const Text('Denunciar registro'),
+    content: Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text('Qual é o problema?'),
+        RadioGroup<ReportReason>(
+          groupValue: _reason,
+          onChanged: (value) => setState(() => _reason = value),
+          child: Column(
+            children: [
+              for (final reason in ReportReason.values)
+                RadioListTile<ReportReason>(
+                  value: reason,
+                  contentPadding: EdgeInsets.zero,
+                  title: Text(reason.label),
+                ),
+            ],
+          ),
+        ),
+        TextField(
+          controller: _details,
+          maxLength: 500,
+          maxLines: 3,
+          minLines: 1,
+          decoration: const InputDecoration(
+            labelText: 'Detalhes (opcional)',
+          ),
+        ),
+      ],
+    ),
+    actions: [
+      TextButton(
+        onPressed: () => Navigator.pop(context),
+        child: const Text('Cancelar'),
+      ),
+      FilledButton(
+        onPressed: _reason == null
+            ? null
+            : () => Navigator.pop(context, (_reason!, _details.text)),
+        child: const Text('Enviar denúncia'),
+      ),
+    ],
+  );
 }

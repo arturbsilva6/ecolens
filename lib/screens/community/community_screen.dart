@@ -9,11 +9,18 @@ import 'community_widgets.dart';
 import 'sighting_detail_screen.dart';
 import 'sighting_form_screen.dart';
 import '../../widgets/eco_spinner.dart';
+import '../../data/blocked_authors_repository.dart';
 
 class CommunityScreen extends StatefulWidget {
   final CommunityRepository? repository;
   final bool initialMine;
-  const CommunityScreen({super.key, this.repository, this.initialMine = false});
+  final BlockedAuthorsRepository? blockedAuthors;
+  const CommunityScreen({
+    super.key,
+    this.repository,
+    this.initialMine = false,
+    this.blockedAuthors,
+  });
   @override
   State<CommunityScreen> createState() => _CommunityScreenState();
 }
@@ -26,6 +33,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
     super.initState();
     _controller = CommunityController(
       widget.repository ?? SupabaseCommunityRepository(),
+      blockedAuthors: widget.blockedAuthors ?? BlockedAuthorsRepository(),
     );
     _controller.mine = widget.initialMine;
     _controller.load();
@@ -307,6 +315,11 @@ class _CommunityScreenState extends State<CommunityScreen> {
         '${s.observedOn.day}/${s.observedOn.month}/${s.observedOn.year}';
     final place = _controller.municipality(s.municipalityId)?.label ?? 'SP';
     final (tag, tagColor, tagText) = switch (s.status) {
+      'published' when s.hidden => (
+        'Oculto após denúncias',
+        colors.errorContainer,
+        colors.onErrorContainer,
+      ),
       'published' => (
         s.identificationLabel,
         colors.secondaryContainer,
@@ -336,6 +349,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                 sighting: s,
                 municipalities: _controller.municipalities,
                 accountId: _controller.accountId,
+                blockedAuthors: _controller.blockedAuthors,
               ),
             ),
           );
@@ -367,7 +381,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                       ),
                     const SizedBox(height: 6),
                     Text(
-                      '$place · $date',
+                      '$place · $date${s.edited ? ' · editado' : ''}',
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: colors.onSurfaceVariant,
                       ),

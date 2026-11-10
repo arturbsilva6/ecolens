@@ -29,4 +29,8 @@ abstract class CommunityRepository {
   Future<Sighting> create(SightingDraft draft, Uint8List sanitizedPhoto);
   Future<void> update(Sighting sighting, SightingDraft draft);
   Future<void> delete(Sighting sighting);
+
+  /// Denuncia um registro de outra pessoa. Com denúncias de três pessoas
+  /// diferentes, o servidor oculta o registro.
+  Future<void> report(Sighting sighting, ReportReason reason, String details);
 }

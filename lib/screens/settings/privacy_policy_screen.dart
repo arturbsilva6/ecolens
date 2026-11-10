@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class PrivacyPolicyScreen extends StatelessWidget {
   const PrivacyPolicyScreen({super.key});
 
-  static const updatedAt = '7 de novembro de 2026';
+  static const updatedAt = '9 de novembro de 2026';
 
   static const sections = <(String, String)>[
     (
@@ -22,7 +22,12 @@ class PrivacyPolicyScreen extends StatelessWidget {
           'visíveis para outros usuários nos seus avistamentos.\n'
           '• Avistamentos: município, data, nome da espécie, observações e a '
           'foto que você decidir publicar, sempre sem localização exata e sem '
-          'metadados.\n'
+          'metadados. Cada registro publicado leva um identificador interno da '
+          'conta (não o e-mail), que permite saber quais registros são do '
+          'mesmo autor.\n'
+          '• Denúncias: quando você denuncia um registro, guardamos o motivo, '
+          'os detalhes que escrever e qual conta denunciou, para evitar '
+          'abusos. Autores bloqueados ficam só no seu aparelho.\n'
           '• Identificação por IA: a foto escolhida é enviada para análise '
           'somente depois do seu consentimento e não é armazenada.\n'
           '• No aparelho: favoritos, histórico de identificações, preferências '
@@ -47,6 +52,13 @@ class PrivacyPolicyScreen extends StatelessWidget {
       'Por quanto tempo',
       'Os dados da conta e os avistamentos ficam guardados enquanto a conta '
           'existir. Ao excluir a conta, eles são apagados do servidor.',
+    ),
+    (
+      'Moderação da Comunidade',
+      'Qualquer conta pode denunciar um registro. Registros denunciados por '
+          'três pessoas diferentes são ocultados automaticamente. Cada conta '
+          'pode publicar até 10 registros por dia, e registros alterados '
+          'depois de publicados aparecem como editados.',
     ),
     (
       'Seus direitos',

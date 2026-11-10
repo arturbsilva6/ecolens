@@ -1,19 +1,71 @@
 // EcoLens — integração de identificação experimental com Gemini.
 // Exige sessão real do Supabase Auth e GEMINI_API_KEY no servidor.
 // Não salva imagens; envia bytes à API Gemini após consentimento do usuário.
-const jsonHeaders = {
-  "content-type": "application/json; charset=utf-8",
-  "cache-control": "no-store",
-  "access-control-allow-origin": "*",
-  "access-control-allow-headers": "authorization, apikey, content-type",
-  "access-control-allow-methods": "POST, OPTIONS",
-};
+// O app Android não usa CORS. Navegadores só são aceitos se a origem estiver
+// em ALLOWED_ORIGINS (lista separada por vírgulas nos segredos da função).
+const allowedOrigins = (Deno.env.get("ALLOWED_ORIGINS") ?? "")
+  .split(",").map((o) => o.trim()).filter((o) => o.length > 0);
+let corsOrigin: string | null = null;
+
+function headers(): Record<string, string> {
+  const base: Record<string, string> = {
+    "content-type": "application/json; charset=utf-8",
+    "cache-control": "no-store",
+    "vary": "origin",
+  };
+  if (corsOrigin) {
+    base["access-control-allow-origin"] = corsOrigin;
+    base["access-control-allow-headers"] =
+      "authorization, apikey, content-type, x-client-info";
+    base["access-control-allow-methods"] = "POST, OPTIONS";
+  }
+  return base;
+}
 
 function json(data: unknown, status = 200): Response {
-  return new Response(JSON.stringify(data), {
-    status,
-    headers: jsonHeaders,
-  });
+  return new Response(JSON.stringify(data), { status, headers: headers() });
+}
+
+// Lê o corpo com teto real de bytes, mesmo sem o cabeçalho content-length.
+async function readLimited(
+  request: Request,
+  maxBytes: number,
+): Promise<string | null> {
+  const reader = request.body?.getReader();
+  if (!reader) return "";
+  const chunks: Uint8Array[] = [];
+  let total = 0;
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    total += value.byteLength;
+    if (total > maxBytes) {
+      await reader.cancel().catch(() => {});
+      return null;
+    }
+    chunks.push(value);
+  }
+  const all = new Uint8Array(total);
+  let offset = 0;
+  for (const chunk of chunks) {
+    all.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  return new TextDecoder().decode(all);
+}
+
+// Hash do IP com o dia, para limitar por rede sem guardar o endereço.
+async function networkHash(request: Request): Promise<string | null> {
+  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    request.headers.get("x-real-ip")?.trim();
+  if (!ip) return null;
+  const day = new Date().toISOString().slice(0, 10);
+  const digest = await crypto.subtle.digest(
+    "SHA-256",
+    new TextEncoder().encode(`ecolens:${day}:${ip}`),
+  );
+  return Array.from(new Uint8Array(digest))
+    .map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
 function safeText(value: unknown, maxLength: number): string | null {
@@ -23,8 +75,13 @@ function safeText(value: unknown, maxLength: number): string | null {
 }
 
 Deno.serve(async (request: Request) => {
+  const origin = request.headers.get("origin");
+  corsOrigin = origin && allowedOrigins.includes(origin) ? origin : null;
   if (request.method === "OPTIONS") {
-    return new Response(null, { status: 204, headers: jsonHeaders });
+    return new Response(null, {
+      status: corsOrigin ? 204 : 403,
+      headers: headers(),
+    });
   }
   if (request.method !== "POST") {
     return json({ error: "Método não permitido." }, 405);
@@ -63,12 +120,14 @@ Deno.serve(async (request: Request) => {
     return json({ error: "Sessão inválida ou expirada." }, 401);
   }
   const user = await userResponse.json().catch(() => null) as
-    | { id?: string }
+    | { id?: string; is_anonymous?: boolean }
     | null;
   if (!user?.id) return json({ error: "Usuário não autenticado." }, 401);
+  // Visitantes (sessão anônima) têm cota menor e separada das contas.
+  const anonymous = user.is_anonymous === true;
 
   // A quota é persistida no PostgreSQL e consumida ANTES da chamada Gemini.
-  // Máximo: 5 pedidos por usuário/dia; 20 pedidos totais/dia.
+  // Limites por dia: ver a migração 20261110020000_ai_quota_anonymous.sql.
   // A RPC só pode ser executada com chave administrativa do servidor.
   let privilegedKey: string | undefined;
   try {
@@ -89,7 +148,9 @@ Deno.serve(async (request: Request) => {
 
   let body: { imageBase64?: unknown; mimeType?: unknown };
   try {
-    body = await request.json();
+    const text = await readLimited(request, 5_700_000);
+    if (text === null) return json({ error: "Imagem muito grande." }, 413);
+    body = JSON.parse(text);
   } catch {
     return json({ error: "JSON inválido." }, 400);
   }
@@ -140,7 +201,11 @@ Deno.serve(async (request: Request) => {
             ? { "authorization": `Bearer ${key}` }
             : {}),
         },
-        body: JSON.stringify({ p_user_id: user.id }),
+        body: JSON.stringify({
+          p_user_id: user.id,
+          p_anonymous: anonymous,
+          p_ip_hash: await networkHash(request),
+        }),
         signal: AbortSignal.timeout(7000),
       },
     );
@@ -152,7 +217,11 @@ Deno.serve(async (request: Request) => {
   }
   const allowed = await quotaResponse.json().catch(() => false);
   if (allowed !== true) {
-    return json({ error: "Limite diário de análises atingido." }, 429);
+    return json({
+      error: anonymous
+        ? "Limite diário de análises para visitantes atingido. Entre na sua conta para analisar mais fotos."
+        : "Limite diário de análises atingido.",
+    }, 429);
   }
 
   const model = Deno.env.get("GEMINI_MODEL") ??

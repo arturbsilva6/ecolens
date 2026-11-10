@@ -132,6 +132,12 @@ class SupabaseCommunityRepository implements CommunityRepository {
             ['42P01', 'PGRST205', '42703'].contains(e.code)) {
           throw _safe(e);
         }
+        if (e is PostgrestException &&
+            e.message.contains('ECOLENS_DAILY_LIMIT')) {
+          throw const CommunityFailure(
+            'Você atingiu o limite de 10 publicações por dia. Tente novamente amanhã.',
+          );
+        }
         throw const CommunityPublicationUncertain();
       }
     } catch (e) {
@@ -175,6 +181,40 @@ class SupabaseCommunityRepository implements CommunityRepository {
       await client.from('community_sightings').delete().eq('id', sighting.id);
     } catch (e) {
       throw _safe(e, deleting: true);
+    }
+  }
+
+  @override
+  Future<void> report(
+    Sighting sighting,
+    ReportReason reason,
+    String details,
+  ) async {
+    try {
+      await _requireAccount();
+      await (await clientProvider()).rpc(
+        'report_sighting',
+        params: {
+          'p_sighting': sighting.id,
+          'p_reason': reason.code,
+          'p_details': details.trim(),
+        },
+      );
+    } on PostgrestException catch (e) {
+      if (e.message.contains('ECOLENS_REPORT_LIMIT')) {
+        throw const CommunityFailure(
+          'Você já enviou muitas denúncias hoje. Tente novamente amanhã.',
+        );
+      }
+      if (e.message.contains('ECOLENS_OWN_SIGHTING')) {
+        throw const CommunityFailure('Não é possível denunciar o próprio registro.');
+      }
+      if (e.message.contains('ECOLENS_LOGIN_REQUIRED')) {
+        throw const CommunityFailure('Entre na sua conta para denunciar.');
+      }
+      throw _safe(e);
+    } catch (e) {
+      throw _safe(e);
     }
   }
 

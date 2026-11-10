@@ -17,6 +17,20 @@ void main() {
     );
   });
 
+  test('Visitante no limite é convidado a entrar na conta', () {
+    expect(
+      aiAnalysisErrorMessage(
+        FunctionException(
+          status: 429,
+          details: {
+            'error': 'Limite diário de análises para visitantes atingido.',
+          },
+        ),
+      ),
+      contains('Entre na sua conta'),
+    );
+  });
+
   test('Falha temporária não expõe detalhes internos', () {
     expect(
       aiAnalysisErrorMessage(FunctionException(status: 502)),

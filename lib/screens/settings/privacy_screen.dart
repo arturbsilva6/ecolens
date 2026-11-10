@@ -6,15 +6,18 @@ import '../../widgets/auth/account_navigation_scope.dart';
 import 'offline_package_screen.dart';
 import 'privacy_policy_screen.dart';
 import '../../widgets/result_dialog.dart';
+import '../../data/blocked_authors_repository.dart';
 
 class PrivacyScreen extends StatefulWidget {
   final IdentificationHistoryRepository? historyRepository;
   final FavoritesRepository? favoritesRepository;
+  final BlockedAuthorsRepository? blockedAuthors;
 
   const PrivacyScreen({
     super.key,
     this.historyRepository,
     this.favoritesRepository,
+    this.blockedAuthors,
   });
 
   @override
@@ -29,6 +32,7 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
     required String content,
     required String done,
     required Future<void> Function() action,
+    String confirmLabel = 'Apagar',
   }) async {
     final confirmed = await showDialog<bool>(
       context: context,
@@ -42,7 +46,7 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
           ),
           FilledButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Apagar'),
+            child: Text(confirmLabel),
           ),
         ],
       ),
@@ -59,7 +63,7 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
     setState(() => _busy = false);
     await showResultDialog(
       context,
-      title: ok ? 'Pronto' : 'Não foi possível apagar',
+      title: ok ? 'Pronto' : 'Não foi possível concluir',
       message: ok ? done : 'Tente novamente.',
       success: ok,
     );
@@ -138,6 +142,24 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
               done: 'Favoritos apagados.',
               action: () =>
                   (widget.favoritesRepository ?? FavoritesRepository()).clear(),
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.block),
+            title: const Text('Desbloquear autores'),
+            subtitle: const Text(
+              'Volta a mostrar na Comunidade os autores que você bloqueou',
+            ),
+            enabled: !_busy,
+            onTap: () => _clear(
+              title: 'Desbloquear todos os autores?',
+              content:
+                  'Os registros dos autores bloqueados voltam a aparecer '
+                  'na Comunidade.',
+              done: 'Autores desbloqueados.',
+              confirmLabel: 'Desbloquear',
+              action: () =>
+                  (widget.blockedAuthors ?? BlockedAuthorsRepository()).clear(),
             ),
           ),
           ListTile(

@@ -27,6 +27,7 @@ class CommunityFake implements CommunityRepository {
   String? user;
   List<Sighting> items = [];
   int calls = 0, deletions = 0, updates = 0, creations = 0;
+  final reports = <(String, ReportReason, String)>[];
   bool fail = false, failDelete = false;
   @override
   Future<String?> accountId() async => user;
@@ -83,5 +84,15 @@ class CommunityFake implements CommunityRepository {
     if (failDelete) throw const CommunityFailure('Exclusão não confirmada');
     deletions++;
     items.removeWhere((s) => s.id == sighting.id);
+  }
+
+  @override
+  Future<void> report(
+    Sighting sighting,
+    ReportReason reason,
+    String details,
+  ) async {
+    if (fail) throw const CommunityFailure('Falha de rede');
+    reports.add((sighting.id, reason, details));
   }
 }
