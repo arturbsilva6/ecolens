@@ -302,108 +302,113 @@ class _HeatMapScreenState extends State<HeatMapScreen> {
                         'Mapa dos avistamentos por município. Arraste para '
                         'mover e toque em um município para ver os registros.',
                     child: FlutterMap(
-                    key: ValueKey(_mapViewRevision),
-                    options: MapOptions(
-                      initialCenter: _center,
-                      initialZoom: 10,
-                      minZoom: 5,
-                      maxZoom: 16,
-                    ),
-                    children: [
-                      if (widget.loadTiles)
-                        TileLayer(
-                          key: ValueKey(_tileAttempt),
-                          urlTemplate:
-                              'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                          userAgentPackageName: 'br.com.ecolens',
-                          errorTileCallback: (_, _, _) {
-                            if (!_tileError && mounted) {
-                              WidgetsBinding.instance.addPostFrameCallback((_) {
-                                if (mounted) {
-                                  setState(() {
-                                    _tileError = true;
-                                  });
-                                }
-                              });
-                            }
-                          },
-                        ),
-                      if (_concentration)
-                        CircleLayer(
-                          circles: municipalities
+                      key: ValueKey(_mapViewRevision),
+                      options: MapOptions(
+                        initialCenter: _center,
+                        initialZoom: 10,
+                        minZoom: 5,
+                        maxZoom: 16,
+                      ),
+                      children: [
+                        if (widget.loadTiles)
+                          TileLayer(
+                            key: ValueKey(_tileAttempt),
+                            urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                            userAgentPackageName: 'br.com.ecolens',
+                            errorTileCallback: (_, _, _) {
+                              if (!_tileError && mounted) {
+                                WidgetsBinding.instance.addPostFrameCallback((
+                                  _,
+                                ) {
+                                  if (mounted) {
+                                    setState(() {
+                                      _tileError = true;
+                                    });
+                                  }
+                                });
+                              }
+                            },
+                          ),
+                        if (_concentration)
+                          CircleLayer(
+                            circles: municipalities
+                                .map(
+                                  (m) => CircleMarker(
+                                    point: LatLng(m.latitude, m.longitude),
+                                    radius: counts[m.id]! >= 10
+                                        ? 44
+                                        : counts[m.id]! >= 2
+                                        ? 30
+                                        : 18,
+                                    color: colors.primary.withValues(
+                                      alpha: .25,
+                                    ),
+                                    borderColor: colors.primary,
+                                    borderStrokeWidth: 2,
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                        MarkerLayer(
+                          markers: municipalities
                               .map(
-                                (m) => CircleMarker(
+                                (m) => Marker(
                                   point: LatLng(m.latitude, m.longitude),
-                                  radius: counts[m.id]! >= 10
-                                      ? 44
-                                      : counts[m.id]! >= 2
-                                      ? 30
-                                      : 18,
-                                  color: colors.primary.withValues(alpha: .25),
-                                  borderColor: colors.primary,
-                                  borderStrokeWidth: 2,
+                                  width: 64,
+                                  height: 64,
+                                  child: Semantics(
+                                    label:
+                                        '${m.label}, ${counts[m.id]} registros carregados',
+                                    button: true,
+                                    child: IconButton(
+                                      tooltip: '${m.label}: ${counts[m.id]}',
+                                      onPressed: () => _openMunicipality(m),
+                                      icon: Badge(
+                                        label: Text('${counts[m.id]}'),
+                                        child: const Icon(Icons.location_on),
+                                      ),
+                                      color: colors.primary,
+                                    ),
+                                  ),
                                 ),
                               )
                               .toList(),
                         ),
-                      MarkerLayer(
-                        markers: municipalities
-                            .map(
-                              (m) => Marker(
-                                point: LatLng(m.latitude, m.longitude),
-                                width: 64,
-                                height: 64,
-                                child: Semantics(
-                                  label:
-                                      '${m.label}, ${counts[m.id]} registros carregados',
-                                  button: true,
-                                  child: IconButton(
-                                    tooltip: '${m.label}: ${counts[m.id]}',
-                                    onPressed: () => _openMunicipality(m),
-                                    icon: Badge(
-                                      label: Text('${counts[m.id]}'),
-                                      child: const Icon(Icons.location_on),
-                                    ),
-                                    color: colors.primary,
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          // A etiqueta é pequena, mas a área de toque tem
+                          // 48 dp de altura para facilitar o toque.
+                          child: InkWell(
+                            onTap: _source,
+                            child: ConstrainedBox(
+                              constraints: const BoxConstraints(minHeight: 48),
+                              child: Align(
+                                widthFactor: 1,
+                                heightFactor: 1,
+                                alignment: Alignment.bottomRight,
+                                child: Container(
+                                  margin: const EdgeInsets.all(6),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 4,
                                   ),
-                                ),
-                              ),
-                            )
-                            .toList(),
-                      ),
-                      Align(
-                        alignment: Alignment.bottomRight,
-                        // A etiqueta é pequena, mas a área de toque tem
-                        // 48 dp de altura para facilitar o toque.
-                        child: InkWell(
-                          onTap: _source,
-                          child: ConstrainedBox(
-                            constraints: const BoxConstraints(minHeight: 48),
-                            child: Align(
-                              widthFactor: 1,
-                              heightFactor: 1,
-                              alignment: Alignment.bottomRight,
-                              child: Container(
-                                margin: const EdgeInsets.all(6),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 4,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: colors.surface.withValues(alpha: .85),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Text(
-                                  '© OpenStreetMap',
-                                  style: theme.textTheme.labelSmall,
+                                  decoration: BoxDecoration(
+                                    color: colors.surface.withValues(
+                                      alpha: .85,
+                                    ),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Text(
+                                    '© OpenStreetMap',
+                                    style: theme.textTheme.labelSmall,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
                   ),
                 ),
               ),
