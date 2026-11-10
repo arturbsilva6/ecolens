@@ -192,17 +192,28 @@ class _DeleteAccountWarning extends StatelessWidget {
             if (email != null) Text('Conta: $email'),
             const SizedBox(height: 6),
             const Text('Serão apagados do servidor:'),
-            item(Icons.person_off_outlined, 'Sua conta e o acesso com ela',
-                color: colors.error),
-            item(Icons.photo_library_outlined,
-                'Todos os seus avistamentos e as fotos enviadas',
-                color: colors.error),
-            item(Icons.badge_outlined, 'Seu perfil público (nome e avatar)',
-                color: colors.error),
+            item(
+              Icons.person_off_outlined,
+              'Sua conta e o acesso com ela',
+              color: colors.error,
+            ),
+            item(
+              Icons.photo_library_outlined,
+              'Todos os seus avistamentos e as fotos enviadas',
+              color: colors.error,
+            ),
+            item(
+              Icons.badge_outlined,
+              'Seu perfil público (nome e avatar)',
+              color: colors.error,
+            ),
             const SizedBox(height: 14),
             const Text('Continuam só neste aparelho:'),
-            item(Icons.favorite_border, 'Favoritos e histórico de '
-                'identificações'),
+            item(
+              Icons.favorite_border,
+              'Favoritos e histórico de '
+              'identificações',
+            ),
           ],
         ),
       ),
