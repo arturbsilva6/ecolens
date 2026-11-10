@@ -63,6 +63,35 @@ void main() {
     expect(opened?.commonName, 'Taturana');
   });
 
+  testWidgets('Com TalkBack ligado, não troca de espécie sozinho', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: MediaQuery(
+          data: const MediaQueryData(accessibleNavigation: true),
+          child: Scaffold(
+            body: SingleChildScrollView(
+              child: RegionAlertCarousel(
+                interval: const Duration(seconds: 2),
+                fetchPublishedSpecies: () async => [
+                  _s('Jararaca', SpeciesStatus.danger),
+                  _s('Taturana', SpeciesStatus.danger),
+                ],
+                onSpeciesTap: (_) {},
+                onViewAllTap: () {},
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 5));
+    expect(find.bySemanticsLabel('Espécie 1 de 2'), findsOneWidget);
+  });
+
   testWidgets('Sem espécies de alerta, a seção não aparece', (tester) async {
     await tester.pumpWidget(
       MaterialApp(

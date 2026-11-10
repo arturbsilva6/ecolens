@@ -200,12 +200,12 @@ class SosScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            Text(
+            Semantics(header: true, child: Text(
               'Emergência com pessoas',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
-            ),
+            )),
             const SizedBox(height: 8),
             _callCard(
               context,
@@ -225,12 +225,12 @@ class SosScreen extends StatelessWidget {
               icon: Icons.local_fire_department_outlined,
             ),
             const SizedBox(height: 16),
-            Text(
+            Semantics(header: true, child: Text(
               'Animal silvestre em risco',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
-            ),
+            )),
             const SizedBox(height: 8),
             _guidanceCard(
               context,
@@ -246,12 +246,12 @@ class SosScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 16),
-            Text(
+            Semantics(header: true, child: Text(
               'Resgate de fauna · São Roque e região',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
-            ),
+            )),
             const SizedBox(height: 8),
             const Text(
               'Contatos regionais para orientação e encaminhamento. '
@@ -288,12 +288,12 @@ class SosScreen extends StatelessWidget {
               icon: Icons.pets_outlined,
             ),
             const SizedBox(height: 16),
-            Text(
+            Semantics(header: true, child: Text(
               'Denúncias e orientação ambiental',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
-            ),
+            )),
             const SizedBox(height: 8),
             _callCard(
               context,

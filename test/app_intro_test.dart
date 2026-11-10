@@ -13,12 +13,16 @@ void main() {
   Future<int Function()> show(
     WidgetTester tester, {
     bool reduceMotion = false,
+    bool screenReader = false,
   }) async {
     var finished = 0;
     await tester.pumpWidget(
       MaterialApp(
         home: MediaQuery(
-          data: MediaQueryData(disableAnimations: reduceMotion),
+          data: MediaQueryData(
+            disableAnimations: reduceMotion,
+            accessibleNavigation: screenReader,
+          ),
           child: Scaffold(
             body: AppIntro(
               onFinished: () => finished++,
@@ -66,6 +70,16 @@ void main() {
     final finished = await show(tester, reduceMotion: true);
     await tester.pump();
     expect(opacityOf(tester, AppInfo.taglineSecond), 1);
+    await tester.pump(const Duration(seconds: 1));
+    await tester.pumpAndSettle();
+    expect(finished(), 1);
+  });
+
+  testWidgets('Com TalkBack ligado, a abertura não faz esperar', (
+    tester,
+  ) async {
+    final finished = await show(tester, screenReader: true);
+    await tester.pump();
     await tester.pump(const Duration(seconds: 1));
     await tester.pumpAndSettle();
     expect(finished(), 1);

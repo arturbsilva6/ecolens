@@ -77,7 +77,10 @@ class _AppIntroState extends State<AppIntro>
     super.didChangeDependencies();
     if (_started) return;
     _started = true;
-    final reduceMotion = MediaQuery.maybeDisableAnimationsOf(context) ?? false;
+    // Com "Remover animações" ou com o TalkBack ligado, não faz esperar.
+    final reduceMotion =
+        (MediaQuery.maybeDisableAnimationsOf(context) ?? false) ||
+        (MediaQuery.maybeAccessibleNavigationOf(context) ?? false);
     if (reduceMotion) {
       _controller.value = _shown;
       Future<void>.delayed(const Duration(milliseconds: 900), _skip);

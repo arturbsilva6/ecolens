@@ -81,7 +81,10 @@ class _RegionAlertCarouselState extends State<RegionAlertCarousel> {
   void _restartTimer() {
     _timer?.cancel();
     final reduceMotion = MediaQuery.maybeDisableAnimationsOf(context) ?? false;
-    if (reduceMotion || _count < 2) return;
+    // Com TalkBack, o conteúdo não pode trocar sozinho enquanto é lido.
+    final screenReader =
+        MediaQuery.maybeAccessibleNavigationOf(context) ?? false;
+    if (reduceMotion || screenReader || _count < 2) return;
     _timer = Timer.periodic(widget.interval, (_) {
       if (!mounted || !_controller.hasClients) return;
       final next = (_page + 1) % _count;
@@ -117,12 +120,12 @@ class _RegionAlertCarouselState extends State<RegionAlertCarousel> {
               alignment: WrapAlignment.spaceBetween,
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
-                Text(
+                Semantics(header: true, child: Text(
                   'Cuidado na região',
                   style: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
-                ),
+                )),
                 TextButton(
                   onPressed: widget.onViewAllTap,
                   child: const Text('Ver todas'),

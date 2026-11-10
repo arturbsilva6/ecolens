@@ -52,11 +52,11 @@ class _RecentSpeciesSectionState extends State<RecentSpeciesSection> {
           alignment: WrapAlignment.spaceBetween,
           crossAxisAlignment: WrapCrossAlignment.center,
           children: [
-            Text(
+            Semantics(header: true, child: Text(
               'Explore as espécies',
               style: Theme.of(context).textTheme.titleLarge
                   ?.copyWith(fontWeight: FontWeight.bold),
-            ),
+            )),
             TextButton(
               onPressed: widget.onViewAllTap,
               child: const Text('Ver todas'),
@@ -192,6 +192,8 @@ class _SpeciesCard extends StatelessWidget {
                     : Image.asset(
                         species.imagePath!,
                         fit: BoxFit.cover,
+                        semanticLabel:
+                            'Fotografia ilustrativa de ${species.commonName}',
                         errorBuilder: (context, error, stackTrace) {
                           return _placeholder(context);
                         },
