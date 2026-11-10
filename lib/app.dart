@@ -238,6 +238,7 @@ class _EcoLensAppState extends State<EcoLensApp> {
             themeController: _themeController,
             fetchPublishedSpecies: widget.fetchPublishedSpecies,
             onProfileTap: _openProfile,
+            showTour: widget.showIntro,
           ),
         );
       },

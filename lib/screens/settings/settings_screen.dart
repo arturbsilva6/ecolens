@@ -13,6 +13,9 @@ class SettingsScreen extends StatelessWidget {
 
   const SettingsScreen({super.key, required this.themeController});
 
+  /// Resultado devolvido à Home para mostrar o tour de novo.
+  static const replayTour = 'replay_tour';
+
   void _open(BuildContext context, Widget screen) {
     Navigator.of(context)
         .push(MaterialPageRoute<void>(builder: (context) => screen));
@@ -56,6 +59,12 @@ class SettingsScreen extends StatelessWidget {
         title: 'Privacidade e dados',
         subtitle: 'Permissões, dados no aparelho e política',
         onTap: () => _open(context, const PrivacyScreen()),
+      ),
+      _item(
+        icon: Icons.tour_outlined,
+        title: 'Tour do app',
+        subtitle: 'Mostra de novo os principais recursos',
+        onTap: () => Navigator.of(context).maybePop(replayTour),
       ),
       _item(
         icon: Icons.info_outline,
