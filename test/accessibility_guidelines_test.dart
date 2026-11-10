@@ -91,9 +91,28 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        await expectLater(tester, meetsGuideline(androidTapTargetGuideline));
-        await expectLater(tester, meetsGuideline(labeledTapTargetGuideline));
-        await expectLater(tester, meetsGuideline(textContrastGuideline));
+        // Confere a tela inteira, rolando uma página por vez.
+        final scrollable = find.byType(Scrollable);
+        for (var page = 0; page < 8; page++) {
+          await expectLater(tester, meetsGuideline(androidTapTargetGuideline));
+          await expectLater(tester, meetsGuideline(labeledTapTargetGuideline));
+          await expectLater(tester, meetsGuideline(textContrastGuideline));
+          if (scrollable.evaluate().isEmpty) break;
+          final position = tester
+              .state<ScrollableState>(scrollable.first)
+              .position;
+          if (position.axis != Axis.vertical ||
+              position.pixels >= position.maxScrollExtent) {
+            break;
+          }
+          position.jumpTo(
+            (position.pixels + position.viewportDimension * .8).clamp(
+              0,
+              position.maxScrollExtent,
+            ),
+          );
+          await tester.pumpAndSettle();
+        }
         semantics.dispose();
       });
     }

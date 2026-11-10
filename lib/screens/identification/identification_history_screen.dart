@@ -262,11 +262,12 @@ class _IdentificationHistoryDetailScreen extends StatelessWidget {
             const SizedBox(height: 16),
             Card(
               color: colors.tertiaryContainer,
-              child: const Padding(
-                padding: EdgeInsets.all(16),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
                 child: Text(
                   'Sugestão experimental da IA. Este registro não '
                   'confirma a identificação da espécie.',
+                  style: TextStyle(color: colors.onTertiaryContainer),
                 ),
               ),
             ),

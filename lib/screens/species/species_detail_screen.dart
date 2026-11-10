@@ -257,16 +257,20 @@ class SpeciesDetailScreen extends StatelessWidget {
             if (isDemonstration)
               Card(
                 color: colors.tertiaryContainer,
-                child: const Padding(
-                  padding: EdgeInsets.all(16),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
                   child: Row(
                     children: [
-                      Icon(Icons.science_outlined),
-                      SizedBox(width: 12),
+                      Icon(
+                        Icons.science_outlined,
+                        color: colors.onTertiaryContainer,
+                      ),
+                      const SizedBox(width: 12),
                       Expanded(
                         child: Text(
                           'DEMONSTRAÇÃO: este resultado é ilustrativo. '
                           'Nenhuma fotografia foi analisada por IA.',
+                          style: TextStyle(color: colors.onTertiaryContainer),
                         ),
                       ),
                     ],

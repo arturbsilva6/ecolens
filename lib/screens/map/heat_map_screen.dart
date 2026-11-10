@@ -367,22 +367,30 @@ class _HeatMapScreenState extends State<HeatMapScreen> {
                       ),
                       Align(
                         alignment: Alignment.bottomRight,
-                        child: Container(
-                          margin: const EdgeInsets.all(6),
-                          decoration: BoxDecoration(
-                            color: colors.surface.withValues(alpha: .85),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: InkWell(
-                            onTap: _source,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
-                                vertical: 4,
-                              ),
-                              child: Text(
-                                '© OpenStreetMap',
-                                style: theme.textTheme.labelSmall,
+                        // A etiqueta é pequena, mas a área de toque tem
+                        // 48 dp de altura para facilitar o toque.
+                        child: InkWell(
+                          onTap: _source,
+                          child: ConstrainedBox(
+                            constraints: const BoxConstraints(minHeight: 48),
+                            child: Align(
+                              widthFactor: 1,
+                              heightFactor: 1,
+                              alignment: Alignment.bottomRight,
+                              child: Container(
+                                margin: const EdgeInsets.all(6),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 4,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: colors.surface.withValues(alpha: .85),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Text(
+                                  '© OpenStreetMap',
+                                  style: theme.textTheme.labelSmall,
+                                ),
                               ),
                             ),
                           ),
