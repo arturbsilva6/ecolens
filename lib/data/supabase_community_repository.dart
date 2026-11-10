@@ -207,7 +207,9 @@ class SupabaseCommunityRepository implements CommunityRepository {
         );
       }
       if (e.message.contains('ECOLENS_OWN_SIGHTING')) {
-        throw const CommunityFailure('Não é possível denunciar o próprio registro.');
+        throw const CommunityFailure(
+          'Não é possível denunciar o próprio registro.',
+        );
       }
       if (e.message.contains('ECOLENS_LOGIN_REQUIRED')) {
         throw const CommunityFailure('Entre na sua conta para denunciar.');

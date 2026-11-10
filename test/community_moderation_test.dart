@@ -80,7 +80,11 @@ void main() {
     final repository = CommunityFake()..user = 'other';
     await show(
       tester,
-      detail(repository, _sighting('a', 'author', 'Jararaca'), account: 'other'),
+      detail(
+        repository,
+        _sighting('a', 'author', 'Jararaca'),
+        account: 'other',
+      ),
     );
     await tester.tap(find.byTooltip('Mais opções'));
     await tester.pumpAndSettle();
@@ -103,7 +107,10 @@ void main() {
 
   testWidgets('Visitante não denuncia sem conta', (tester) async {
     final repository = CommunityFake();
-    await show(tester, detail(repository, _sighting('a', 'author', 'Jararaca')));
+    await show(
+      tester,
+      detail(repository, _sighting('a', 'author', 'Jararaca')),
+    );
     await tester.tap(find.byTooltip('Mais opções'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Denunciar registro'));

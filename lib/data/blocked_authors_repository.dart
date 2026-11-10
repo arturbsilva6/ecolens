@@ -4,16 +4,21 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// na Comunidade. Fica só no celular; o autor não é avisado.
 class BlockedAuthorsRepository {
   BlockedAuthorsRepository({SharedPreferencesAsync? preferences})
-    : _preferences = preferences ?? SharedPreferencesAsync();
+    : _given = preferences;
 
   static const _key = 'community_blocked_authors';
-  final SharedPreferencesAsync _preferences;
+  final SharedPreferencesAsync? _given;
+
+  // Criado só no primeiro uso, para a tela abrir mesmo sem armazenamento.
+  late final SharedPreferencesAsync _preferences =
+      _given ?? SharedPreferencesAsync();
 
   Future<Set<String>> load() async =>
       (await _preferences.getStringList(_key) ?? const <String>[]).toSet();
 
   Future<void> block(String ownerId) async {
-    final all = await load()..add(ownerId);
+    final all = await load()
+      ..add(ownerId);
     await _preferences.setStringList(_key, all.toList()..sort());
   }
 

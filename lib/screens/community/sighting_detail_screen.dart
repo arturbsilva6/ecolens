@@ -137,29 +137,25 @@ class _SightingDetailScreenState extends State<SightingDetailScreen> {
     );
     if (result == null || !mounted) return;
     setState(() => _busy = true);
+    String? failure;
     try {
       await widget.repository.report(widget.sighting, result.$1, result.$2);
-      if (!mounted) return;
-      await showResultDialog(
-        context,
-        title: 'Denúncia enviada',
-        message:
-            'Obrigado por avisar. Registros denunciados por várias pessoas '
-            'são ocultados automaticamente da Comunidade.',
-      );
     } catch (e) {
-      if (!mounted) return;
-      await showResultDialog(
-        context,
-        title: 'Denúncia não enviada',
-        message: e is CommunityFailure
-            ? e.message
-            : 'Não foi possível enviar agora. Tente novamente.',
-        success: false,
-      );
-    } finally {
-      if (mounted) setState(() => _busy = false);
+      failure = e is CommunityFailure
+          ? e.message
+          : 'Não foi possível enviar agora. Tente novamente.';
     }
+    if (!mounted) return;
+    setState(() => _busy = false);
+    await showResultDialog(
+      context,
+      title: failure == null ? 'Denúncia enviada' : 'Denúncia não enviada',
+      message:
+          failure ??
+          'Obrigado por avisar. Registros denunciados por várias pessoas '
+              'são ocultados automaticamente da Comunidade.',
+      success: failure == null,
+    );
   }
 
   Future<void> _block() async {
@@ -287,8 +283,7 @@ class _SightingDetailScreenState extends State<SightingDetailScreen> {
             PopupMenuButton<String>(
               tooltip: 'Mais opções',
               enabled: !_busy,
-              onSelected: (value) =>
-                  value == 'report' ? _report() : _block(),
+              onSelected: (value) => value == 'report' ? _report() : _block(),
               itemBuilder: (_) => const [
                 PopupMenuItem(
                   value: 'report',
@@ -628,9 +623,7 @@ class _ReportDialogState extends State<_ReportDialog> {
           maxLength: 500,
           maxLines: 3,
           minLines: 1,
-          decoration: const InputDecoration(
-            labelText: 'Detalhes (opcional)',
-          ),
+          decoration: const InputDecoration(labelText: 'Detalhes (opcional)'),
         ),
       ],
     ),
