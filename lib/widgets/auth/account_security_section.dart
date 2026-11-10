@@ -41,9 +41,17 @@ class AccountSecuritySection extends StatelessWidget {
     if (confirmed == true) await controller.signOutEverywhere();
   }
 
+  /// Exclusão em duas etapas: primeiro o que será perdido, depois a
+  /// confirmação final digitando EXCLUIR.
   Future<void> _deleteAccount(BuildContext context) async {
+    final proceed = await showDialog<bool>(
+      context: context,
+      builder: (_) => _DeleteAccountWarning(email: controller.user?.email),
+    );
+    if (proceed != true || !context.mounted) return;
     final confirmed = await showDialog<bool>(
       context: context,
+      barrierDismissible: false,
       builder: (_) => const _DeleteAccountDialog(),
     );
     if (confirmed == true) await controller.deleteAccount();
@@ -153,6 +161,67 @@ class _ChangePasswordDialogState extends State<_ChangePasswordDialog> {
   }
 }
 
+/// Primeiro aviso: mostra o que será apagado e o que continua no aparelho.
+class _DeleteAccountWarning extends StatelessWidget {
+  const _DeleteAccountWarning({this.email});
+
+  final String? email;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    Widget item(IconData icon, String text, {Color? color}) => Padding(
+      padding: const EdgeInsets.only(top: 10),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, size: 20, color: color),
+          const SizedBox(width: 10),
+          Expanded(child: Text(text)),
+        ],
+      ),
+    );
+    return AlertDialog(
+      icon: Icon(Icons.warning_amber_rounded, size: 40, color: colors.error),
+      title: const Text('Excluir sua conta?', textAlign: TextAlign.center),
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (email != null) Text('Conta: $email'),
+            const SizedBox(height: 6),
+            const Text('Serão apagados do servidor:'),
+            item(Icons.person_off_outlined, 'Sua conta e o acesso com ela',
+                color: colors.error),
+            item(Icons.photo_library_outlined,
+                'Todos os seus avistamentos e as fotos enviadas',
+                color: colors.error),
+            item(Icons.badge_outlined, 'Seu perfil público (nome e avatar)',
+                color: colors.error),
+            const SizedBox(height: 14),
+            const Text('Continuam só neste aparelho:'),
+            item(Icons.favorite_border, 'Favoritos e histórico de '
+                'identificações'),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          style: TextButton.styleFrom(foregroundColor: colors.error),
+          onPressed: () => Navigator.of(context).pop(true),
+          child: const Text('Continuar'),
+        ),
+        FilledButton(
+          onPressed: () => Navigator.of(context).pop(false),
+          child: const Text('Manter minha conta'),
+        ),
+      ],
+    );
+  }
+}
+
+/// Segundo aviso: última confirmação, só libera depois de digitar EXCLUIR.
 class _DeleteAccountDialog extends StatefulWidget {
   const _DeleteAccountDialog();
 
@@ -181,16 +250,17 @@ class _DeleteAccountDialogState extends State<_DeleteAccountDialog> {
     final ready = _typed.text.trim().toUpperCase() == _word;
     final error = Theme.of(context).colorScheme.error;
     return AlertDialog(
-      title: const Text('Excluir sua conta?'),
+      icon: Icon(Icons.delete_forever_rounded, size: 40, color: error),
+      title: const Text('Tem certeza?', textAlign: TextAlign.center),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Sua conta, seus avistamentos e as fotos enviadas serão apagados '
-              'do servidor. Não é possível desfazer. Favoritos e histórico '
-              'continuam só neste aparelho.',
+            Text(
+              'Esta é a última etapa. A exclusão é definitiva: depois dela, '
+              'não é possível recuperar a conta nem os avistamentos.',
+              style: TextStyle(color: error, fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 16),
             const Text('Para confirmar, digite $_word:'),
@@ -211,7 +281,7 @@ class _DeleteAccountDialogState extends State<_DeleteAccountDialog> {
         FilledButton(
           style: FilledButton.styleFrom(backgroundColor: error),
           onPressed: ready ? () => Navigator.of(context).pop(true) : null,
-          child: const Text('Excluir conta'),
+          child: const Text('Excluir definitivamente'),
         ),
       ],
     );

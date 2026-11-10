@@ -216,7 +216,9 @@ void main() {
       expect(controller.message, 'Sem conexão.');
     });
 
-    testWidgets('Excluir conta exige digitar EXCLUIR', (tester) async {
+    testWidgets('Excluir conta pede dois avisos e digitar EXCLUIR', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -231,9 +233,26 @@ void main() {
         ),
       );
 
+      // Primeiro aviso: desistir não apaga nada.
       await tester.tap(find.text('Excluir minha conta'));
       await tester.pumpAndSettle();
-      final button = find.widgetWithText(FilledButton, 'Excluir conta');
+      expect(find.text('Excluir sua conta?'), findsOneWidget);
+      expect(find.text('Conta: ${account.email}'), findsOneWidget);
+      await tester.tap(find.text('Manter minha conta'));
+      await tester.pumpAndSettle();
+      expect(find.text('Excluir sua conta?'), findsNothing);
+      expect(repository.deleteAccountCalls, 0);
+
+      // Segundo aviso: só libera depois de digitar EXCLUIR.
+      await tester.tap(find.text('Excluir minha conta'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Continuar'));
+      await tester.pumpAndSettle();
+      expect(find.text('Tem certeza?'), findsOneWidget);
+      final button = find.widgetWithText(
+        FilledButton,
+        'Excluir definitivamente',
+      );
       expect(tester.widget<FilledButton>(button).onPressed, isNull);
 
       await tester.enterText(find.byType(TextField), 'excluir');
