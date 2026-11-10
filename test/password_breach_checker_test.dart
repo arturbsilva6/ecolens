@@ -17,12 +17,16 @@ void main() {
       client: MockClient((request) async {
         asked = request.url;
         expect(request.headers['Add-Padding'], 'true');
-        return http.Response('0000000000000000000000000000000000A:3\r\n$suffix:9545824\r\n', 200);
+        return http.Response(
+          '0000000000000000000000000000000000A:3\r\n$suffix:9545824\r\n',
+          200,
+        );
       }),
     );
     expect(await checker.isLeaked('password'), isTrue);
     expect(asked?.path, '/range/$prefix');
-    expect(asked.toString(), isNot(contains('password')));
+    // O resto do hash (e a senha) nunca vai na requisição.
+    expect(asked.toString(), isNot(contains(suffix)));
   });
 
   test('Linha de preenchimento (contagem 0) não conta como vazada', () async {
@@ -39,21 +43,24 @@ void main() {
     expect(await checker.isLeaked('password'), isFalse);
   });
 
-  test('Cadastro com senha vazada é recusado antes de chegar ao servidor', () async {
-    final repository = FakeAuthRepository();
-    final controller = AuthController(
-      repository: repository,
-      isLeakedPassword: (_) async => true,
-    );
-    addTearDown(controller.dispose);
-    await controller.initialize();
-    await controller.signUp(
-      'pessoa@example.com',
-      'senha12345',
-      'senha12345',
-      'Pessoa',
-    );
-    expect(controller.message, contains('vazamentos'));
-    expect(repository.calls, 0);
-  });
+  test(
+    'Cadastro com senha vazada é recusado antes de chegar ao servidor',
+    () async {
+      final repository = FakeAuthRepository();
+      final controller = AuthController(
+        repository: repository,
+        isLeakedPassword: (_) async => true,
+      );
+      addTearDown(controller.dispose);
+      await controller.initialize();
+      await controller.signUp(
+        'pessoa@example.com',
+        'senha12345',
+        'senha12345',
+        'Pessoa',
+      );
+      expect(controller.message, contains('vazamentos'));
+      expect(repository.calls, 0);
+    },
+  );
 }
