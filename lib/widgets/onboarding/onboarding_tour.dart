@@ -212,7 +212,8 @@ class _TourCard extends StatelessWidget {
             Semantics(
               liveRegion: true,
               container: true,
-              label: 'Passo ${index + 1} de $total. ${step.title}. ${step.text}',
+              label:
+                  'Passo ${index + 1} de $total. ${step.title}. ${step.text}',
               child: ExcludeSemantics(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -251,7 +252,10 @@ class _TourCard extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     if (onBack != null)
-                      TextButton(onPressed: onBack, child: const Text('Voltar')),
+                      TextButton(
+                        onPressed: onBack,
+                        child: const Text('Voltar'),
+                      ),
                     const SizedBox(width: 4),
                     FilledButton(
                       onPressed: onNext,
