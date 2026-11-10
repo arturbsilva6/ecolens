@@ -32,7 +32,10 @@ abstract final class AppConfig {
 
   /// Nos testes automáticos o app fica desconectado, como antes, para que
   /// nenhum teste dependa da internet ou do projeto real.
-  static bool get _testing =>
+  static bool get _testing => isTesting;
+
+  /// Verdadeiro quando o código roda em `flutter test`.
+  static bool get isTesting =>
       !kIsWeb && Platform.environment.containsKey('FLUTTER_TEST');
 
   static String get supabaseUrl => _testing ? '' : _url;

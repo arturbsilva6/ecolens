@@ -46,6 +46,9 @@ class PrivacyPolicyScreen extends StatelessWidget {
           '• Google (Gemini): recebe a foto enviada para identificação, apenas '
           'quando você aceita a análise.\n'
           '• Google (login): quando você escolhe entrar com sua conta Google.\n'
+          '• Have I Been Pwned: ao criar ou trocar a senha, o app confere se '
+          'ela já vazou na internet enviando só os 5 primeiros caracteres de '
+          'um código (hash) da senha. A senha em si nunca é enviada.\n'
           'Avistamentos publicados ficam visíveis para outros usuários.',
     ),
     (

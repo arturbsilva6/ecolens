@@ -5,6 +5,8 @@ import 'package:flutter/foundation.dart';
 import '../data/auth_repository.dart';
 import '../data/supabase_auth_repository.dart';
 import '../models/user_model.dart';
+import '../services/password_breach_checker.dart';
+import '../core/app_config.dart';
 
 class AuthController extends ChangeNotifier {
   final AuthRepository repository;
@@ -29,9 +31,30 @@ class AuthController extends ChangeNotifier {
   int _resends = 0;
   DateTime? _resendAfter;
 
-  AuthController({AuthRepository? repository, DateTime Function()? now})
-    : repository = repository ?? SupabaseAuthRepository(),
-      _now = now ?? DateTime.now;
+  AuthController({
+    AuthRepository? repository,
+    DateTime Function()? now,
+    Future<bool> Function(String password)? isLeakedPassword,
+  }) : repository = repository ?? SupabaseAuthRepository(),
+       _now = now ?? DateTime.now,
+       // Nos testes automáticos, nada sai para a internet.
+       _isLeakedPassword =
+           isLeakedPassword ??
+           (AppConfig.isTesting
+               ? ((_) async => false)
+               : PasswordBreachChecker().isLeaked);
+
+  /// Confere a senha nova na base de senhas vazadas (Have I Been Pwned).
+  final Future<bool> Function(String password) _isLeakedPassword;
+
+  Future<void> _rejectLeaked(String password) async {
+    if (await _isLeakedPassword(password)) {
+      throw const AuthFailure(
+        'Esta senha já apareceu em vazamentos de dados na internet e pode ser '
+        'adivinhada. Escolha outra.',
+      );
+    }
+  }
 
   void _notify() {
     if (!_disposed) notifyListeners();
@@ -165,6 +188,7 @@ class AuthController extends ChangeNotifier {
     if (password != confirmation) {
       throw const AuthFailure('As senhas não coincidem.');
     }
+    await _rejectLeaked(password);
     final result = await repository.signUp(email.trim(), password, name.trim());
     if (_disposed) return;
     user = result;
@@ -235,6 +259,7 @@ class AuthController extends ChangeNotifier {
         if (password != confirmation) {
           throw const AuthFailure('As senhas não coincidem.');
         }
+        await _rejectLeaked(password);
         await repository.updatePassword(password);
         if (_disposed) return;
         recoveryRequired = false;
@@ -305,6 +330,7 @@ class AuthController extends ChangeNotifier {
       throw const AuthFailure('As senhas não coincidem.');
     }
     await repository.verifyPassword(current);
+    await _rejectLeaked(password);
     await repository.updatePassword(password);
     if (_disposed) return;
     noticeTitle = 'Senha alterada';
