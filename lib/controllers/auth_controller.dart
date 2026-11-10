@@ -288,16 +288,23 @@ class AuthController extends ChangeNotifier {
     linkProblem = false;
   });
 
-  Future<void> changePassword(String password, String confirmation) =>
-      _run(() async {
+  Future<void> changePassword(
+    String current,
+    String password,
+    String confirmation,
+  ) => _run(() async {
         if (user == null) {
           throw const AuthFailure('Entre na sua conta para alterar a senha.');
+        }
+        if (current.isEmpty) {
+          throw const AuthFailure('Informe a senha atual.');
         }
         final error = passwordError(password);
         if (error != null) throw AuthFailure(error);
         if (password != confirmation) {
           throw const AuthFailure('As senhas não coincidem.');
         }
+        await repository.verifyPassword(current);
         await repository.updatePassword(password);
         if (_disposed) return;
         noticeTitle = 'Senha alterada';
@@ -312,11 +319,17 @@ class AuthController extends ChangeNotifier {
     message = 'Você saiu da conta em todos os aparelhos.';
   });
 
-  Future<void> deleteAccount() => _run(() async {
-    if (user == null) {
+  Future<void> deleteAccount({String? password}) => _run(() async {
+    final current = user;
+    if (current == null) {
       throw const AuthFailure('Entre na sua conta para excluí-la.');
     }
-    await repository.deleteAccount();
+    if (current.hasPassword && (password == null || password.isEmpty)) {
+      throw const AuthFailure('Informe sua senha para excluir a conta.');
+    }
+    await repository.deleteAccount(
+      password: current.hasPassword ? password : null,
+    );
     if (_disposed) return;
     _clearAccount();
     noticeTitle = 'Conta excluída';

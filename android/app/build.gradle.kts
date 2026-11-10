@@ -52,9 +52,9 @@ android {
 
     buildTypes {
         release {
-            // Sem key.properties (CI e máquinas de desenvolvimento), o build de
-            // release usa a chave de debug só para permitir `flutter run --release`.
-            // Esse APK não serve para publicação.
+            // Sem key.properties (CI e testes locais), o release usa a chave de
+            // debug só para permitir `flutter run --release`. A geração de
+            // pacotes para publicação falha antes (ver bloco abaixo).
             signingConfig = if (keystorePropertiesFile.exists()) {
                 signingConfigs.getByName("release")
             } else {
@@ -64,12 +64,25 @@ android {
     }
 }
 
-kotlin {
-    compilerOptions {
-        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+// Sem key.properties, o pacote de release sairia assinado com a chave de
+// debug. O App Bundle (usado na Play Store) para com erro; o APK só avisa,
+// porque `flutter run --release` também gera um APK de release.
+// No CI (variável CI=true) a regra não se aplica.
+gradle.taskGraph.whenReady {
+    if (keystorePropertiesFile.exists() || System.getenv("CI") == "true") {
+        return@whenReady
     }
-}
-
-flutter {
-    source = "../.."
+    val names = allTasks.filter { it.project == project }.map { it.name }
+    if ("bundleRelease" in names) {
+        throw GradleException(
+            "Falta android/key.properties: o App Bundle seria assinado com a " +
+                "chave de debug e recusado na Play Store. Veja docs/release-signing.md.",
+        )
+    }
+    if ("assembleRelease" in names) {
+        logger.warn(
+            "AVISO: sem android/key.properties, este APK de release usa a chave " +
+                "de debug e não serve para publicação.",
+        )
+    }
 }

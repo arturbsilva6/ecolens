@@ -9,12 +9,12 @@ class AccountSecuritySection extends StatelessWidget {
   const AccountSecuritySection({super.key, required this.controller});
 
   Future<void> _changePassword(BuildContext context) async {
-    final result = await showDialog<(String, String)>(
+    final result = await showDialog<(String, String, String)>(
       context: context,
       builder: (_) => const _ChangePasswordDialog(),
     );
     if (result == null) return;
-    await controller.changePassword(result.$1, result.$2);
+    await controller.changePassword(result.$1, result.$2, result.$3);
   }
 
   Future<void> _signOutEverywhere(BuildContext context) async {
@@ -49,12 +49,17 @@ class AccountSecuritySection extends StatelessWidget {
       builder: (_) => _DeleteAccountWarning(email: controller.user?.email),
     );
     if (proceed != true || !context.mounted) return;
-    final confirmed = await showDialog<bool>(
+    final hasPassword = controller.user?.hasPassword ?? true;
+    final confirmed = await showDialog<(bool, String)>(
       context: context,
       barrierDismissible: false,
-      builder: (_) => const _DeleteAccountDialog(),
+      builder: (_) => _DeleteAccountDialog(askPassword: hasPassword),
     );
-    if (confirmed == true) await controller.deleteAccount();
+    if (confirmed?.$1 == true) {
+      await controller.deleteAccount(
+        password: hasPassword ? confirmed!.$2 : null,
+      );
+    }
   }
 
   @override
@@ -70,11 +75,18 @@ class AccountSecuritySection extends StatelessWidget {
           style: Theme.of(context).textTheme.titleMedium,
         ),
         const SizedBox(height: 8),
-        OutlinedButton.icon(
-          onPressed: busy ? null : () => _changePassword(context),
-          icon: const Icon(Icons.password),
-          label: const Text('Alterar senha'),
-        ),
+        if (controller.user?.hasPassword ?? true)
+          OutlinedButton.icon(
+            onPressed: busy ? null : () => _changePassword(context),
+            icon: const Icon(Icons.password),
+            label: const Text('Alterar senha'),
+          )
+        else
+          Text(
+            'Você entra com o Google, então não há senha do EcoLens para '
+            'alterar.',
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
         const SizedBox(height: 8),
         OutlinedButton.icon(
           onPressed: busy ? null : () => _signOutEverywhere(context),
@@ -101,12 +113,14 @@ class _ChangePasswordDialog extends StatefulWidget {
 }
 
 class _ChangePasswordDialogState extends State<_ChangePasswordDialog> {
+  final _current = TextEditingController();
   final _password = TextEditingController();
   final _confirmation = TextEditingController();
   bool _hidden = true;
 
   @override
   void dispose() {
+    _current.dispose();
     _password.dispose();
     _confirmation.dispose();
     super.dispose();
@@ -120,6 +134,13 @@ class _ChangePasswordDialogState extends State<_ChangePasswordDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            TextField(
+              controller: _current,
+              obscureText: _hidden,
+              autofillHints: const [AutofillHints.password],
+              decoration: const InputDecoration(labelText: 'Senha atual'),
+            ),
+            const SizedBox(height: 12),
             TextField(
               controller: _password,
               obscureText: _hidden,
@@ -152,8 +173,9 @@ class _ChangePasswordDialogState extends State<_ChangePasswordDialog> {
           child: const Text('Cancelar'),
         ),
         FilledButton(
-          onPressed: () =>
-              Navigator.of(context).pop((_password.text, _confirmation.text)),
+          onPressed: () => Navigator.of(
+            context,
+          ).pop((_current.text, _password.text, _confirmation.text)),
           child: const Text('Salvar'),
         ),
       ],
@@ -234,7 +256,10 @@ class _DeleteAccountWarning extends StatelessWidget {
 
 /// Segundo aviso: última confirmação, só libera depois de digitar EXCLUIR.
 class _DeleteAccountDialog extends StatefulWidget {
-  const _DeleteAccountDialog();
+  const _DeleteAccountDialog({required this.askPassword});
+
+  /// Contas com senha confirmam com ela; contas do Google, com login recente.
+  final bool askPassword;
 
   @override
   State<_DeleteAccountDialog> createState() => _DeleteAccountDialogState();
@@ -243,22 +268,27 @@ class _DeleteAccountDialog extends StatefulWidget {
 class _DeleteAccountDialogState extends State<_DeleteAccountDialog> {
   static const _word = 'EXCLUIR';
   final _typed = TextEditingController();
+  final _password = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _typed.addListener(() => setState(() {}));
+    _password.addListener(() => setState(() {}));
   }
 
   @override
   void dispose() {
     _typed.dispose();
+    _password.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final ready = _typed.text.trim().toUpperCase() == _word;
+    final ready =
+        _typed.text.trim().toUpperCase() == _word &&
+        (!widget.askPassword || _password.text.isNotEmpty);
     final error = Theme.of(context).colorScheme.error;
     return AlertDialog(
       icon: Icon(Icons.delete_forever_rounded, size: 40, color: error),
@@ -281,17 +311,33 @@ class _DeleteAccountDialogState extends State<_DeleteAccountDialog> {
               autocorrect: false,
               decoration: const InputDecoration(hintText: _word),
             ),
+            const SizedBox(height: 12),
+            if (widget.askPassword)
+              TextField(
+                controller: _password,
+                obscureText: true,
+                autofillHints: const [AutofillHints.password],
+                decoration: const InputDecoration(labelText: 'Sua senha'),
+              )
+            else
+              Text(
+                'Por segurança, se você entrou com o Google há mais de 15 '
+                'minutos, será preciso entrar de novo antes de excluir.',
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
           ],
         ),
       ),
       actions: [
         TextButton(
-          onPressed: () => Navigator.of(context).pop(false),
+          onPressed: () => Navigator.of(context).pop((false, '')),
           child: const Text('Cancelar'),
         ),
         FilledButton(
           style: FilledButton.styleFrom(backgroundColor: error),
-          onPressed: ready ? () => Navigator.of(context).pop(true) : null,
+          onPressed: ready
+              ? () => Navigator.of(context).pop((true, _password.text))
+              : null,
           child: const Text('Excluir definitivamente'),
         ),
       ],

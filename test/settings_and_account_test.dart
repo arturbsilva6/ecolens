@@ -3,6 +3,7 @@ import 'package:ecolens/controllers/theme_controller.dart';
 import 'package:ecolens/data/auth_repository.dart';
 import 'package:ecolens/data/favorites_repository.dart';
 import 'package:ecolens/data/identification_history_repository.dart';
+import 'package:ecolens/models/user_model.dart';
 import 'package:ecolens/screens/settings/about_screen.dart';
 import 'package:ecolens/screens/settings/accessibility_screen.dart';
 import 'package:ecolens/screens/settings/privacy_policy_screen.dart';
@@ -192,15 +193,52 @@ void main() {
     });
     tearDown(() => controller.dispose());
 
-    test('Alterar senha valida tamanho e confirmação', () async {
-      await controller.changePassword('curta', 'curta');
+    test('Alterar senha pede a senha atual e valida a nova', () async {
+      await controller.changePassword('', 'senhaforte1', 'senhaforte1');
+      expect(controller.message, 'Informe a senha atual.');
+      await controller.changePassword('senha-atual', 'curta', 'curta');
       expect(controller.message, contains('8 a 128'));
-      await controller.changePassword('senhaforte1', 'senhaforte2');
+      await controller.changePassword(
+        'senha-atual',
+        'senhaforte1',
+        'senhaforte2',
+      );
       expect(controller.message, 'As senhas não coincidem.');
       expect(repository.calls, 0);
-      await controller.changePassword('senhaforte1', 'senhaforte1');
+
+      await controller.changePassword('errada', 'senhaforte1', 'senhaforte1');
+      expect(controller.message, 'Senha atual incorreta.');
+      expect(repository.calls, 0);
+
+      await controller.changePassword(
+        'senha-atual',
+        'senhaforte1',
+        'senhaforte1',
+      );
       expect(controller.message, 'Senha alterada.');
       expect(repository.calls, 1);
+    });
+
+    test('Excluir conta com senha exige informar a senha', () async {
+      await controller.deleteAccount();
+      expect(controller.message, 'Informe sua senha para excluir a conta.');
+      expect(repository.deleteAccountCalls, 0);
+    });
+
+    test('Conta do Google exclui sem senha (servidor pede login recente)', () async {
+      final google = FakeAuthRepository()
+        ..restored = const UserModel(
+          id: 'g',
+          email: 'g@example.com',
+          displayName: 'G',
+          hasPassword: false,
+        );
+      final googleController = AuthController(repository: google);
+      addTearDown(googleController.dispose);
+      await googleController.initialize();
+      await googleController.deleteAccount();
+      expect(google.deleteAccountCalls, 1);
+      expect(google.lastDeletePassword, isNull);
     });
 
     test('Sair de todos os aparelhos encerra a sessão local', () async {
@@ -211,7 +249,7 @@ void main() {
 
     test('Falha ao excluir mantém a conta e mostra a mensagem', () async {
       repository.failure = const AuthFailure('Sem conexão.');
-      await controller.deleteAccount();
+      await controller.deleteAccount(password: 'senha-atual');
       expect(controller.user, isNotNull);
       expect(controller.message, 'Sem conexão.');
     });
@@ -255,13 +293,18 @@ void main() {
       );
       expect(tester.widget<FilledButton>(button).onPressed, isNull);
 
-      await tester.enterText(find.byType(TextField), 'excluir');
+      await tester.enterText(find.byType(TextField).first, 'excluir');
+      await tester.pump();
+      // Conta com senha: também precisa informar a senha.
+      expect(tester.widget<FilledButton>(button).onPressed, isNull);
+      await tester.enterText(find.byType(TextField).last, 'senha-atual');
       await tester.pump();
       expect(tester.widget<FilledButton>(button).onPressed, isNotNull);
       await tester.tap(button);
       await tester.pumpAndSettle();
 
       expect(repository.deleteAccountCalls, 1);
+      expect(repository.lastDeletePassword, 'senha-atual');
       expect(controller.user, isNull);
       expect(controller.message, startsWith('Conta excluída.'));
     });

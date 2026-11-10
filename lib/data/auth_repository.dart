@@ -43,6 +43,11 @@ abstract class AuthRepository {
   Future<void> signOutEverywhere();
 
   /// Exclui a conta, os avistamentos e as fotos do usuário no servidor.
-  Future<void> deleteAccount();
+  /// Confere a senha atual da conta conectada, antes de ações sensíveis.
+  Future<void> verifyPassword(String password);
+
+  /// Contas com senha precisam informá-la; contas do Google precisam ter
+  /// entrado há pouco tempo (o servidor confere as duas coisas).
+  Future<void> deleteAccount({String? password});
   Future<void> dispose();
 }

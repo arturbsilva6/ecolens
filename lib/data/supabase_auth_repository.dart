@@ -63,6 +63,10 @@ class SupabaseAuthRepository implements AuthRepository {
           displayName: user.userMetadata?['display_name'] is String
               ? user.userMetadata!['display_name'] as String
               : '',
+          hasPassword: switch (user.appMetadata['providers']) {
+            final List<dynamic> providers => providers.contains('email'),
+            _ => user.appMetadata['provider'] != 'google',
+          },
         );
 
   void _emit(AccountEvent event) {
@@ -347,7 +351,26 @@ class SupabaseAuthRepository implements AuthRepository {
   });
 
   @override
-  Future<void> deleteAccount() async {
+  Future<void> verifyPassword(String password) async {
+    final client = await _clientProvider();
+    final email = client.auth.currentUser?.email;
+    if (email == null || email.isEmpty) {
+      throw const AuthFailure('Entre na sua conta para continuar.');
+    }
+    try {
+      await client.auth.signInWithPassword(email: email, password: password);
+    } on AuthException catch (error) {
+      if (error.statusCode == '400') {
+        throw const AuthFailure('Senha atual incorreta.');
+      }
+      throw AuthFailure(authErrorMessage(error));
+    } catch (error) {
+      throw AuthFailure(authErrorMessage(error));
+    }
+  }
+
+  @override
+  Future<void> deleteAccount({String? password}) async {
     try {
       await connect();
       final client = _client!;
@@ -359,11 +382,24 @@ class SupabaseAuthRepository implements AuthRepository {
       // a conta. A confirmação evita exclusão por chamada acidental.
       await client.functions.invoke(
         'delete-account',
-        body: {'confirm': 'EXCLUIR'},
+        body: {'confirm': 'EXCLUIR', 'password': ?password},
       );
     } on AuthFailure {
       rethrow;
-    } on FunctionException {
+    } on FunctionException catch (error) {
+      final details = error.details;
+      final code = details is Map ? details['code'] : null;
+      switch (code) {
+        case 'wrong_password':
+          throw const AuthFailure('Senha incorreta. A conta não foi excluída.');
+        case 'password_required':
+          throw const AuthFailure('Informe sua senha para excluir a conta.');
+        case 'reauthentication_required':
+          throw const AuthFailure(
+            'Por segurança, saia e entre de novo com o Google e, em seguida, '
+            'exclua a conta. Nada foi apagado.',
+          );
+      }
       throw const AuthFailure(
         'Não foi possível excluir a conta agora. Verifique a conexão e tente novamente.',
       );

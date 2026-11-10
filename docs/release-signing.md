@@ -50,6 +50,10 @@ para outro projeto, use `--dart-define` (por exemplo,
 `--dart-define=SUPABASE_URL=...`). Só entram chaves publicáveis; nunca a
 chave `service_role` nem segredos do Google.
 
+Sem `android/key.properties`, `flutter build appbundle --release` para com
+erro (o pacote sairia com a chave de debug) e `flutter build apk --release`
+mostra um aviso.
+
 Para conferir a assinatura do APK:
 
 ```powershell
