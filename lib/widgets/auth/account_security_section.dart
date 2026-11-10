@@ -173,9 +173,9 @@ class _ChangePasswordDialogState extends State<_ChangePasswordDialog> {
           child: const Text('Cancelar'),
         ),
         FilledButton(
-          onPressed: () => Navigator.of(
-            context,
-          ).pop((_current.text, _password.text, _confirmation.text)),
+          onPressed: () =>
+              Navigator.of(context)
+                  .pop((_current.text, _password.text, _confirmation.text)),
           child: const Text('Salvar'),
         ),
       ],

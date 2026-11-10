@@ -225,21 +225,24 @@ void main() {
       expect(repository.deleteAccountCalls, 0);
     });
 
-    test('Conta do Google exclui sem senha (servidor pede login recente)', () async {
-      final google = FakeAuthRepository()
-        ..restored = const UserModel(
-          id: 'g',
-          email: 'g@example.com',
-          displayName: 'G',
-          hasPassword: false,
-        );
-      final googleController = AuthController(repository: google);
-      addTearDown(googleController.dispose);
-      await googleController.initialize();
-      await googleController.deleteAccount();
-      expect(google.deleteAccountCalls, 1);
-      expect(google.lastDeletePassword, isNull);
-    });
+    test(
+      'Conta do Google exclui sem senha (servidor pede login recente)',
+      () async {
+        final google = FakeAuthRepository()
+          ..restored = const UserModel(
+            id: 'g',
+            email: 'g@example.com',
+            displayName: 'G',
+            hasPassword: false,
+          );
+        final googleController = AuthController(repository: google);
+        addTearDown(googleController.dispose);
+        await googleController.initialize();
+        await googleController.deleteAccount();
+        expect(google.deleteAccountCalls, 1);
+        expect(google.lastDeletePassword, isNull);
+      },
+    );
 
     test('Sair de todos os aparelhos encerra a sessão local', () async {
       await controller.signOutEverywhere();

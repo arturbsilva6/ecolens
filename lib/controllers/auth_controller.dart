@@ -293,23 +293,23 @@ class AuthController extends ChangeNotifier {
     String password,
     String confirmation,
   ) => _run(() async {
-        if (user == null) {
-          throw const AuthFailure('Entre na sua conta para alterar a senha.');
-        }
-        if (current.isEmpty) {
-          throw const AuthFailure('Informe a senha atual.');
-        }
-        final error = passwordError(password);
-        if (error != null) throw AuthFailure(error);
-        if (password != confirmation) {
-          throw const AuthFailure('As senhas não coincidem.');
-        }
-        await repository.verifyPassword(current);
-        await repository.updatePassword(password);
-        if (_disposed) return;
-        noticeTitle = 'Senha alterada';
-        message = 'Senha alterada.';
-      });
+    if (user == null) {
+      throw const AuthFailure('Entre na sua conta para alterar a senha.');
+    }
+    if (current.isEmpty) {
+      throw const AuthFailure('Informe a senha atual.');
+    }
+    final error = passwordError(password);
+    if (error != null) throw AuthFailure(error);
+    if (password != confirmation) {
+      throw const AuthFailure('As senhas não coincidem.');
+    }
+    await repository.verifyPassword(current);
+    await repository.updatePassword(password);
+    if (_disposed) return;
+    noticeTitle = 'Senha alterada';
+    message = 'Senha alterada.';
+  });
 
   Future<void> signOutEverywhere() => _run(() async {
     await repository.signOutEverywhere();
