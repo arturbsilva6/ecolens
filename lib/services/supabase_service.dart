@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
 import '../core/app_config.dart';
 
 /// Inicializa somente o SDK; não consulta o catálogo nem exige login.

@@ -36,8 +36,7 @@ abstract final class AppConfig {
       !kIsWeb && Platform.environment.containsKey('FLUTTER_TEST');
 
   static String get supabaseUrl => _testing ? '' : _url;
-  static String get supabasePublishableKey =>
-      _testing ? '' : _publishableKey;
+  static String get supabasePublishableKey => _testing ? '' : _publishableKey;
   static bool get googleEnabled => !_testing && _google;
   static bool get aiEnabled => !_testing && _ai;
 }
